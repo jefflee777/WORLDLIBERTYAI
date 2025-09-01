@@ -152,8 +152,8 @@ const LiveDataPreviewSection = () => {
                 <span className="text-[#fdd949] font-medium">real-time financial intelligence</span>.
               </p>
               
-              <p className="text-lg text-[#e7e5e4] leading-relaxed">
-                From whale alerts to cross-market deviations — WLFI AI keeps you ahead of the curve 
+              <p className="text-lg text-[#e7e5e4] text-balance leading-relaxed">
+                From whale alerts to cross-market deviations WLFI AI keeps you ahead of the curve 
                 with instant insights and actionable intelligence.
               </p>
             </motion.div>
@@ -194,7 +194,7 @@ const LiveDataPreviewSection = () => {
               
               {/* Main Chart Container */}
               <motion.div
-                className="relative p-6 bg-gradient-to-br from-[#1c1917]/80 to-[#171412]/60 backdrop-blur-sm border border-[#e7ac08]/20 rounded-2xl mb-6"
+                className="relative overflow-hidden p-6 bg-gradient-to-br from-[#1c1917]/80 to-[#171412]/60 backdrop-blur-sm border border-[#e7ac08]/20 rounded-2xl mb-6"
                 whileHover={{ 
                   borderColor: "rgba(231, 172, 8, 0.4)",
                   boxShadow: "0 20px 40px rgba(231, 172, 8, 0.1)"
