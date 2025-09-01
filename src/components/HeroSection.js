@@ -121,22 +121,17 @@ const HeroSection = () => {
                 transition={{ duration: 1.2, delay: 1, ease: "easeOut" }}
               >
                 <div className="h-[2px] bg-gradient-to-r from-[#e7ac08] via-[#fdd949] to-transparent rounded-full" />
-                <motion.div 
-                  className="absolute top-0 left-0 h-[2px] w-6 bg-[#fdd949] rounded-full"
-                  animate={{ x: [0, 100, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, delay: 2 }}
-                />
               </motion.div>
             </div>
 
             {/* Subheading */}
             <motion.p 
-              className="text-xl sm:text-2xl lg:text-2xl text-[#d7d3d0] leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light"
+              className="text-lg sm:text-xl lg:text-xl text-balance text-[#d7d3d0]/80 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
             >
-              Real-time insights on global transactions, market trends, and whale movements — 
+              Real-time insights on global transactions, market trends, and whale movements 
               all in one intelligent hub.
             </motion.p>
 

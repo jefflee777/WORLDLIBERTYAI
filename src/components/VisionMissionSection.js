@@ -28,22 +28,30 @@ const VisionMissionSection = () => {
     {
       icon: FaSearch,
       title: "Real-time AI transaction analysis",
-      description: "Advanced algorithms monitor blockchain transactions instantly"
+      description: "Advanced algorithms monitor blockchain transactions instantly with pattern recognition",
+      thumbnail: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='bg1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23e7ac08;stop-opacity:0.1'/%3E%3Cstop offset='100%25' style='stop-color:%23171412;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='200' height='120' fill='url(%23bg1)'/%3E%3Ccircle cx='50' cy='40' r='8' fill='%23e7ac08' opacity='0.6'/%3E%3Ccircle cx='120' cy='30' r='6' fill='%23fdd949' opacity='0.8'/%3E%3Ccircle cx='150' cy='70' r='10' fill='%23e7ac08' opacity='0.5'/%3E%3Cpath d='M50 40 L120 30 L150 70' stroke='%23fdd949' stroke-width='2' opacity='0.6' fill='none'/%3E%3Ctext x='20' y='100' fill='%23e7ac08' font-size='12' font-weight='bold'%3EAI Analysis%3C/text%3E%3C/svg%3E",
+      color: "#e7ac08"
     },
     {
       icon: FaChartLine,
       title: "Market trend insights for investors", 
-      description: "Data-driven intelligence for smarter investment decisions"
+      description: "Data-driven intelligence and predictive analytics for smarter investment decisions",
+      thumbnail: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='bg2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23fdd949;stop-opacity:0.1'/%3E%3Cstop offset='100%25' style='stop-color:%23171412;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='200' height='120' fill='url(%23bg2)'/%3E%3Cpath d='M20 80 L50 60 L80 45 L110 35 L140 25 L170 20' stroke='%23fdd949' stroke-width='3' fill='none'/%3E%3Cpath d='M20 80 L50 60 L80 45 L110 35 L140 25 L170 20 L170 90 L20 90 Z' fill='%23fdd949' opacity='0.2'/%3E%3Ccircle cx='170' cy='20' r='4' fill='%23fdd949'/%3E%3Ctext x='20' y='105' fill='%23fdd949' font-size='12' font-weight='bold'%3ETrend Analysis%3C/text%3E%3C/svg%3E",
+      color: "#fdd949"
     },
     {
       icon: FaBell,
       title: "Instant alerts on abnormal activity",
-      description: "Immediate notifications when unusual patterns are detected"
+      description: "Immediate notifications and warnings when unusual market patterns are detected",
+      thumbnail: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='bg3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23f87171;stop-opacity:0.1'/%3E%3Cstop offset='100%25' style='stop-color:%23171412;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='200' height='120' fill='url(%23bg3)'/%3E%3Ccircle cx='100' cy='50' r='25' fill='none' stroke='%23f87171' stroke-width='2' opacity='0.6'/%3E%3Ccircle cx='100' cy='50' r='15' fill='none' stroke='%23fdd949' stroke-width='2' opacity='0.8'/%3E%3Ccircle cx='100' cy='50' r='5' fill='%23f87171' opacity='0.9'/%3E%3Cpath d='M75 30 L85 40 M125 30 L115 40 M75 70 L85 60 M125 70 L115 60' stroke='%23e7ac08' stroke-width='2' opacity='0.7'/%3E%3Ctext x='60' y='105' fill='%23f87171' font-size='12' font-weight='bold'%3EAlert System%3C/text%3E%3C/svg%3E",
+      color: "#f87171"
     },
     {
       icon: FaTelegram,
       title: "Accessible via Telegram Mini App",
-      description: "Seamless access to AI insights through your messenger"
+      description: "Seamless access to AI insights through your messenger with instant notifications",
+      thumbnail: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='bg4' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%230088cc;stop-opacity:0.1'/%3E%3Cstop offset='100%25' style='stop-color:%23171412;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='200' height='120' fill='url(%23bg4)'/%3E%3Crect x='60' y='20' width='80' height='60' rx='8' fill='%230088cc' opacity='0.2'/%3E%3Crect x='65' y='25' width='70' height='50' rx='4' fill='%23171412' opacity='0.8'/%3E%3Ccircle cx='75' cy='40' r='3' fill='%23e7ac08'/%3E%3Crect x='85' y='37' width='40' height='6' rx='3' fill='%23fdd949' opacity='0.6'/%3E%3Ccircle cx='75' cy='55' r='3' fill='%230088cc'/%3E%3Crect x='85' y='52' width='35' height='6' rx='3' fill='%23d7d3d0' opacity='0.8'/%3E%3Ctext x='50' y='105' fill='%230088cc' font-size='12' font-weight='bold'%3ETelegram Bot%3C/text%3E%3C/svg%3E",
+      color: "#0088cc"
     }
   ]
 
@@ -211,7 +219,7 @@ const VisionMissionSection = () => {
               </p>
             </motion.div>
 
-            {/* Mission Section */}
+            {/* Mission Section with Cards */}
             <div className="space-y-8">
               <motion.h3 
                 className="text-xl lg:text-2xl font-bold text-[#ffffff]"
@@ -222,35 +230,70 @@ const VisionMissionSection = () => {
                 Our Mission
               </motion.h3>
               
-              <div className="grid gap-4">
+              <div className="grid sm:grid-cols-2 gap-6">
                 {missions.map((mission, index) => (
                   <motion.div
                     key={index}
-                    className="group flex items-center gap-4 p-4 rounded-xl border border-[#44403c]/40 bg-[#1c1917]/30 hover:border-[#e7ac08]/50 hover:bg-[#1c1917]/50 transition-all duration-300"
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={rightInView ? { opacity: 1, x: 0 } : {}}
+                    className="group relative p-6 rounded-2xl border border-[#44403c]/40 bg-gradient-to-br from-[#1c1917]/60 to-[#171412]/40 backdrop-blur-sm hover:border-[#e7ac08]/50 hover:bg-[#1c1917]/70 transition-all duration-300 overflow-hidden"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={rightInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.6, delay: 1.1 + index * 0.1 }}
                     whileHover={{ 
                       scale: 1.02,
-                      transition: { duration: 0.2 }
+                      y: -5,
+                      transition: { duration: 0.3 }
                     }}
                   >
+                    {/* Thumbnail Image */}
                     <motion.div
-                      className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#e7ac08] to-[#fdd949] rounded-lg flex items-center justify-center"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className="relative w-full h-20 mb-4 rounded-lg overflow-hidden"
+                      whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <mission.icon className="text-base text-[#171412]" />
+                      <img 
+                        src={mission.thumbnail} 
+                        alt={mission.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div 
+                        className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
+                      />
+                      
+                      {/* Floating Icon */}
+                      <motion.div
+                        className="absolute top-3 right-3 w-8 h-8 bg-gradient-to-br from-[#e7ac08] to-[#fdd949] rounded-lg flex items-center justify-center"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <mission.icon className="text-sm text-[#171412]" />
+                      </motion.div>
                     </motion.div>
                     
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-base lg:text-lg font-semibold text-[#ffffff] group-hover:text-[#fdd949] transition-colors duration-300 leading-tight">
+                    {/* Card Content */}
+                    <div className="space-y-3">
+                      <h4 className="text-lg font-bold text-[#ffffff] group-hover:text-[#fdd949] transition-colors duration-300 leading-tight">
                         {mission.title}
                       </h4>
-                      <p className="text-sm text-[#aaa29d] leading-snug mt-1">
+                      <p className="text-sm text-[#aaa29d] leading-relaxed">
                         {mission.description}
                       </p>
                     </div>
+
+                    {/* Hover Glow Effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle at bottom right, ${mission.color}10 0%, transparent 70%)`
+                      }}
+                    />
+
+                    {/* Corner Accent */}
+                    <div 
+                      className="absolute top-0 left-0 w-20 h-20 rounded-br-2xl opacity-20"
+                      style={{
+                        background: `linear-gradient(135deg, ${mission.color}40 0%, transparent 70%)`
+                      }}
+                    />
                   </motion.div>
                 ))}
               </div>
