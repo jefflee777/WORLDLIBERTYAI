@@ -6,6 +6,7 @@ export default function Home() {
     <div>
       <HeroSection/>
       <VisionMissionSection/>
+      <div className="h-screen"/>
     </div>
   );
 }
