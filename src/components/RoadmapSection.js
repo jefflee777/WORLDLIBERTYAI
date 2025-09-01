@@ -10,7 +10,9 @@ import {
   FaClock,
   FaArrowRight
 } from 'react-icons/fa'
-import { BiTrendingUp, BiGlobe, BiStats } from 'react-icons/bi'
+import { BsTwitterX } from "react-icons/bs";
+
+import { BiGlobe, BiStats } from 'react-icons/bi'
 
 const RoadmapSection = () => {
   const sectionRef = useRef(null)
@@ -80,7 +82,7 @@ const RoadmapSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-24 lg:py-32 bg-[#171412] overflow-hidden"
+      className="relative py-14 lg:py-28 bg-[#171412] overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
@@ -142,7 +144,7 @@ const RoadmapSection = () => {
           </motion.h2>
           
           <motion.p
-            className="text-xl text-[#d7d3d0] max-w-3xl mx-auto leading-relaxed"
+            className="text-xl text-[#d7d3d0] text-balance max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -157,7 +159,7 @@ const RoadmapSection = () => {
           {/* Timeline Line */}
           <motion.div
             ref={timelineRef}
-            className="absolute left-8 lg:left-12 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#e7ac08]/30 via-[#fdd949]/50 to-[#e7ac08]/30"
+            className="absolute left-8 lg:left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#e7ac08]/30 via-[#fdd949]/50 to-[#e7ac08]/30"
             initial={{ scaleY: 0 }}
             animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
             transition={{ duration: 1.5, delay: 0.8 }}
@@ -215,7 +217,7 @@ const RoadmapSection = () => {
                   
                   {/* Status Indicator */}
                   <motion.div
-                    className={`absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                    className={`absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full flex items-center justify-center text-xs ${
                       phase.status === 'in-progress' ? 'bg-[#4ade80]' :
                       phase.status === 'upcoming' ? 'bg-[#fbbf24]' :
                       'bg-[#6b7280]'
@@ -322,6 +324,7 @@ const RoadmapSection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 2 }}
         >
+          <a href='https://x.com/worldlibertyai' target='_blank'>
           <motion.button
             className="group px-8 py-4 bg-gradient-to-r from-[#e7ac08]/10 to-[#fdd949]/10 border border-[#e7ac08]/30 rounded-xl text-[#fdd949] font-medium hover:bg-gradient-to-r hover:from-[#e7ac08]/20 hover:to-[#fdd949]/20 hover:border-[#e7ac08]/50 transition-all duration-300"
             whileHover={{ scale: 1.05 }}
@@ -329,9 +332,10 @@ const RoadmapSection = () => {
           >
             <span className="flex items-center gap-3">
               Join Our Journey
-              <BiTrendingUp className="text-lg group-hover:rotate-12 transition-transform duration-300" />
+              <BsTwitterX className="text-lg transition-transform duration-300" />
             </span>
           </motion.button>
+          </a>
         </motion.div>
       </motion.div>
     </section>
