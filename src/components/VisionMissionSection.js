@@ -219,10 +219,12 @@ const VisionMissionSection = () => {
               </p>
             </motion.div>
 
+          </motion.div>
+        </div>
             {/* Mission Section with Cards */}
             <div className="space-y-8">
               <motion.h3 
-                className="text-xl lg:text-2xl font-bold text-[#ffffff]"
+                className="text-xl lg:text-2xl mt-10 font-bold text-[#ffffff]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={rightInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.9 }}
@@ -230,7 +232,7 @@ const VisionMissionSection = () => {
                 Our Mission
               </motion.h3>
               
-              <div className="grid sm:grid-cols-2 gap-6">
+              <div className="grid sm:grid-cols-4 gap-6">
                 {missions.map((mission, index) => (
                   <motion.div
                     key={index}
@@ -246,7 +248,7 @@ const VisionMissionSection = () => {
                   >
                     {/* Thumbnail Image */}
                     <motion.div
-                      className="relative w-full h-20 mb-4 rounded-lg overflow-hidden"
+                      className="relative w-full h-fit mb-4 rounded-lg overflow-hidden"
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.3 }}
                     >
@@ -298,8 +300,6 @@ const VisionMissionSection = () => {
                 ))}
               </div>
             </div>
-          </motion.div>
-        </div>
       </motion.div>
     </section>
   )
