@@ -9,6 +9,7 @@ import {
 import { BiNetworkChart } from 'react-icons/bi'
 import { BsTwitterX } from "react-icons/bs";
 import { RiBnbFill } from "react-icons/ri";
+import Image from 'next/image'
 
 const Footer = () => {
   const footerRef = useRef(null)
@@ -83,26 +84,7 @@ const Footer = () => {
           >
             {/* Logo */}
             <div className="flex items-center gap-4">
-              <motion.div
-                className="w-12 h-12 bg-gradient-to-br from-[#e7ac08] to-[#fdd949] rounded-xl flex items-center justify-center"
-                whileHover={{ scale: 1.05, rotate: 5 }}
-                transition={{ duration: 0.3 }}
-              >
-                <BiNetworkChart className="text-2xl text-[#171412]" />
-              </motion.div>
-              <div>
-                <h3 className="text-2xl lg:text-3xl font-bold text-[#ffffff]">
-                  WLFI AI
-                </h3>
-                <div className="flex items-center gap-2">
-                  <motion.div 
-                    className="w-2 h-2 bg-[#4ade80] rounded-full"
-                    animate={{ scale: [1, 1.3, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  <span className="text-[#4ade80] text-sm font-medium">Live</span>
-                </div>
-              </div>
+            <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200'/>
             </div>
             
             {/* Tagline */}
@@ -116,11 +98,11 @@ const Footer = () => {
                 World Liberty AI
               </h4>
               <p className="text-lg text-[#d7d3d0] leading-relaxed">
-                <span className="text-[#fdd949] font-medium">Transparent</span>.{' '}
-                <span className="text-[#fdd949] font-medium">Intelligent</span>.{' '}
-                <span className="text-[#fdd949] font-medium">Borderless</span>.
+                <span className="text-[#fdd949] font-medium">Transparent</span>,{' '}
+                <span className="text-[#fdd949] font-medium">Intelligent</span>,{' '}
+                <span className="text-[#fdd949] font-medium">Borderless</span>
               </p>
-              <p className="text-[#aaa29d] leading-relaxed max-w-lg">
+              <p className="text-[#aaa29d] text-balance leading-relaxed max-w-lg">
                 Revolutionizing financial intelligence through AI-powered blockchain analysis 
                 and real-time market insights.
               </p>
