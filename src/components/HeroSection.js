@@ -84,7 +84,7 @@ const HeroSection = () => {
             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
           >
             {/* Main Headline */}
-            <div className="space-y-6">
+            <div className="space-y-6 sm:mt-0 mt-20">
               <motion.h1 
                 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] tracking-tight"
                 initial={{ opacity: 0, y: 20 }}

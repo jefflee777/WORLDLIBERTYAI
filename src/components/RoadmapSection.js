@@ -160,7 +160,7 @@ const RoadmapSection = () => {
           {/* Timeline Line */}
           <motion.div
             ref={timelineRef}
-            className="absolute left-8 lg:left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#e7ac08]/30 via-[#fdd949]/50 to-[#e7ac08]/30"
+            className="sm:flex hidden absolute left-8 lg:left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#e7ac08]/30 via-[#fdd949]/50 to-[#e7ac08]/30"
             initial={{ scaleY: 0 }}
             animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
             transition={{ duration: 1.5, delay: 0.8 }}
@@ -186,7 +186,7 @@ const RoadmapSection = () => {
               >
                 {/* Timeline Node */}
                 <motion.div
-                  className="relative flex-shrink-0 mr-8 lg:mr-12"
+                  className="relative sm:block hidden flex-shrink-0 mr-8 lg:mr-12"
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -245,11 +245,11 @@ const RoadmapSection = () => {
                   {/* Phase Header */}
                   <div className="mb-6">
                     <div className="flex items-center gap-4 mb-3">
-                      <h3 className="text-2xl lg:text-3xl font-bold text-[#ffffff]">
+                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#ffffff]">
                         Phase {phase.id} – {phase.phase}
                       </h3>
                       <span 
-                        className="px-3 py-1 rounded-full text-sm font-medium border"
+                        className="px-3 py-1 rounded-full sm:text-sm text-xs font-medium border"
                         style={{
                           backgroundColor: `${phase.color}20`,
                           borderColor: `${phase.color}40`,
@@ -260,7 +260,7 @@ const RoadmapSection = () => {
                       </span>
                     </div>
                     
-                    <p className="text-lg text-[#d7d3d0] leading-relaxed mb-6">
+                    <p className="text-sm sm:text-lg text-[#d7d3d0] leading-relaxed mb-6">
                       {phase.description}
                     </p>
                   </div>
