@@ -2,16 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { FaTelegram, FaBars, FaTimes, FaExternalLinkAlt } from 'react-icons/fa'
-import { FaTwitter } from 'react-icons/fa'
+import { FaTelegram, FaBars, FaTimes } from 'react-icons/fa'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BiNetworkChart, BiAnalyse } from 'react-icons/bi'
+import { BiAnalyse } from 'react-icons/bi'
 import Image from 'next/image';
+import { RiBnbFill } from "react-icons/ri";
+import { BsTwitterX } from "react-icons/bs";
 
 const socialLinks = [
   {
     href: "https://x.com/worldlibertyai",
-    icon: FaTwitter,
+    icon: BsTwitterX,
     label: "X",
     color: "#1da1f2",
     hover: "#fdd949"
@@ -25,7 +26,7 @@ const socialLinks = [
   },
   {
     href: "https://bscscan.com",
-    icon: FaExternalLinkAlt,
+    icon: RiBnbFill,
     label: "BscScan",
     color: "#f0b90b",
     hover: "#fdd949"
@@ -33,11 +34,11 @@ const socialLinks = [
 ]
 
 const navigationLinks = [
-  { name: 'Features', href: '#features' },
-  { name: 'Vision', href: '#vision' },
+  { name: 'Home', href: '/' },
+  { name: 'Web Agent', href: '/ai' },
   { name: 'Tokenomics', href: '#tokenomics' },
-  { name: 'Roadmap', href: '#roadmap' },
-  { name: 'Community', href: '#community' }
+//   { name: 'Roadmap', href: '#roadmap' },
+//   { name: 'Community', href: '#community' }
 ]
 
 const Navbar = () => {
@@ -144,8 +145,8 @@ const Navbar = () => {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="hidden sm:block">
-                    <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='sm:scale-200'/>
+                  <div className="block">
+                    <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200'/>
                   </div>
                 </motion.div>
               </Link>
@@ -202,7 +203,7 @@ const Navbar = () => {
                 </div>
 
                 {/* CTA Button */}
-                <motion.button
+                {/* <motion.button
                   className="px-4 py-2 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412] font-bold text-sm rounded-lg hover:shadow-lg transition-all duration-300"
                   whileHover={{ 
                     scale: 1.05,
@@ -212,7 +213,7 @@ const Navbar = () => {
                   onClick={() => handleLinkClick('#community')}
                 >
                   Join Beta
-                </motion.button>
+                </motion.button> */}
               </div>
 
               {/* Mobile: Hamburger Menu Button */}
