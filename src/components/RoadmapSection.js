@@ -84,16 +84,6 @@ const RoadmapSection = () => {
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
-        {/* Subtle radial gradient */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(circle at center, rgba(231, 172, 8, 0.03) 0%, transparent 60%),
-              linear-gradient(135deg, rgba(28, 25, 23, 0.8) 0%, rgba(23, 20, 18, 1) 100%)
-            `
-          }}
-        />
         
         {/* Animated connecting dots */}
         <div className="absolute inset-0 opacity-[0.02]">

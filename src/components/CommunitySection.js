@@ -68,16 +68,6 @@ const CommunitySection = () => {
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
-        {/* Gold accent gradients */}
-        <div 
-          className="absolute top-0 left-0 w-full h-full"
-          style={{
-            background: `
-              radial-gradient(circle at 20% 20%, rgba(231, 172, 8, 0.05) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(253, 217, 73, 0.03) 0%, transparent 50%)
-            `
-          }}
-        />
         
         {/* Decorative network pattern */}
         <svg className="absolute inset-0 w-full h-full opacity-[0.03]" viewBox="0 0 1000 800">
@@ -113,28 +103,6 @@ const CommunitySection = () => {
             />
           ))}
         </svg>
-        
-        {/* Floating particles */}
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[#e7ac08]/30 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 4 + 4,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
       </div>
 
       <motion.div 
@@ -155,22 +123,6 @@ const CommunitySection = () => {
             animate={isInView ? { width: 150 } : { width: 0 }}
             transition={{ duration: 1.5, delay: 0.3 }}
           >
-            <div className="relative">
-              <div className="h-[3px] bg-gradient-to-r from-transparent via-[#e7ac08] to-transparent rounded-full" />
-              <motion.div 
-                className="absolute top-0 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-[#e7ac08]/20 rounded-full flex items-center justify-center -mt-2.5"
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 0.8, 0.5],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                }}
-              >
-                <FaUsers className="text-[#e7ac08] text-sm" />
-              </motion.div>
-            </div>
           </motion.div>
           
           {/* Main Headline */}

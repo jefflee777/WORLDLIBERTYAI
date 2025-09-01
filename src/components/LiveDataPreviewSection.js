@@ -185,7 +185,7 @@ const LiveDataPreviewSection = () => {
 
           {/* Right Data Visualization */}
           <motion.div 
-            className="lg:col-span-7"
+            className="lg:col-span-7 relative"
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
@@ -280,7 +280,7 @@ const LiveDataPreviewSection = () => {
                   
                   {/* Glowing overlay */}
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-[#e7ac08]/10 to-transparent"
+                    className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-[#e7ac08]/10 to-transparent"
                     animate={{ x: ['-100%', '100%'] }}
                     transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
                   />

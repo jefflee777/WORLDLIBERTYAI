@@ -97,7 +97,7 @@ const TokenomicsSection = () => {
     >
       {/* Background with Gold Highlights */}
       <div className="absolute inset-0">
-        <div 
+        {/* <div 
           className="absolute inset-0"
           style={{
             background: `
@@ -106,7 +106,7 @@ const TokenomicsSection = () => {
               linear-gradient(135deg, rgba(28, 25, 23, 0.8) 0%, rgba(23, 20, 18, 1) 100%)
             `
           }}
-        />
+        /> */}
         
         {/* Animated Chart Pattern Background */}
         <svg className="absolute inset-0 w-full h-full opacity-[0.03]" viewBox="0 0 1000 1000">
