@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import KeyFeaturesSection from "@/components/KeyFeaturesSection";
 import LiveDataPreviewSection from "@/components/LiveDataPreviewSection";
 import RoadmapSection from "@/components/RoadmapSection";
+import TokenomicsSection from "@/components/TokenomicsSection";
 import VisionMissionSection from "@/components/VisionMissionSection";
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
       <VisionMissionSection/>
       <KeyFeaturesSection/>
       <LiveDataPreviewSection/>
-      {/* here token section added */}
+      <TokenomicsSection/>
       <RoadmapSection/>
       <CommunitySection/>
       <Footer/>
