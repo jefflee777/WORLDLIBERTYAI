@@ -93,20 +93,10 @@ const TokenomicsSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-24 lg:py-32 bg-[#171412] overflow-hidden"
+      className="relative py-10 lg:py-32 bg-[#171412] overflow-hidden"
     >
       {/* Background with Gold Highlights */}
       <div className="absolute inset-0">
-        {/* <div 
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(circle at 30% 30%, rgba(231, 172, 8, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 70% 70%, rgba(253, 217, 73, 0.05) 0%, transparent 50%),
-              linear-gradient(135deg, rgba(28, 25, 23, 0.8) 0%, rgba(23, 20, 18, 1) 100%)
-            `
-          }}
-        /> */}
         
         {/* Animated Chart Pattern Background */}
         <svg className="absolute inset-0 w-full h-full opacity-[0.03]" viewBox="0 0 1000 1000">
@@ -182,7 +172,7 @@ const TokenomicsSection = () => {
           </motion.h2>
           
           <motion.p
-            className="text-xl lg:text-2xl text-[#d7d3d0] max-w-3xl mx-auto leading-relaxed"
+            className="text-xl lg:text-2xl text-[#d7d3d0] text-balance max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -271,7 +261,7 @@ const TokenomicsSection = () => {
               
               {/* Chart Legend */}
               <motion.div
-                className="mt-8 space-y-4"
+                className="mt-8 space-y-4 grid grid-cols-2 gap-2"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 1 }}
@@ -296,7 +286,7 @@ const TokenomicsSection = () => {
                     transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
                   >
                     <motion.div
-                      className="w-4 h-4 rounded-full flex-shrink-0"
+                      className="w-4 h-4 rounded-full flex-shrink-0 hidden"
                       style={{ backgroundColor: item.color }}
                       animate={{
                         scale: selectedSegment === index ? 1.3 : 1,
@@ -307,7 +297,7 @@ const TokenomicsSection = () => {
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3">
-                        <item.icon className="text-[#e7ac08] text-sm" />
+                        <item.icon className="text-[#e7ac08] text-sm " />
                         <h4 className="font-semibold text-[#ffffff] group-hover:text-[#fdd949] transition-colors">
                           {item.title}
                         </h4>
