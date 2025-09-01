@@ -6,6 +6,7 @@ import { FaTelegram, FaBars, FaTimes, FaExternalLinkAlt } from 'react-icons/fa'
 import { FaTwitter } from 'react-icons/fa'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BiNetworkChart, BiAnalyse } from 'react-icons/bi'
+import Image from 'next/image';
 
 const socialLinks = [
   {
@@ -143,31 +144,8 @@ const Navbar = () => {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <motion.div
-                    className="w-10 h-10 bg-gradient-to-br from-[#e7ac08] to-[#fdd949] rounded-xl flex items-center justify-center"
-                    animate={{
-                      boxShadow: [
-                        "0 0 10px rgba(231, 172, 8, 0.3)",
-                        "0 0 20px rgba(231, 172, 8, 0.5)",
-                        "0 0 10px rgba(231, 172, 8, 0.3)",
-                      ]
-                    }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  >
-                    <BiNetworkChart className="text-xl text-[#171412]" />
-                  </motion.div>
                   <div className="hidden sm:block">
-                    <h1 className="text-lg font-bold text-[#ffffff] leading-tight">
-                      WLFI AI
-                    </h1>
-                    <div className="flex items-center gap-1">
-                      <motion.div 
-                        className="w-1.5 h-1.5 bg-[#4ade80] rounded-full"
-                        animate={{ scale: [1, 1.3, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      />
-                      <span className="text-xs text-[#4ade80] font-medium">Live</span>
-                    </div>
+                    <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='sm:scale-200'/>
                   </div>
                 </motion.div>
               </Link>
