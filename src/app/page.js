@@ -1,4 +1,5 @@
 import HeroSection from "@/components/HeroSection";
+import KeyFeaturesSection from "@/components/KeyFeaturesSection";
 import VisionMissionSection from "@/components/VisionMissionSection";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
     <div>
       <HeroSection/>
       <VisionMissionSection/>
+      <KeyFeaturesSection/>
       <div className="h-screen"/>
     </div>
   );
