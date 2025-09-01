@@ -10,6 +10,7 @@ import {
   FaArrowRight
 } from 'react-icons/fa'
 import { BiTrendingUp } from 'react-icons/bi'
+import { BsTwitterX } from "react-icons/bs";
 
 const KeyFeaturesSection = () => {
   const sectionRef = useRef(null)
@@ -57,7 +58,7 @@ const KeyFeaturesSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-24 lg:py-32 bg-[#171412] overflow-hidden"
+      className="relative bg-[#171412] overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
@@ -145,7 +146,7 @@ const KeyFeaturesSection = () => {
           </motion.h2>
           
           <motion.p
-            className="text-xl text-[#d7d3d0] max-w-3xl mx-auto leading-relaxed"
+            className="text-xl text-[#d7d3d0] text-balance max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -172,7 +173,7 @@ const KeyFeaturesSection = () => {
               <motion.div
                 className="relative h-full p-6 lg:p-8 rounded-2xl border border-[#44403c]/40 bg-gradient-to-br from-[#1c1917]/60 to-[#171412]/40 backdrop-blur-sm overflow-hidden"
                 whileHover={{ 
-                  scale: 1.05,
+                  scale: 1.02,
                   borderColor: "rgba(231, 172, 8, 0.6)",
                   boxShadow: "0 20px 40px rgba(231, 172, 8, 0.1)",
                 }}
@@ -212,15 +213,6 @@ const KeyFeaturesSection = () => {
                   <p className="text-[#aaa29d] leading-relaxed flex-1 mb-6">
                     {feature.description}
                   </p>
-                  
-                  {/* Learn more link */}
-                  <motion.div
-                    className="flex items-center text-[#e7ac08] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    whileHover={{ x: 5 }}
-                  >
-                    <span>Learn more</span>
-                    <FaArrowRight className="ml-2 text-xs" />
-                  </motion.div>
                 </div>
                 
                 {/* Corner accent */}
@@ -230,7 +222,7 @@ const KeyFeaturesSection = () => {
               {/* Floating connection line */}
               {index < features.length - 1 && (
                 <motion.div
-                  className="hidden lg:block absolute top-1/2 -right-4 w-8 h-[1px] bg-gradient-to-r from-[#e7ac08]/30 to-transparent"
+                  className="hidden lg:block absolute top-1/2 -left-8 w-8 h-[1px] bg-gradient-to-r from-[#e7ac08]/30 to-transparent"
                   initial={{ scaleX: 0 }}
                   animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
                   transition={{ duration: 0.8, delay: 1 + feature.delay }}
@@ -242,21 +234,23 @@ const KeyFeaturesSection = () => {
         
         {/* Bottom CTA */}
         <motion.div
-          className="text-center mt-16 lg:mt-20"
+          className="text-center mt-16 lg:mt-20 mb-10"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 1.2 }}
         >
-          <motion.button
+            <a href='https://x.com/worldlibertyai' target='_target'>
+            <motion.button
             className="group px-8 py-4 bg-gradient-to-r from-[#e7ac08]/10 to-[#fdd949]/10 border border-[#e7ac08]/30 rounded-xl text-[#fdd949] font-medium hover:bg-gradient-to-r hover:from-[#e7ac08]/20 hover:to-[#fdd949]/20 hover:border-[#e7ac08]/50 transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
             <span className="flex items-center gap-3">
               Explore All Features
-              <BiTrendingUp className="text-lg group-hover:rotate-12 transition-transform duration-300" />
+              <BsTwitterX className="text-lg group-hover:rotate-12 transition-transform duration-300" />
             </span>
           </motion.button>
+            </a>
         </motion.div>
       </motion.div>
     </section>
