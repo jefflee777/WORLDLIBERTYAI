@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useInView } from 'motion/react'
 import { useRef } from 'react'
 import { FaSearch, FaChartLine, FaBell, FaTelegram } from 'react-icons/fa'
 import { BiAnalyse } from 'react-icons/bi'
+import Image from 'next/image'
 
 const VisionMissionSection = () => {
   const sectionRef = useRef(null)
@@ -89,7 +90,8 @@ const VisionMissionSection = () => {
             animate={leftInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            <div className="relative w-full max-w-md lg:max-w-lg">
+            <Image src='/ourmission.png' alt='Image' width={400} height={400} className='scale-125 -mt-10'/>
+            <div className="relative w-full hidden max-w-md lg:max-w-lg">
               {/* Central AI Core */}
               <motion.div
                 className="relative w-72 h-72 lg:w-80 lg:h-80 mx-auto"
