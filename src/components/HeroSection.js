@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { FaRocket } from 'react-icons/fa'
 import { useRef } from 'react'
+import Image from 'next/image'
 
 const HeroSection = () => {
   const globeRef = useRef(null)
@@ -206,7 +207,8 @@ const HeroSection = () => {
                 className="relative w-80 h-80 sm:w-96 sm:h-96 lg:w-[480px] lg:h-[480px]"
                 animate={floatingAnimation}
               >
-                {/* Outer Ring - Subtle */}
+                <Image src='/heroimage2.png' alt='Hero Image' width={700} height={700} quality={100} className='scale-150'/>
+                {/* 
                 <motion.div
                   className="absolute inset-0 rounded-full border border-[#e7ac08]/20"
                   animate={pulseAnimation}
@@ -215,7 +217,7 @@ const HeroSection = () => {
                   }}
                 />
                 
-                {/* Inner Ring - More Defined */}
+                
                 <motion.div
                   className="absolute inset-12 rounded-full border border-[#e7ac08]/40"
                   animate={{
@@ -228,7 +230,7 @@ const HeroSection = () => {
                   }}
                 />
                 
-                {/* Core Globe - Premium Finish */}
+                
                 <motion.div
                   className="absolute inset-20 rounded-full"
                   style={{
@@ -248,7 +250,7 @@ const HeroSection = () => {
                   }}
                 />
                 
-                {/* Minimal Data Points */}
+                
                 {[...Array(8)].map((_, i) => (
                   <motion.div
                     key={i}
@@ -269,7 +271,7 @@ const HeroSection = () => {
                       ease: "easeInOut"
                     }}
                   />
-                ))}
+                ))} */}
               </motion.div>
               
               {/* Refined Floating Labels */}
