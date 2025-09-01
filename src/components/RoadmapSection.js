@@ -81,6 +81,7 @@ const RoadmapSection = () => {
 
   return (
     <section 
+      id='roadmap'
       ref={sectionRef}
       className="relative py-14 lg:py-28 bg-[#171412] overflow-hidden"
     >

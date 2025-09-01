@@ -63,6 +63,7 @@ const CommunitySection = () => {
 
   return (
     <section 
+      id='community'
       ref={sectionRef}
       className="relative py-14 lg:py-20 bg-[#171412] overflow-hidden"
     >

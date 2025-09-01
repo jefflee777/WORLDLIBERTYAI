@@ -4,17 +4,18 @@ import { motion, useInView } from 'motion/react'
 import { useRef } from 'react'
 import { 
   FaTelegram, 
-  FaTwitter,
   FaExternalLinkAlt
 } from 'react-icons/fa'
 import { BiNetworkChart } from 'react-icons/bi'
+import { BsTwitterX } from "react-icons/bs";
+import { RiBnbFill } from "react-icons/ri";
 
 const Footer = () => {
   const footerRef = useRef(null)
   const isInView = useInView(footerRef, { once: true, amount: 0.3 })
 
   const quickLinks = [
-    { label: "Documentation", href: "#docs" },
+    { label: "Web Agent", href: "/ai" },
     { label: "Tokenomics", href: "#tokenomics" },
     { label: "Roadmap", href: "#roadmap" },
     { label: "Community", href: "#community" }
@@ -28,13 +29,13 @@ const Footer = () => {
       color: "#0088cc"
     },
     {
-      icon: FaTwitter,
-      href: "https://twitter.com/worldlibertyai",
+      icon: BsTwitterX,
+      href: "https://x.com/worldlibertyai",
       label: "Twitter/X",
       color: "#1da1f2"
     },
     {
-      icon: FaExternalLinkAlt,
+      icon: RiBnbFill,
       href: "https://bscscan.com",
       label: "BscScan",
       color: "#f0b90b"
@@ -171,7 +172,7 @@ const Footer = () => {
               <div className="w-1 h-6 bg-gradient-to-b from-[#e7ac08] to-[#fdd949] rounded-full" />
               Connect
             </h5>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={index}
