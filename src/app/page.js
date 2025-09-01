@@ -1,4 +1,5 @@
 import CommunitySection from "@/components/CommunitySection";
+import Footer from "@/components/FooterSection";
 import HeroSection from "@/components/HeroSection";
 import KeyFeaturesSection from "@/components/KeyFeaturesSection";
 import LiveDataPreviewSection from "@/components/LiveDataPreviewSection";
@@ -15,7 +16,7 @@ export default function Home() {
       {/* here token section added */}
       <RoadmapSection/>
       <CommunitySection/>
-      <div className="h-screen"/>
+      <Footer/>
     </div>
   );
 }
