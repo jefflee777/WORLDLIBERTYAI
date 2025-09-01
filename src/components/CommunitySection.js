@@ -3,14 +3,14 @@
 import { motion, useScroll, useTransform, useInView } from 'motion/react'
 import { useRef } from 'react'
 import { 
-  FaTelegram, 
-  FaTwitter, 
-  FaBook,
+  FaTelegram,  
   FaUsers,
   FaGlobe,
   FaArrowRight
 } from 'react-icons/fa'
 import { BiRocket, BiNetworkChart } from 'react-icons/bi'
+import { BsTwitterX } from "react-icons/bs";
+import { MdOutlineAppShortcut } from "react-icons/md";
 
 const CommunitySection = () => {
   const sectionRef = useRef(null)
@@ -36,17 +36,17 @@ const CommunitySection = () => {
       delay: 0
     },
     {
-      icon: FaTwitter,
+      icon: BsTwitterX,
       label: "Follow on X/Twitter",
       description: "Stay updated with news",
-      href: "#twitter",
+      href: "https://x.com/worldlibertyai",
       color: "#1da1f2",
       gradient: "from-[#1da1f2] to-[#1976d2]",
       delay: 0.1
     },
     {
-      icon: FaBook,
-      label: "Explore Documentation",
+      icon: MdOutlineAppShortcut,
+      label: "Mini App",
       description: "Learn about the platform",
       href: "#docs",
       color: "#e7ac08",
@@ -56,7 +56,7 @@ const CommunitySection = () => {
   ]
 
   const stats = [
-    { icon: FaUsers, value: "10K+", label: "Community Members" },
+    { icon: FaUsers, value: "110K+", label: "Community Members" },
     { icon: FaGlobe, value: "50+", label: "Countries" },
     { icon: BiNetworkChart, value: "24/7", label: "Live Updates" }
   ]
@@ -64,7 +64,7 @@ const CommunitySection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-24 lg:py-32 bg-[#171412] overflow-hidden"
+      className="relative py-14 lg:py-20 bg-[#171412] overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
@@ -127,9 +127,9 @@ const CommunitySection = () => {
           
           {/* Main Headline */}
           <motion.h2 
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-8"
+            className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-8"
             initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={isInView? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <span className="text-[#ffffff] block mb-2">Join the</span>
@@ -140,7 +140,7 @@ const CommunitySection = () => {
           
           {/* Subheading */}
           <motion.p
-            className="text-xl lg:text-2xl text-[#d7d3d0] max-w-4xl mx-auto leading-relaxed mb-12"
+            className="text-lg text-balance lg:text-2xl text-[#d7d3d0] max-w-4xl mx-auto leading-relaxed mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
