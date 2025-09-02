@@ -423,27 +423,20 @@ What would you like to know about ${coin.name}? I can analyze:
         >
           <div className="flex items-center justify-center gap-4 mb-6">
             <motion.div
-              className="w-20 h-20 bg-gradient-to-br from-[#e7ac08] to-[#fdd949] rounded-3xl flex items-center justify-center"
-              animate={{
-                boxShadow: [
-                  "0 0 30px rgba(231, 172, 8, 0.3)",
-                  "0 0 60px rgba(231, 172, 8, 0.6)",
-                  "0 0 30px rgba(231, 172, 8, 0.3)",
-                ]
-              }}
+              className="w-20 h-20 rounded-3xl flex items-center justify-center"
               transition={{ duration: 4, repeat: Infinity }}
             >
-              <BiNetworkChart className="text-4xl text-[#171412]" />
+              <Image src="/logo.png" alt="logo" width={70} height={70} quality={100} className='scale-150'/>
             </motion.div>
             <div className="text-left">
-              <h1 className="text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
+              <h1 className="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
                 WLFI AI
               </h1>
               <p className="text-xl text-[#aaa29d] font-medium">Premium Web Agent</p>
             </div>
           </div>
           
-          <p className="text-2xl text-[#d7d3d0] max-w-4xl mx-auto leading-relaxed mb-6">
+          <p className="text-lg sm:text-xl text-[#d7d3d0]/80 max-w-4xl mx-auto text-balance leading-relaxed mb-6">
             Advanced <span className="text-[#fdd949] font-medium">AI-powered cryptocurrency intelligence</span> with 
             real-time data, market analytics, and personalized insights.
           </p>
