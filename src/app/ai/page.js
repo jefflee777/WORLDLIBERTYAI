@@ -849,7 +849,7 @@ What would you like to know about ${coin.name}? I can analyze:
               <div className="bg-[#1c1917]/50 border border-[#44403c]/30 rounded-2xl p-6 mb-6 h-96 overflow-y-auto backdrop-blur-sm">
                 {conversation.length === 0 ? (
                   <div className="text-center py-12">
-                    <BiNetworkChart className="text-6xl text-[#e7ac08] mx-auto mb-4 opacity-50" />
+                    <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200 mx-auto mb-5'/>
                     <p className="text-[#aaa29d] text-lg mb-4">Welcome to WLFI AI Assistant</p>
                     <p className="text-[#aaa29d] text-sm mb-6">
                       I can help you analyze cryptocurrencies, understand market trends, and make informed decisions.
