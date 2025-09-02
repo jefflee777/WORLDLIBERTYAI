@@ -154,22 +154,19 @@ const Navbar = () => {
               {/* Desktop Navigation Links */}
               <div className="hidden lg:flex items-center gap-8">
                 {navigationLinks.map((link) => (
-                  <motion.a
-                    key={link.name}
-                    href={link.href}
+                  <Link key={link.name}
+                  href={link.href}>
+                    <motion.div
                     className="text-[#d7d3d0] hover:text-[#fdd949] font-medium transition-colors duration-300 relative group"
                     whileHover={{ y: -1 }}
                     transition={{ duration: 0.2 }}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleLinkClick(link.href)
-                    }}
                   >
                     {link.name}
                     <motion.div 
                       className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] transition-all duration-300 group-hover:w-full"
                     />
-                  </motion.a>
+                  </motion.div>
+                  </Link>
                 ))}
               </div>
 
