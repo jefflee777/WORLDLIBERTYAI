@@ -5,24 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { 
   FaTelegram, 
   FaCoins, 
-  FaArrowRight,
   FaSearch,
   FaStar,
   FaRegStar,
   FaChartLine,
   FaBolt,
-  FaRocket,
   FaEye,
   FaPaperPlane,
   FaSpinner,
-  FaFilter,
-  FaSort,
   FaBookmark,
-  FaRegBookmark,
-  FaTrendingUp,
-  FaTrendingDown,
-  FaFireAlt,
-  FaGlobe
+  FaRegBookmark
 } from 'react-icons/fa'
 import { BsTwitterX } from "react-icons/bs";
 import { 
@@ -30,8 +22,7 @@ import {
   BiTrendingUp, 
   BiTrendingDown, 
   BiStats,
-  BiRefresh,
-  BiTime
+  BiRefresh
 } from 'react-icons/bi'
 import { BsArrowRightCircle, BsChatDots, BsLightningCharge } from 'react-icons/bs'
 import Image from 'next/image'
@@ -780,7 +771,7 @@ What would you like to know about ${coin.name}? I can analyze:
                               Ask AI
                             </motion.button>
                             <motion.button
-                              className="bg-[#1c1917]/50 border border-[#44403c]/40 text-[#aaa29d] p-2 rounded-lg hover:text-[#fdd949] hover:border-[#e7ac08]/40 transition-colors"
+                              className="bg-[#1c1917]/50 hidden border border-[#44403c]/40 text-[#aaa29d] p-2 rounded-lg hover:text-[#fdd949] hover:border-[#e7ac08]/40 transition-colors"
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                               onClick={(e) => {
