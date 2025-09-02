@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   FaTelegram, 
-  FaTwitter, 
   FaCoins, 
   FaArrowRight,
   FaSearch,
@@ -25,6 +24,7 @@ import {
   FaFireAlt,
   FaGlobe
 } from 'react-icons/fa'
+import { BsTwitterX } from "react-icons/bs";
 import { 
   BiNetworkChart, 
   BiTrendingUp, 
@@ -704,7 +704,7 @@ What would you like to know about ${coin.name}? I can analyze:
                             whileTap={{ scale: 0.98 }}
                           >
                             <div className="flex items-center justify-center gap-2">
-                              <FaTwitter />
+                              <BsTwitterX />
                               Join WLFI on X
                             </div>
                           </motion.div>
@@ -1013,11 +1013,10 @@ What would you like to know about ${coin.name}? I can analyze:
         >
           <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-[#e7ac08]/10 to-[#fdd949]/10 border border-[#e7ac08]/30 rounded-3xl backdrop-blur-sm">
             <div className="mb-8">
-              <FaRocket className="text-5xl text-[#e7ac08] mx-auto mb-6" />
               <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
                 Ready for Advanced AI Intelligence?
               </h3>
-              <p className="text-[#aaa29d] leading-relaxed text-lg mb-6">
+              <p className="text-[#aaa29d] leading-relaxed text-lg mb-6 text-balance">
                 Unlock the full power of WLFI AI with our Telegram Mini App. Get real-time blockchain analytics, 
                 whale tracking, portfolio optimization, and advanced market intelligence.
               </p>
@@ -1059,7 +1058,7 @@ What would you like to know about ${coin.name}? I can analyze:
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <FaTwitter className="text-xl" />
+                <BsTwitterX className="text-xl" />
                 Follow Updates
               </motion.a>
               
