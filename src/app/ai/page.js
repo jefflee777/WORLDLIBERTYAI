@@ -34,6 +34,7 @@ import {
   BiTime
 } from 'react-icons/bi'
 import { BsArrowRightCircle, BsChatDots, BsLightningCharge } from 'react-icons/bs'
+import Image from 'next/image'
 
 const WebAgent = () => {
   // Enhanced state management
@@ -127,7 +128,7 @@ const WebAgent = () => {
         id: 'wlfi',
         symbol: 'wlfi',
         name: 'World Liberty AI',
-        image: 'https://via.placeholder.com/64/e7ac08/171412?text=WLFI',
+        image: '/logo.png',
         current_price: null,
         market_cap: null,
         market_cap_rank: null,
@@ -627,14 +628,18 @@ What would you like to know about ${coin.name}? I can analyze:
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
                           <div className="relative">
-                            <img 
-                              src={coin.image} 
-                              alt={coin.name}
-                              className="w-12 h-12 rounded-full object-cover"
-                              onError={(e) => {
-                                e.target.src = `https://via.placeholder.com/48/e7ac08/171412?text=${coin.symbol.charAt(0).toUpperCase()}`
-                              }}
-                            />
+                          {coin.special ? (
+                                    <Image src="/logo.png" alt="logo" width={50} height={50} quality={100} className='scale-200'/>
+                                ) : (
+                                    <img
+                                        src={coin.image}
+                                        alt={coin.name}
+                                        className="w-12 h-12 rounded-xl object-cover"
+                                        onError={(e) => {
+                                            e.target.src = `https://via.placeholder.com/48/e7ac08/171412?text=${coin.symbol.charAt(0).toUpperCase()}`;
+                                        }}
+                                    />
+                                )}
                             {coin.market_cap_rank <= 10 && !coin.special && (
                               <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#fdd949] text-[#171412] text-xs font-bold rounded-full flex items-center justify-center">
                                 {coin.market_cap_rank}
