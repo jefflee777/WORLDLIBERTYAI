@@ -690,7 +690,7 @@ What would you like to know about ${coin.name}? I can analyze:
                       {coin.special ? (
                         /* WLFI Special Content */
                         <div className="space-y-4">
-                          <p className="text-[#d7d3d0] leading-relaxed">
+                          <p className="text-[#d7d3d0] text-xs leading-relaxed">
                             {coin.description}
                           </p>
                           <div className="space-y-2">
