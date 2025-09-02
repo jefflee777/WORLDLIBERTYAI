@@ -417,7 +417,7 @@ What would you like to know about ${coin.name}? I can analyze:
               className="w-20 h-20 rounded-3xl flex items-center justify-center"
               transition={{ duration: 4, repeat: Infinity }}
             >
-              <Image src="/logo.png" alt="logo" width={70} height={70} quality={100} className='scale-150'/>
+              <Image src="/logo.png" alt="logo" width={80} height={80} quality={100} className='scale-200 mr-2.5'/>
             </motion.div>
             <div className="text-left">
               <h1 className="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
