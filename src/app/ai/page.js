@@ -177,7 +177,7 @@ const WebAgent = () => {
         body: JSON.stringify({
           messages: [
             { 
-              role: 'system', 
+              role: 'system',
               content: `You are WLFI AI, World Liberty AI's financial intelligence assistant. You specialize in:
 
 🔹 BLOCKCHAIN ANALYTICS:
