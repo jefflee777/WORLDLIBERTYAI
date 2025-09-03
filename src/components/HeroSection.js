@@ -135,7 +135,7 @@ const HeroSection = () => {
               Real-time insights on global transactions, market trends, and whale movements 
               all in one intelligent hub.
             </motion.p>
-
+            {/* https://t.me/WLFIai_bot/live */}
             {/* CTA Button - Keeping Original 3D Style */}
             <motion.div
               className="flex justify-center lg:justify-start"
@@ -143,6 +143,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1, ease: "easeOut" }}
             >
+              <a href='https://t.me/WLFIai_bot/live' target='_blank'>
               <motion.button
                 className="group relative px-8 py-4 sm:px-10 sm:py-5 font-bold text-lg sm:text-xl text-[#171412] rounded-2xl overflow-hidden transition-all duration-300"
                 style={{
@@ -190,6 +191,7 @@ const HeroSection = () => {
                   }}
                 />
               </motion.button>
+              </a>
             </motion.div>
           </motion.div>
 

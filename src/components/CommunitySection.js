@@ -48,7 +48,7 @@ const CommunitySection = () => {
       icon: MdOutlineAppShortcut,
       label: "Mini App",
       description: "Learn about the platform",
-      href: "#docs",
+      href: "https://t.me/WLFIai_bot/live",
       color: "#e7ac08",
       gradient: "from-[#e7ac08] to-[#fdd949]",
       delay: 0.2
