@@ -31,88 +31,87 @@ const LiveDataPreviewSection = () => {
   
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
 
-  // Fetch real WLFI coin data from CoinGecko
-  useEffect(() => {
-    const fetchWLFIData = async () => {
-      try {
-        setLoading(true)
-        
-        // Fetch World Liberty Financial and USD1 WLFI tokens
-        const response = await fetch(
-          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=world-liberty-financial,usd-coin&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d'
-        )
-        
+// Fetch real WLFI and USD1 coin data from CoinGecko
+useEffect(() => {
+  const fetchCoinData = async () => {
+    try {
+      setLoading(true)
+
+      // API call to get World Liberty Financial data
+      const wlfiRequest = fetch(
+        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=world-liberty-financial&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d'
+      ).then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch WLFI data')
         }
-        
-        const data = await response.json()
-        
-        // Add WLFI token manually since it might not be on CoinGecko yet
-        const wlfiToken = {
-          id: 'world-liberty-ai',
+        return response.json()
+      })
+      
+      // API call to get USD1 data using the correct ID from the search results
+      const usd1Request = fetch(
+        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=usd1-wlfi&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d'
+      ).then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch USD1 data')
+        }
+        return response.json()
+      })
+      
+      // Use Promise.all to fetch both data sets concurrently
+      const [wlfiData, usd1Data] = await Promise.all([wlfiRequest, usd1Request])
+
+      // Combine the results into a single array
+      const combinedData = [...wlfiData, ...usd1Data];
+
+      setWlfiCoins(combinedData)
+      setError(null)
+    } catch (err) {
+      console.error('Error fetching coin data:', err)
+      setError(err.message)
+
+      // Fallback data for World Liberty Financial and USD1
+      const fallbackData = [
+        {
+          id: 'world-liberty-financial',
           symbol: 'wlfi',
-          name: 'World Liberty AI',
+          name: 'World Liberty Financial',
           image: 'https://via.placeholder.com/64/e7ac08/171412?text=WLFI',
           current_price: 0.0034,
           price_change_percentage_24h: 12.45,
           price_change_percentage_7d: 28.67,
           market_cap: 3400000000,
           total_volume: 125000000,
-          market_cap_rank: null,
           sparkline_in_7d: {
             price: [0.0028, 0.0031, 0.0029, 0.0032, 0.0035, 0.0033, 0.0034]
-          },
-          ath: 0.0045,
-          atl: 0.0021,
-          circulating_supply: 1000000000,
-          isComingSoon: true
-        }
-        
-        // Combine real data with WLFI token
-        const allCoins = [wlfiToken, ...data]
-        setWlfiCoins(allCoins)
-        setError(null)
-      } catch (err) {
-        console.error('Error fetching WLFI data:', err)
-        setError(err.message)
-        
-        // Fallback data
-        const fallbackData = [
-          {
-            id: 'world-liberty-ai',
-            symbol: 'wlfi',
-            name: 'World Liberty AI',
-            image: 'https://via.placeholder.com/64/e7ac08/171412?text=WLFI',
-            current_price: 0.0034,
-            price_change_percentage_24h: 12.45,
-            price_change_percentage_7d: 28.67,
-            market_cap: 3400000000,
-            total_volume: 125000000,
-            isComingSoon: true
           }
-        ]
-        setWlfiCoins(fallbackData)
-      } finally {
-        setLoading(false)
-      }
+        },
+        {
+          id: 'usd1-wlfi',
+          symbol: 'usd1',
+          name: 'USD1',
+          image: 'https://via.placeholder.com/64/2775CA/ffffff?text=USD1',
+          current_price: 1.00,
+          price_change_percentage_24h: 0.02,
+          price_change_percentage_7d: 0.01,
+          market_cap: 32000000000,
+          total_volume: 4200000000,
+          sparkline_in_7d: {
+            price: [0.999, 1.001, 1.000, 0.999, 1.001, 1.000, 1.000]
+          }
+        }
+      ]
+      setWlfiCoins(fallbackData)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    fetchWLFIData()
-    
-    // Refresh data every 30 seconds
-    const interval = setInterval(fetchWLFIData, 30000)
-    return () => clearInterval(interval)
-  }, [])
-
-  // Enhanced whale alerts with WLFI data
-  const whaleAlerts = [
-    { amount: "2.5M WLFI", action: "ACCUMULATE", exchange: "DEX", time: "2m ago", impact: "high", type: "bullish" },
-    { amount: "850K WLFI", action: "STAKE", exchange: "WLFI Platform", time: "5m ago", impact: "medium", type: "neutral" },
-    { amount: "1.8M WLFI", action: "TRANSFER", exchange: "Cold Storage", time: "8m ago", impact: "low", type: "neutral" },
-    { amount: "3.2M WLFI", action: "BUY", exchange: "Uniswap", time: "12m ago", impact: "high", type: "bullish" },
-    { amount: "650K WLFI", action: "HODL", exchange: "Multi-Sig", time: "15m ago", impact: "medium", type: "bullish" },
-  ]
+  fetchCoinData()
+  
+  // Refresh data every 30 seconds
+  const interval = setInterval(fetchCoinData, 30000)
+  return () => clearInterval(interval)
+}, [])
 
   // Generate dynamic chart points based on real price data
   const generateChartPoints = (sparklineData) => {
@@ -231,7 +230,7 @@ const LiveDataPreviewSection = () => {
             >
               <p className="text-xl lg:text-2xl text-[#d7d3d0] leading-relaxed">
                 Real-time intelligence for{' '}
-                <span className="text-[#fdd949] font-medium">World Liberty AI ecosystem</span> tokens.
+                <span className="text-[#fdd949] font-medium">World Liberty Financial & USD1</span> tokens.
               </p>
               
               <p className="text-lg text-[#e7e5e4] leading-relaxed">
@@ -332,14 +331,10 @@ const LiveDataPreviewSection = () => {
                                     e.target.src = `https://via.placeholder.com/40/e7ac08/171412?text=${coin.symbol.charAt(0).toUpperCase()}`
                                   }}
                                 />
-                                {coin.isComingSoon && (
-                                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-[#fdd949] rounded-full" />
-                                )}
                               </div>
                               <div>
                                 <h4 className="text-[#ffffff] font-bold flex items-center gap-2">
                                   {coin.name}
-                                  {coin.isComingSoon && <FaStar className="text-[#fdd949] text-sm" />}
                                 </h4>
                                 <p className="text-[#aaa29d] text-sm">{coin.symbol.toUpperCase()}</p>
                               </div>
@@ -407,82 +402,11 @@ const LiveDataPreviewSection = () => {
                               </div>
                             </div>
                           </div>
-
-                          {coin.isComingSoon && (
-                            <motion.div
-                              className="mt-3 p-2 bg-[#e7ac08]/10 border border-[#e7ac08]/30 rounded-lg"
-                              animate={{ opacity: [0.7, 1, 0.7] }}
-                              transition={{ duration: 2, repeat: Infinity }}
-                            >
-                              <div className="text-xs text-[#e7ac08] font-medium text-center">
-                                🚀 Revolutionary AI-Powered Financial Intelligence - Coming Soon!
-                              </div>
-                            </motion.div>
-                          )}
                         </motion.div>
                       )
                     })}
                   </div>
                 )}
-              </motion.div>
-
-              {/* Enhanced Whale Alerts Feed */}
-              <motion.div
-                className="relative p-4 bg-gradient-to-br from-[#1c1917]/60 to-[#171412]/40 backdrop-blur-sm border border-[#44403c]/30 rounded-xl"
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.8 }}
-              >
-                <div className="flex items-center gap-2 mb-4">
-                  <FaEye className="text-[#fdd949]" />
-                  <h4 className="text-lg font-semibold text-[#ffffff]">WLFI Whale Activity</h4>
-                  <motion.div 
-                    className="w-2 h-2 bg-[#4ade80] rounded-full ml-auto"
-                    animate={{ scale: [1, 1.3, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  />
-                </div>
-                
-                <div className="space-y-3 max-h-40 overflow-hidden">
-                  {whaleAlerts.slice(0, 3).map((alert, index) => (
-                    <motion.div
-                      key={index}
-                      className="flex items-center justify-between p-3 bg-[#171412]/40 border border-[#44403c]/20 rounded-lg"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
-                      whileHover={{ backgroundColor: "rgba(28, 25, 23, 0.6)" }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <motion.div
-                          className={`w-2 h-2 rounded-full ${
-                            alert.impact === 'high' ? 'bg-[#f87171]' : 
-                            alert.impact === 'medium' ? 'bg-[#fdd949]' : 'bg-[#4ade80]'
-                          }`}
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
-                        />
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-[#ffffff] font-medium text-sm">{alert.amount}</span>
-                            <span className={`text-xs px-2 py-1 rounded ${
-                              alert.type === 'bullish' ? 'bg-[#4ade80]/20 text-[#4ade80]' :
-                              'bg-[#fdd949]/20 text-[#fdd949]'
-                            }`}>
-                              {alert.action}
-                            </span>
-                          </div>
-                          <div className="text-xs text-[#aaa29d]">{alert.exchange} • {alert.time}</div>
-                        </div>
-                      </div>
-                      
-                      {alert.type === 'bullish' ? 
-                        <FaArrowUp className="text-[#4ade80] text-sm" /> :
-                        <FaCircle className="text-[#fdd949] text-xs" />
-                      }
-                    </motion.div>
-                  ))}
-                </div>
               </motion.div>
             </div>
           </motion.div>
