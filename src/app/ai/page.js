@@ -116,8 +116,8 @@ const WebAgent = () => {
       
       // Add WLFI as special coin
       const wlfiCoin = {
-        id: 'wlfi',
-        symbol: 'wlfi',
+        id: 'wlfiai',
+        symbol: 'wlfiai',
         name: 'World Liberty AI',
         image: '/logo.png',
         current_price: null,
@@ -245,7 +245,7 @@ const WebAgent = () => {
     setIsTyping(true)
 
     try {
-      let systemPrompt = `You are WLFI AI, World Liberty AI's advanced financial intelligence assistant. You specialize in:
+      let systemPrompt = `You are WLFIAI AI, World Liberty AI's advanced financial intelligence assistant. You specialize in:
 
 🔹 BLOCKCHAIN ANALYTICS:
 - Real-time transaction analysis
@@ -421,7 +421,7 @@ What would you like to know about ${coin.name}? I can analyze:
             </motion.div>
             <div className="text-left">
               <h1 className="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
-                WLFI AI
+              WLFIAI
               </h1>
               <p className="text-xl text-[#aaa29d] font-medium">Premium Web Agent</p>
             </div>
@@ -681,7 +681,7 @@ What would you like to know about ${coin.name}? I can analyze:
                             <div className="flex justify-between">
                               <span className="text-[#aaa29d]">Max Supply:</span>
                               <span className="text-[#ffffff] font-semibold">
-                                {coin.max_supply?.toLocaleString()} WLFI
+                                {coin.max_supply?.toLocaleString()} WLFIAI
                               </span>
                             </div>
                             <div className="flex justify-between">
@@ -696,7 +696,7 @@ What would you like to know about ${coin.name}? I can analyze:
                           >
                             <div className="flex items-center justify-center gap-2">
                               <BsTwitterX />
-                              Join WLFI on X
+                              Join WLFIAI on X
                             </div>
                           </motion.div>
                         </div>
@@ -850,7 +850,7 @@ What would you like to know about ${coin.name}? I can analyze:
                 {conversation.length === 0 ? (
                   <div className="text-center py-12">
                     <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200 mx-auto mb-5'/>
-                    <p className="text-[#aaa29d] text-lg mb-4">Welcome to WLFI AI Assistant</p>
+                    <p className="text-[#aaa29d] text-lg mb-4">Welcome to WLFIAI AI Assistant</p>
                     <p className="text-[#aaa29d] text-sm mb-6">
                       I can help you analyze cryptocurrencies, understand market trends, and make informed decisions.
                     </p>
@@ -916,7 +916,7 @@ What would you like to know about ${coin.name}? I can analyze:
                       >
                         <div className="bg-[#171412]/70 border border-[#44403c]/30 p-4 rounded-2xl flex items-center gap-2">
                           <FaSpinner className="animate-spin text-[#e7ac08]" />
-                          <span className="text-[#aaa29d]">WLFI AI is analyzing...</span>
+                          <span className="text-[#aaa29d]">WLFIAI AI is analyzing...</span>
                         </div>
                       </motion.div>
                     )}
@@ -935,7 +935,7 @@ What would you like to know about ${coin.name}? I can analyze:
                     placeholder={
                       activeCoin 
                         ? `Ask about ${activeCoin.name}...` 
-                        : "Ask WLFI AI about crypto markets, trends, or specific coins..."
+                        : "Ask WLFIAI about crypto markets, trends, or specific coins..."
                     }
                     className="w-full pl-4 pr-12 py-4 bg-[#1c1917]/50 border border-[#44403c]/40 rounded-xl text-[#fafaf9] placeholder-[#aaa29d] focus:outline-none focus:ring-2 focus:ring-[#e7ac08]/50 focus:border-[#e7ac08]/60 transition-all duration-300"
                     disabled={loading}
@@ -1008,7 +1008,7 @@ What would you like to know about ${coin.name}? I can analyze:
                 Ready for Advanced AI Intelligence?
               </h3>
               <p className="text-[#aaa29d] leading-relaxed text-lg mb-6 text-balance">
-                Unlock the full power of WLFI AI with our Telegram Mini App. Get real-time blockchain analytics, 
+                Unlock the full power of WLFIAI AI with our Telegram Mini App. Get real-time blockchain analytics, 
                 whale tracking, portfolio optimization, and advanced market intelligence.
               </p>
               
@@ -1037,7 +1037,7 @@ What would you like to know about ${coin.name}? I can analyze:
                 whileTap={{ scale: 0.98 }}
               >
                 <FaTelegram className="text-xl" />
-                Launch Full WLFI AI
+                Launch Full WLFIAI AI
                 <BsArrowRightCircle className="text-lg group-hover:translate-x-1 transition-transform" />
               </motion.a>
               
