@@ -82,7 +82,7 @@ const TokenomicsSection = () => {
     {
       icon: FaGift,
       title: "Earn verification rewards",
-      description: "Get WLFI tokens for validating transaction data and insights"
+      description: "Get WLFIAI tokens for validating transaction data and insights"
     }
   ]
 
@@ -167,7 +167,7 @@ const TokenomicsSection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
-              WLFI
+              WLFIAI
             </span>{' '}
             Tokenomics
           </motion.h2>
@@ -254,7 +254,7 @@ const TokenomicsSection = () => {
                   transition={{ duration: 0.8, delay: 1.2 }}
                 >
                   <div className="text-center">
-                    <div className="text-3xl lg:text-4xl font-bold text-[#e7ac08] mb-2">WLFI</div>
+                    <div className="text-3xl lg:text-4xl font-bold text-[#e7ac08] mb-2">WLFIAI</div>
                     <div className="text-sm text-[#aaa29d]">Token Distribution</div>
                   </div>
                 </motion.div>
@@ -348,7 +348,7 @@ const TokenomicsSection = () => {
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.9 }}
               >
-                WLFI tokens power the entire ecosystem, enabling access to premium features and rewarding community participation.
+                WLFIAI tokens power the entire ecosystem, enabling access to premium features and rewarding community participation.
               </motion.p>
             </div>
 
@@ -412,7 +412,7 @@ const TokenomicsSection = () => {
                 <div>
                   <h4 className="text-2xl font-bold text-[#ffffff] mb-1">Total Supply</h4>
                   <p className="text-3xl font-bold text-[#fdd949]">1,000,000,000</p>
-                  <p className="text-sm text-[#aaa29d]">WLFI Tokens</p>
+                  <p className="text-sm text-[#aaa29d]">WLFIAI Tokens</p>
                 </div>
               </div>
             </motion.div>
