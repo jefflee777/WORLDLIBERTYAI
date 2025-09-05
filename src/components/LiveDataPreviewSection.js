@@ -148,7 +148,7 @@ useEffect(() => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-24 lg:py-32 overflow-hidden"
+      className="relative py-24 overflow-hidden"
     >
       {/* Enhanced WLFI Background */}
       <div 
@@ -284,7 +284,7 @@ useEffect(() => {
                   <div className="flex items-center gap-3">
                     <FaGem className="text-[#e7ac08] text-xl" />
                     <div>
-                      <h3 className="text-lg font-semibold text-[#ffffff]">WLFI Ecosystem</h3>
+                      <h3 className="text-lg font-semibold text-[#ffffff]">WLFIAI Ecosystem</h3>
                       <div className="flex items-center gap-2">
                         <motion.div 
                           className="w-2 h-2 bg-[#4ade80] rounded-full"
