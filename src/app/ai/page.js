@@ -1029,7 +1029,7 @@ What would you like to know about ${coin.name}? I can analyze:
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
-                href="https://t.me/worldlibertyai"
+                href="https://t.me/WLFIai_bot/live"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412] font-bold rounded-xl transition-all duration-300"
@@ -1037,7 +1037,7 @@ What would you like to know about ${coin.name}? I can analyze:
                 whileTap={{ scale: 0.98 }}
               >
                 <FaTelegram className="text-xl" />
-                Launch Full WLFIAI AI
+                Launch Full WLFIAI
                 <BsArrowRightCircle className="text-lg group-hover:translate-x-1 transition-transform" />
               </motion.a>
               
