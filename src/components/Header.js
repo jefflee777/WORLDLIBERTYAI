@@ -146,7 +146,7 @@ const Navbar = () => {
                   transition={{ duration: 0.2 }}
                 >
                   <div className="block">
-                    <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200'/>
+                    <Image src='/navlogo.png' alt='logo' width={70} height={70} quality={100} className='scale-150'/>
                   </div>
                 </motion.div>
               </Link>
