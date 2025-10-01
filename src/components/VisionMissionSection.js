@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll, useTransform, useInView } from 'motion/react'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { FaSearch, FaChartLine, FaBell, FaTelegram } from 'react-icons/fa'
 import { BiAnalyse } from 'react-icons/bi'
@@ -31,44 +31,44 @@ const VisionMissionSection = () => {
       title: "Real-time AI transaction analysis",
       description: "Advanced algorithms monitor blockchain transactions instantly with pattern recognition",
       thumbnail: "/mission/1.png",
-      color: "#e7ac08"
+      color: "#39FF14"
     },
     {
       icon: FaChartLine,
       title: "Market trend insights for investors", 
       description: "Data-driven intelligence and predictive analytics for smarter investment decisions",
       thumbnail: "/mission/2.png",
-      color: "#fdd949"
+      color: "#00E0FF"
     },
     {
       icon: FaBell,
       title: "Instant alerts on abnormal activity",
       description: "Immediate notifications and warnings when unusual market patterns are detected",
       thumbnail: "/mission/3.png",
-      color: "#f87171"
+      color: "#B3FF66"
     },
     {
       icon: FaTelegram,
       title: "Accessible via Telegram Mini App",
       description: "Seamless access to AI insights through your messenger with instant notifications",
       thumbnail: "/mission/4.png",
-      color: "#0088cc"
+      color: "#39FF14"
     }
   ]
 
   return (
     <section 
       ref={sectionRef}
-      className="relative  overflow-hidden bg-[#171412]"
+      className="relative overflow-hidden bg-[#000000]"
     >
-      {/* Clean black background with subtle texture */}
+      {/* Futuristic black background with cyber grid */}
       <div className="absolute inset-0">
         <div 
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(231, 172, 8, 0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(231, 172, 8, 0.3) 1px, transparent 1px)
+              linear-gradient(rgba(57, 255, 20, 0.4) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(57, 255, 20, 0.4) 1px, transparent 1px)
             `,
             backgroundSize: '80px 80px'
           }}
@@ -91,7 +91,16 @@ const VisionMissionSection = () => {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <div className='sm:block hidden relative w-full mx-auto max-w-md lg:max-w-lg'>
-            <Image src='/ourmission.png' alt='Image' width={400} height={400} className='scale-125 -mt-10'/>
+              <Image 
+                src='/ourmission.png' 
+                alt='Image' 
+                width={400} 
+                height={400} 
+                className='scale-125 -mt-10'
+                style={{
+                  filter: 'drop-shadow(0 0 40px rgba(57, 255, 20, 0.3))'
+                }}
+              />
             </div>
           </motion.div>
 
@@ -110,17 +119,25 @@ const VisionMissionSection = () => {
                 initial={{ width: 0 }}
                 animate={rightInView ? { width: 80 } : { width: 0 }}
                 transition={{ duration: 1.2, delay: 0.8 }}
-                className="h-[2px] bg-gradient-to-r from-[#e7ac08] to-[#fdd949] rounded-full"
+                className="h-[2px] bg-gradient-to-r from-[#39FF14] to-[#B3FF66] rounded-full"
+                style={{
+                  boxShadow: '0 0 10px rgba(57, 255, 20, 0.6)'
+                }}
               />
               
               <motion.h2 
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#ffffff] leading-tight"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#FFFFFF] leading-tight"
                 initial={{ opacity: 0, y: 30 }}
                 animate={rightInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
                 Our{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
+                <span 
+                  className="text-transparent bg-clip-text bg-gradient-to-r from-[#39FF14] to-[#B3FF66]"
+                  style={{
+                    textShadow: '0 0 30px rgba(57, 255, 20, 0.3)'
+                  }}
+                >
                   Vision
                 </span>
               </motion.h2>
@@ -133,111 +150,140 @@ const VisionMissionSection = () => {
               animate={rightInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.7 }}
             >
-              <p className="text-lg lg:text-xl text-[#d7d3d0] text-balance leading-relaxed">
+              <p className="text-lg lg:text-xl text-[#E5E5E5] text-balance leading-relaxed">
                 We believe financial intelligence should be{' '}
-                <span className="text-[#fdd949] font-medium">transparent</span>,{' '}
-                <span className="text-[#fdd949] font-medium">borderless</span>, and{' '}
-                <span className="text-[#fdd949] font-medium">accessible</span> to everyone.
+                <span className="text-[#39FF14] font-medium">transparent</span>,{' '}
+                <span className="text-[#39FF14] font-medium">borderless</span>, and{' '}
+                <span className="text-[#39FF14] font-medium">accessible</span> to everyone.
               </p>
               
-              <p className="text-base lg:text-lg text-[#e7e5e4] leading-relaxed text-balance">
-                World Liberty AI unlocks the hidden patterns of global markets using AI and blockchain 
+              <p className="text-base lg:text-lg text-[#E5E5E5]/80 leading-relaxed text-balance">
+                WLFI unlocks the hidden patterns of global markets using AI and blockchain 
                 giving you the power to act with clarity.
               </p>
             </motion.div>
-
           </motion.div>
         </div>
-            {/* Mission Section with Cards */}
-            <div className="space-y-6">
+
+        {/* Mission Section with Cards */}
+        <div className="space-y-6 mt-16">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={rightInView ? { width: 80 } : { width: 0 }}
+            transition={{ duration: 1.2, delay: 0.8 }}
+            className="h-[2px] bg-gradient-to-r from-[#39FF14] to-[#00E0FF] rounded-full"
+            style={{
+              boxShadow: '0 0 10px rgba(57, 255, 20, 0.6)'
+            }}
+          />
+          
+          <motion.h2 
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#FFFFFF] leading-tight"
+            initial={{ opacity: 0, y: 30 }}
+            animate={rightInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.5 }}
+          >
+            Our{' '}
+            <span 
+              className="text-[#39FF14]"
+              style={{
+                textShadow: '0 0 30px rgba(57, 255, 20, 0.3)'
+              }}
+            >
+              Mission
+            </span>
+          </motion.h2>
+        </div>
+
+        <div className="space-y-8">
+          <div className="grid sm:grid-cols-4 gap-6 mt-5">
+            {missions.map((mission, index) => (
               <motion.div
-                initial={{ width: 0 }}
-                animate={rightInView ? { width: 80 } : { width: 0 }}
-                transition={{ duration: 1.2, delay: 0.8 }}
-                className="h-[2px] bg-gradient-to-r from-[#e7ac08] to-[#fdd949] rounded-full"
-              />
-              
-              <motion.h2 
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#ffffff] leading-tight"
+                key={index}
+                className="group relative p-6 rounded-2xl border border-[#2E2E2E]/60 bg-gradient-to-br from-[#1A1A1A]/80 to-[#0D0D0D]/60 backdrop-blur-sm hover:border-[#39FF14]/50 hover:bg-[#1A1A1A]/90 transition-all duration-300 overflow-hidden"
                 initial={{ opacity: 0, y: 30 }}
                 animate={rightInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.5 }}
+                transition={{ duration: 0.6, delay: 1.1 + index * 0.1 }}
+                whileHover={{ 
+                  scale: 1.02,
+                  y: -5,
+                  transition: { duration: 0.3 }
+                }}
+                style={{
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
+                }}
               >
-                Our{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
-                Mission
-                </span>
-              </motion.h2>
-            </div>
-            <div className="space-y-8">
-              <div className="grid sm:grid-cols-4 gap-6 mt-5">
-                {missions.map((mission, index) => (
+                {/* Thumbnail Image */}
+                <motion.div
+                  className="relative w-full h-fit mb-4 rounded-lg overflow-hidden"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <img 
+                    src={mission.thumbnail} 
+                    alt={mission.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+                  />
+                  
+                  {/* Floating Icon with Neon Glow */}
                   <motion.div
-                    key={index}
-                    className="group relative p-6 rounded-2xl border border-[#44403c]/40 bg-gradient-to-br from-[#1c1917]/60 to-[#171412]/40 backdrop-blur-sm hover:border-[#e7ac08]/50 hover:bg-[#1c1917]/70 transition-all duration-300 overflow-hidden"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={rightInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 1.1 + index * 0.1 }}
+                    className="absolute top-3 right-3 w-8 h-8 bg-gradient-to-br from-[#39FF14] to-[#B3FF66] rounded-lg flex items-center justify-center"
                     whileHover={{ 
-                      scale: 1.02,
-                      y: -5,
-                      transition: { duration: 0.3 }
+                      scale: 1.1, 
+                      rotate: 5,
+                      boxShadow: '0 0 20px rgba(57, 255, 20, 0.8)'
+                    }}
+                    transition={{ duration: 0.3 }}
+                    style={{
+                      boxShadow: '0 0 15px rgba(57, 255, 20, 0.4)'
                     }}
                   >
-                    {/* Thumbnail Image */}
-                    <motion.div
-                      className="relative w-full h-fit mb-4 rounded-lg overflow-hidden"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <img 
-                        src={mission.thumbnail} 
-                        alt={mission.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <div 
-                        className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
-                      />
-                      
-                      {/* Floating Icon */}
-                      <motion.div
-                        className="absolute top-3 right-3 w-8 h-8 bg-gradient-to-br from-[#e7ac08] to-[#fdd949] rounded-lg flex items-center justify-center"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <mission.icon className="text-sm text-[#171412]" />
-                      </motion.div>
-                    </motion.div>
-                    
-                    {/* Card Content */}
-                    <div className="space-y-3">
-                      <h4 className="text-lg font-bold text-[#ffffff] group-hover:text-[#fdd949] transition-colors duration-300 leading-tight">
-                        {mission.title}
-                      </h4>
-                      <p className="text-sm text-[#aaa29d] leading-relaxed">
-                        {mission.description}
-                      </p>
-                    </div>
-
-                    {/* Hover Glow Effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                      style={{
-                        background: `radial-gradient(circle at bottom right, ${mission.color}10 0%, transparent 70%)`
-                      }}
-                    />
-
-                    {/* Corner Accent */}
-                    <div 
-                      className="absolute top-0 left-0 w-20 h-20 rounded-br-2xl opacity-20"
-                      style={{
-                        background: `linear-gradient(135deg, ${mission.color}40 0%, transparent 70%)`
-                      }}
-                    />
+                    <mission.icon className="text-sm text-[#000000]" />
                   </motion.div>
-                ))}
-              </div>
-            </div>
+                </motion.div>
+                
+                {/* Card Content */}
+                <div className="space-y-3">
+                  <h4 className="text-lg font-bold text-[#FFFFFF] group-hover:text-[#39FF14] transition-colors duration-300 leading-tight">
+                    {mission.title}
+                  </h4>
+                  <p className="text-sm text-[#AAAAAA] leading-relaxed">
+                    {mission.description}
+                  </p>
+                </div>
+
+                {/* Neon Hover Glow Effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(circle at bottom right, ${mission.color}15 0%, transparent 70%)`
+                  }}
+                />
+
+                {/* Enhanced Corner Accent with Neon */}
+                <div 
+                  className="absolute top-0 left-0 w-20 h-20 rounded-br-2xl opacity-30"
+                  style={{
+                    background: `linear-gradient(135deg, ${mission.color}40 0%, transparent 70%)`,
+                    boxShadow: `inset 0 0 20px ${mission.color}20`
+                  }}
+                />
+
+                {/* Subtle Border Glow on Hover */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl border opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  style={{
+                    borderColor: `${mission.color}40`,
+                    boxShadow: `0 0 20px ${mission.color}20`
+                  }}
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </motion.div>
     </section>
   )
