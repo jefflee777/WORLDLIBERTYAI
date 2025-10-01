@@ -94,7 +94,7 @@ const TokenomicsSection = () => {
     <section 
       id='tokenomics'
       ref={sectionRef}
-      className="relative py-10 lg:py-32 bg-[#000000] overflow-hidden"
+      className="relative py-10 bg-[#000000] overflow-hidden"
     >
       {/* Background with Neon Green Highlights */}
       <div className="absolute inset-0">
