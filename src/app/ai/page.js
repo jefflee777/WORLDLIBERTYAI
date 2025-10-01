@@ -387,9 +387,10 @@ What would you like to know about ${coin.name}? I can analyze:
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Image src="/logo.png" alt="WLFI AI" width={40} height={40} />
+              <Image src="/navlogo.png" alt="WLFI AI" width={100} height={100} />
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-[#39FF14]">Premium Web Agent</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-[#39FF14]">
+                WLFIAI</h1>
                 <p className="text-sm text-[#AAAAAA] hidden sm:block">
                   Advanced AI-powered cryptocurrency intelligence with real-time data, market analytics, and personalized insights.
                 </p>
@@ -412,7 +413,7 @@ What would you like to know about ${coin.name}? I can analyze:
                 href="https://t.me/WLFIai_bot/live"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] text-[#000000] rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 text-sm"
+                className="flex items-center gap-2 px-4 py-2 bg-[#39FF14] text-[#000000] rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 text-sm"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -750,12 +751,11 @@ What would you like to know about ${coin.name}? I can analyze:
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <div className="bg-[#0D0D0D] border border-[#39FF14]/30 rounded-2xl p-8 max-w-4xl mx-auto">
-            <BsLightningCharge className="text-5xl text-[#39FF14] mb-4 mx-auto" />
-            <h2 className="text-2xl md:text-3xl font-bold text-[#FFFFFF] mb-4">
-              Unlock the full power of WLFIAI AI with our Telegram Mini App
+            <h2 className="text-2xl md:text-3xl text-balance font-bold text-[#FFFFFF] mb-4">
+            Ready for Advanced AI Intelligence?
             </h2>
-            <p className="text-[#AAAAAA] mb-8 max-w-2xl mx-auto">
-              Get real-time blockchain analytics, whale tracking, portfolio optimization, and advanced market intelligence.
+            <p className="text-[#AAAAAA] text-balance mb-8 max-w-2xl mx-auto">
+            Unlock the full power of WLFIAI AI with our Telegram Mini App. Get real-time blockchain analytics, whale tracking, portfolio optimization, and advanced market intelligence.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
