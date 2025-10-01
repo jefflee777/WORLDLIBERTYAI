@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll, useTransform, useInView } from 'motion/react'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import { 
@@ -29,40 +29,40 @@ const TokenomicsSection = () => {
   
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
 
-  // Tokenomics data with enhanced styling
+  // Updated tokenomics data with new color scheme
   const tokenomicsData = [
     { 
       title: 'Data Rewards', 
       value: 40, 
-      color: '#e7ac08',
+      color: '#39FF14',
       description: 'Incentivize community data verification and contribution',
       icon: FaGift
     },
     { 
       title: 'Ecosystem & Growth', 
       value: 25, 
-      color: '#fdd949',
+      color: '#B3FF66',
       description: 'Platform development and strategic partnerships',
       icon: BiTrendingUp
     },
     { 
       title: 'Team & Advisors', 
       value: 15, 
-      color: '#aaa29d',
+      color: '#00E0FF',
       description: 'Core team and advisor allocations with vesting',
       icon: FaUsers
     },
     { 
       title: 'Liquidity & Reserve', 
       value: 10, 
-      color: '#7a726c',
+      color: '#AAAAAA',
       description: 'Market stability and emergency reserves',
       icon: FaCoins
     },
     { 
       title: 'Marketing', 
       value: 10, 
-      color: '#44403c',
+      color: '#2E2E2E',
       description: 'Community building and user acquisition',
       icon: FaChartPie
     },
@@ -94,17 +94,17 @@ const TokenomicsSection = () => {
     <section 
       id='tokenomics'
       ref={sectionRef}
-      className="relative py-10 lg:py-32 bg-[#171412] overflow-hidden"
+      className="relative py-10 lg:py-32 bg-[#000000] overflow-hidden"
     >
-      {/* Background with Gold Highlights */}
+      {/* Background with Neon Green Highlights */}
       <div className="absolute inset-0">
         
         {/* Animated Chart Pattern Background */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.03]" viewBox="0 0 1000 1000">
+        <svg className="absolute inset-0 w-full h-full opacity-[0.02]" viewBox="0 0 1000 1000">
           <defs>
             <pattern id="chart-pattern" width="150" height="150" patternUnits="userSpaceOnUse">
-              <circle cx="75" cy="75" r="30" fill="none" stroke="#e7ac08" strokeWidth="1" opacity="0.5"/>
-              <circle cx="75" cy="75" r="15" fill="none" stroke="#fdd949" strokeWidth="1" opacity="0.3"/>
+              <circle cx="75" cy="75" r="30" fill="none" stroke="#39FF14" strokeWidth="1" opacity="0.4"/>
+              <circle cx="75" cy="75" r="15" fill="none" stroke="#B3FF66" strokeWidth="1" opacity="0.2"/>
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#chart-pattern)" />
@@ -122,12 +122,12 @@ const TokenomicsSection = () => {
                 y1="400"
                 x2="500"
                 y2="350"
-                stroke="rgba(231, 172, 8, 0.1)"
+                stroke="rgba(57, 255, 20, 0.1)"
                 strokeWidth="2"
                 transform={`rotate(${angle} 500 500)`}
                 animate={{
                   strokeDasharray: ["0,10", "5,5", "0,10"],
-                  opacity: [0.1, 0.3, 0.1],
+                  opacity: [0.1, 0.2, 0.1],
                 }}
                 transition={{
                   duration: 4,
@@ -157,30 +157,30 @@ const TokenomicsSection = () => {
             animate={isInView ? { width: 100 } : { width: 0 }}
             transition={{ duration: 1.2, delay: 0.3 }}
           >
-            <div className="h-[3px] bg-gradient-to-r from-transparent via-[#e7ac08] to-transparent rounded-full" />
+            <div className="h-[3px] bg-gradient-to-r from-transparent via-[#39FF14] to-transparent rounded-full" />
           </motion.div>
           
           <motion.h2 
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#ffffff] leading-tight mb-6"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#FFFFFF] leading-tight mb-6"
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#39FF14] to-[#B3FF66]">
               WLFIAI
             </span>{' '}
             Tokenomics
           </motion.h2>
           
           <motion.p
-            className="text-xl lg:text-2xl text-[#d7d3d0] text-balance max-w-3xl mx-auto leading-relaxed"
+            className="text-xl lg:text-2xl text-[#E5E5E5] text-balance max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Fueling the World Liberty AI ecosystem through{' '}
-            <span className="text-[#fdd949] font-medium">strategic token allocation</span> and{' '}
-            <span className="text-[#fdd949] font-medium">community incentives</span>.
+            Fueling the ecosystem through{' '}
+            <span className="text-[#39FF14] font-medium">strategic token allocation</span> and{' '}
+            <span className="text-[#39FF14] font-medium">community incentives</span>.
           </motion.p>
         </motion.div>
 
@@ -198,10 +198,9 @@ const TokenomicsSection = () => {
               {/* Chart Container */}
               <motion.div
                 ref={chartRef}
-                className="relative p-8 bg-gradient-to-br from-[#1c1917]/60 to-[#171412]/40 backdrop-blur-sm border border-[#e7ac08]/20 rounded-3xl"
+                className="relative p-8 bg-[#0D0D0D]/80 backdrop-blur-sm border border-[#2E2E2E] rounded-3xl"
                 whileHover={{ 
-                  borderColor: "rgba(231, 172, 8, 0.4)",
-                  boxShadow: "0 20px 60px rgba(231, 172, 8, 0.1)"
+                  borderColor: "#39FF14",
                 }}
                 transition={{ duration: 0.3 }}
               >
@@ -221,7 +220,7 @@ const TokenomicsSection = () => {
                     labelStyle={{
                       fontSize: '6px',
                       fontWeight: 'bold',
-                      fill: '#ffffff',
+                      fill: '#FFFFFF',
                       fontFamily: 'system-ui',
                     }}
                     labelPosition={85}
@@ -254,8 +253,8 @@ const TokenomicsSection = () => {
                   transition={{ duration: 0.8, delay: 1.2 }}
                 >
                   <div className="text-center">
-                    <div className="text-3xl lg:text-4xl font-bold text-[#e7ac08] mb-2">WLFIAI</div>
-                    <div className="text-sm text-[#aaa29d]">Token Distribution</div>
+                    <div className="text-3xl lg:text-4xl font-bold text-[#39FF14] mb-2">WLFIAI</div>
+                    <div className="text-sm text-[#AAAAAA]">Token Distribution</div>
                   </div>
                 </motion.div>
               </motion.div>
@@ -272,10 +271,10 @@ const TokenomicsSection = () => {
                     key={index}
                     className={`group flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 cursor-pointer ${
                       selectedSegment === index 
-                        ? 'border-[#e7ac08]/60 bg-[#1c1917]/60' 
+                        ? 'border-[#39FF14] bg-[#1A1A1A]/80' 
                         : hovered === item.title
-                        ? 'border-[#e7ac08]/40 bg-[#1c1917]/40'
-                        : 'border-[#44403c]/30 bg-[#1c1917]/20'
+                        ? 'border-[#39FF14]/60 bg-[#1A1A1A]/60'
+                        : 'border-[#2E2E2E] bg-[#1A1A1A]/40'
                     }`}
                     whileHover={{ scale: 1.02, x: 5 }}
                     whileTap={{ scale: 0.98 }}
@@ -286,29 +285,19 @@ const TokenomicsSection = () => {
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
                   >
-                    <motion.div
-                      className="w-4 h-4 rounded-full flex-shrink-0 hidden"
-                      style={{ backgroundColor: item.color }}
-                      animate={{
-                        scale: selectedSegment === index ? 1.3 : 1,
-                        boxShadow: selectedSegment === index 
-                          ? `0 0 15px ${item.color}80` 
-                          : `0 0 5px ${item.color}40`,
-                      }}
-                    />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3">
-                        <item.icon className="text-[#e7ac08] text-sm " />
-                        <h4 className="font-semibold text-[#ffffff] group-hover:text-[#fdd949] transition-colors">
+                        <item.icon className="text-[#39FF14] text-sm" />
+                        <h4 className="font-semibold text-[#FFFFFF] group-hover:text-[#39FF14] transition-colors">
                           {item.title}
                         </h4>
-                        <span className="font-bold text-[#e7ac08] text-lg ml-auto">
+                        <span className="font-bold text-[#39FF14] text-lg ml-auto">
                           {item.value}%
                         </span>
                       </div>
                       {selectedSegment === index && (
                         <motion.p 
-                          className="text-sm text-[#aaa29d] mt-2 leading-relaxed"
+                          className="text-sm text-[#AAAAAA] mt-2 leading-relaxed"
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
@@ -333,17 +322,17 @@ const TokenomicsSection = () => {
           >
             <div className="space-y-6">
               <motion.h3 
-                className="text-2xl lg:text-3xl font-bold text-[#ffffff] flex items-center gap-3"
+                className="text-2xl lg:text-3xl font-bold text-[#FFFFFF] flex items-center gap-3"
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.8 }}
               >
-                <div className="w-1 h-8 bg-gradient-to-b from-[#e7ac08] to-[#fdd949] rounded-full" />
+                <div className="w-1 h-8 bg-gradient-to-b from-[#39FF14] to-[#B3FF66] rounded-full" />
                 Token Utility
               </motion.h3>
               
               <motion.p
-                className="text-lg text-[#d7d3d0] leading-relaxed"
+                className="text-lg text-[#E5E5E5] leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.9 }}
@@ -356,27 +345,26 @@ const TokenomicsSection = () => {
               {utilityFeatures.map((feature, index) => (
                 <motion.div
                   key={index}
-                  className="group flex items-start gap-4 p-6 bg-gradient-to-br from-[#1c1917]/50 to-[#171412]/30 border border-[#44403c]/30 rounded-2xl hover:border-[#e7ac08]/40 hover:bg-[#1c1917]/60 transition-all duration-300"
+                  className="group flex items-start gap-4 p-6 bg-[#1A1A1A]/60 border border-[#2E2E2E] rounded-2xl hover:border-[#39FF14] hover:bg-[#1A1A1A]/80 transition-all duration-300"
                   whileHover={{ 
                     scale: 1.02,
-                    boxShadow: "0 10px 30px rgba(231, 172, 8, 0.1)",
                   }}
                   initial={{ opacity: 0, y: 30 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.6, delay: 1 + index * 0.1 }}
                 >
                   <motion.div
-                    className="w-12 h-12 bg-gradient-to-br from-[#e7ac08] to-[#fdd949] rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
+                    className="w-12 h-12 bg-gradient-to-br from-[#39FF14] to-[#B3FF66] rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
                     whileHover={{ rotate: 5 }}
                   >
-                    <feature.icon className="text-xl text-[#171412]" />
+                    <feature.icon className="text-xl text-[#000000]" />
                   </motion.div>
                   
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-xl font-bold text-[#ffffff] mb-2 group-hover:text-[#fdd949] transition-colors duration-300">
+                    <h4 className="text-xl font-bold text-[#FFFFFF] mb-2 group-hover:text-[#39FF14] transition-colors duration-300">
                       {feature.title}
                     </h4>
-                    <p className="text-[#aaa29d] leading-relaxed">
+                    <p className="text-[#AAAAAA] leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -386,33 +374,29 @@ const TokenomicsSection = () => {
 
             {/* Total Supply Info */}
             <motion.div
-              className="p-6 bg-gradient-to-br from-[#e7ac08]/10 to-[#fdd949]/10 border border-[#e7ac08]/30 rounded-2xl"
+              className="p-6 bg-[#39FF14]/10 border border-[#39FF14]/30 rounded-2xl"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 1.3 }}
               whileHover={{ 
-                borderColor: "rgba(231, 172, 8, 0.5)",
-                backgroundColor: "rgba(231, 172, 8, 0.15)"
+                borderColor: "#39FF14",
+                backgroundColor: "rgba(57, 255, 20, 0.15)"
               }}
             >
               <div className="flex items-center gap-4">
                 <motion.div
-                  className="w-16 h-16 bg-gradient-to-br from-[#e7ac08] to-[#fdd949] rounded-2xl flex items-center justify-center"
+                  className="w-16 h-16 bg-gradient-to-br from-[#39FF14] to-[#B3FF66] rounded-2xl flex items-center justify-center"
                   animate={{
-                    boxShadow: [
-                      "0 0 20px rgba(231, 172, 8, 0.3)",
-                      "0 0 30px rgba(231, 172, 8, 0.5)",
-                      "0 0 20px rgba(231, 172, 8, 0.3)",
-                    ]
+                    scale: [1, 1.05, 1],
                   }}
                   transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <FaCoins className="text-2xl text-[#171412]" />
+                  <FaCoins className="text-2xl text-[#000000]" />
                 </motion.div>
                 <div>
-                  <h4 className="text-2xl font-bold text-[#ffffff] mb-1">Total Supply</h4>
-                  <p className="text-3xl font-bold text-[#fdd949]">1,000,000,000</p>
-                  <p className="text-sm text-[#aaa29d]">WLFIAI Tokens</p>
+                  <h4 className="text-2xl font-bold text-[#FFFFFF] mb-1">Total Supply</h4>
+                  <p className="text-3xl font-bold text-[#39FF14]">1,000,000,000</p>
+                  <p className="text-sm text-[#AAAAAA]">WLFIAI Tokens</p>
                 </div>
               </div>
             </motion.div>
