@@ -132,7 +132,7 @@ const HeroSection = () => {
                   The Future of
                 </motion.span>
                 <motion.span 
-                  className="text-transparent bg-clip-text bg-gradient-to-r from-[#39FF14] via-[#B3FF66] to-[#00E0FF] block"
+                  className="text-[#39FF14] block"
                   whileInView={{ opacity: [0, 1] }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                   style={{
