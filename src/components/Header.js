@@ -15,21 +15,21 @@ const socialLinks = [
     icon: BsTwitterX,
     label: "X",
     color: "#1da1f2",
-    hover: "#fdd949"
+    hover: "#39FF14"
   },
   {
     href: "https://t.me/worldlibertyai",
     icon: FaTelegram,
     label: "Telegram",
     color: "#0088cc",
-    hover: "#e7ac08"
+    hover: "#39FF14"
   },
   {
     href: "https://bscscan.com",
     icon: RiBnbFill,
     label: "BscScan",
     color: "#f0b90b",
-    hover: "#fdd949"
+    hover: "#39FF14"
   }
 ]
 
@@ -114,27 +114,32 @@ const Navbar = () => {
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ 
+              duration: 0.8, 
+              ease: [0.16, 1, 0.3, 1],
+              type: "spring",
+              stiffness: 100
+            }}
             className="fixed left-0 right-0 top-4 z-50 flex justify-center pointer-events-none"
           >
             <nav
-              className={`max-w-7xl w-[90%] sm:w-full mx-auto pointer-events-auto transition-all duration-300 p-3 ${
+              className={`max-w-7xl w-[90%] sm:w-full mx-auto pointer-events-auto transition-all duration-500 ease-out p-3 ${
                 scrollY > 50 
-                  ? 'bg-[#171412]/95 border-[#e7ac08]/60' 
-                  : 'bg-[#171412]/85 border-[#e7ac08]/30'
+                  ? 'bg-[#0D0D0D]/98 border-[#39FF14]/60' 
+                  : 'bg-[#0D0D0D]/90 border-[#39FF14]/30'
               }`}
               style={{
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
-                border: `1px solid ${scrollY > 50 ? 'rgba(231, 172, 8, 0.6)' : 'rgba(231, 172, 8, 0.3)'}`,
+                border: `1px solid ${scrollY > 50 ? 'rgba(57, 255, 20, 0.6)' : 'rgba(57, 255, 20, 0.3)'}`,
                 borderRadius: '16px',
                 padding: '12px 16px sm:12px 24px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 boxShadow: scrollY > 50 
-                  ? '0 8px 32px rgba(231, 172, 8, 0.2)' 
-                  : '0 4px 16px rgba(0, 0, 0, 0.3)'
+                  ? '0 8px 32px rgba(57, 255, 20, 0.2)' 
+                  : '0 4px 16px rgba(0, 0, 0, 0.4)'
               }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -143,7 +148,10 @@ const Navbar = () => {
                 <motion.div 
                   className="flex items-center gap-3"
                   whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ 
+                    duration: 0.3, 
+                    ease: [0.16, 1, 0.3, 1] 
+                  }}
                 >
                   <div className="block">
                     <Image src='/navlogo.png' alt='logo' width={70} height={70} quality={100} className='scale-150'/>
@@ -154,18 +162,23 @@ const Navbar = () => {
               {/* Desktop Navigation Links */}
               <div className="hidden lg:flex items-center gap-8">
                 {navigationLinks.map((link) => (
-                  <Link key={link.name}
-                  href={link.href}>
+                  <Link key={link.name} href={link.href}>
                     <motion.div
-                    className="text-[#d7d3d0] hover:text-[#fdd949] font-medium transition-colors duration-300 relative group"
-                    whileHover={{ y: -1 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {link.name}
-                    <motion.div 
-                      className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] transition-all duration-300 group-hover:w-full"
-                    />
-                  </motion.div>
+                      className="text-[#E5E5E5] hover:text-[#39FF14] font-medium transition-all duration-400 relative group cursor-pointer"
+                      whileHover={{ y: -1 }}
+                      transition={{ 
+                        duration: 0.3,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
+                    >
+                      {link.name}
+                      <motion.div 
+                        className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] transition-all duration-400 group-hover:w-full"
+                        initial={{ scaleX: 0 }}
+                        whileHover={{ scaleX: 1 }}
+                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      />
+                    </motion.div>
                   </Link>
                 ))}
               </div>
@@ -182,18 +195,25 @@ const Navbar = () => {
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group relative flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-300 bg-[#1c1917]/50 border border-[#44403c]/50 hover:border-[#e7ac08]/60"
+                        className="group relative flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-400 bg-[#1A1A1A]/70 border border-[#2E2E2E]/50 hover:border-[#39FF14]/60"
                         whileHover={{
                           scale: 1.1,
                           y: -2,
-                          backgroundColor: 'rgba(231, 172, 8, 0.1)',
-                          boxShadow: '0 4px 16px rgba(231, 172, 8, 0.3)'
+                          backgroundColor: 'rgba(57, 255, 20, 0.1)',
+                          boxShadow: '0 4px 20px rgba(57, 255, 20, 0.3)',
+                          borderColor: 'rgba(57, 255, 20, 0.8)'
                         }}
                         whileTap={{ scale: 0.9 }}
-                        transition={{ duration: 0.2 }}
+                        transition={{ 
+                          duration: 0.3,
+                          ease: [0.16, 1, 0.3, 1]
+                        }}
                         aria-label={item.label}
                       >
-                        <Icon size={16} className="text-[#e7ac08] group-hover:text-[#fdd949] transition-colors duration-300" />
+                        <Icon 
+                          size={16} 
+                          className="text-[#39FF14] group-hover:text-[#B3FF66] transition-colors duration-300" 
+                        />
                       </motion.a>
                     )
                   })}
@@ -201,12 +221,13 @@ const Navbar = () => {
 
                 {/* CTA Button */}
                 {/* <motion.button
-                  className="px-4 py-2 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412] font-bold text-sm rounded-lg hover:shadow-lg transition-all duration-300"
+                  className="px-4 py-2 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] text-[#000000] font-bold text-sm rounded-lg hover:shadow-lg transition-all duration-400"
                   whileHover={{ 
                     scale: 1.05,
-                    boxShadow: "0 8px 25px rgba(231, 172, 8, 0.4)"
+                    boxShadow: "0 8px 25px rgba(57, 255, 20, 0.4)"
                   }}
                   whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.3 }}
                   onClick={() => handleLinkClick('#community')}
                 >
                   Join Beta
@@ -215,34 +236,45 @@ const Navbar = () => {
 
               {/* Mobile: Hamburger Menu Button */}
               <motion.button
-                className="sm:hidden flex items-center justify-center w-10 h-10 rounded-lg bg-[#1c1917]/50 border border-[#44403c]/50 text-[#e7ac08] transition-colors duration-300"
+                className="sm:hidden flex items-center justify-center w-10 h-10 rounded-lg bg-[#1A1A1A]/70 border border-[#2E2E2E]/50 text-[#39FF14] transition-all duration-400"
                 onClick={toggleMobileMenu}
                 whileHover={{ 
                   scale: 1.05, 
-                  backgroundColor: 'rgba(231, 172, 8, 0.1)',
-                  borderColor: 'rgba(231, 172, 8, 0.6)'
+                  backgroundColor: 'rgba(57, 255, 20, 0.1)',
+                  borderColor: 'rgba(57, 255, 20, 0.6)',
+                  boxShadow: "0 4px 16px rgba(57, 255, 20, 0.2)"
                 }}
                 whileTap={{ scale: 0.95 }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
                 aria-label="Toggle mobile menu"
               >
                 <AnimatePresence mode="wait">
                   {isMobileMenuOpen ? (
                     <motion.div
                       key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
+                      initial={{ rotate: -90, opacity: 0, scale: 0.8 }}
+                      animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                      exit={{ rotate: 90, opacity: 0, scale: 0.8 }}
+                      transition={{ 
+                        duration: 0.3,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
                     >
                       <FaTimes size={18} />
                     </motion.div>
                   ) : (
                     <motion.div
                       key="menu"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
+                      initial={{ rotate: 90, opacity: 0, scale: 0.8 }}
+                      animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                      exit={{ rotate: -90, opacity: 0, scale: 0.8 }}
+                      transition={{ 
+                        duration: 0.3,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
                     >
                       <FaBars size={18} />
                     </motion.div>
@@ -262,18 +294,31 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ 
+              duration: 0.4,
+              ease: [0.16, 1, 0.3, 1]
+            }}
           >
             {/* Backdrop */}
-            <div className="absolute inset-0 bg-[#171412]/95 backdrop-blur-md" />
+            <motion.div 
+              className="absolute inset-0 bg-[#000000]/98 backdrop-blur-md" 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            />
             
             {/* Menu Content */}
             <motion.div
               className="relative z-10 flex flex-col h-full pt-24 px-6"
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -50, opacity: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
+              initial={{ y: -50, opacity: 0, scale: 0.98 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: -50, opacity: 0, scale: 0.98 }}
+              transition={{ 
+                duration: 0.4, 
+                delay: 0.1,
+                ease: [0.16, 1, 0.3, 1]
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Navigation Links */}
@@ -282,15 +327,19 @@ const Navbar = () => {
                   <motion.a
                     key={link.name}
                     href={link.href}
-                    className="block text-2xl font-bold text-[#ffffff] hover:text-[#fdd949] transition-colors duration-300"
+                    className="block text-2xl font-bold text-[#FFFFFF] hover:text-[#39FF14] transition-colors duration-400"
                     onClick={(e) => {
                       e.preventDefault()
                       handleLinkClick(link.href)
                     }}
                     initial={{ x: -30, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1 + 0.2, duration: 0.4 }}
-                    whileTap={{ scale: 0.95 }}
+                    transition={{ 
+                      delay: index * 0.1 + 0.2, 
+                      duration: 0.5,
+                      ease: [0.16, 1, 0.3, 1]
+                    }}
+                    whileTap={{ scale: 0.98, x: 4 }}
                   >
                     {link.name}
                   </motion.a>
@@ -299,10 +348,14 @@ const Navbar = () => {
 
               {/* Mobile CTA Button */}
               <motion.button
-                className="w-full py-4 mb-8 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412] font-bold text-lg rounded-xl"
+                className="w-full py-4 mb-8 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] text-[#000000] font-bold text-lg rounded-xl shadow-lg"
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.4 }}
+                transition={{ 
+                  delay: 0.6, 
+                  duration: 0.5,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleLinkClick('#community')}
               >
@@ -319,16 +372,20 @@ const Navbar = () => {
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 text-[#e7ac08] hover:text-[#fdd949] transition-colors duration-300"
+                      className="flex flex-col items-center gap-2 text-[#39FF14] hover:text-[#B3FF66] transition-colors duration-400"
                       initial={{ y: 30, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1 + 0.7, duration: 0.4 }}
-                      whileTap={{ scale: 0.9 }}
+                      transition={{ 
+                        delay: index * 0.1 + 0.7, 
+                        duration: 0.5,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 bg-[#1c1917]/50 border border-[#44403c]/50">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-400 bg-[#1A1A1A]/70 border border-[#2E2E2E]/50 hover:border-[#39FF14]/60 hover:bg-[#39FF14]/10">
                         <Icon size={24} />
                       </div>
-                      <span className="text-xs font-semibold text-[#aaa29d]">{item.label}</span>
+                      <span className="text-xs font-semibold text-[#AAAAAA]">{item.label}</span>
                     </motion.a>
                   )
                 })}
@@ -336,12 +393,16 @@ const Navbar = () => {
 
               {/* World Liberty AI Badge - Mobile */}
               <motion.div
-                className="flex items-center justify-center gap-2 mt-12 text-[#aaa29d]"
+                className="flex items-center justify-center gap-2 mt-12 text-[#AAAAAA]"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 0.4 }}
+                transition={{ 
+                  delay: 1, 
+                  duration: 0.5,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
               >
-                <BiAnalyse className="w-4 h-4 text-[#e7ac08]" />
+                <BiAnalyse className="w-4 h-4 text-[#39FF14]" />
                 <span className="text-sm font-medium">World Liberty AI • Financial Intelligence</span>
               </motion.div>
             </motion.div>
