@@ -5,27 +5,22 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { 
   FaTelegram, 
   FaCoins, 
-  FaSearch,
-  FaStar,
-  FaRegStar,
-  FaChartLine,
-  FaBolt,
-  FaEye,
-  FaPaperPlane,
-  FaSpinner,
-  FaBookmark,
-  FaRegBookmark
+  FaSearch, 
+  FaStar, 
+  FaRegStar, 
+  FaChartLine, 
+  FaBolt, 
+  FaEye, 
+  FaPaperPlane, 
+  FaSpinner, 
+  FaBookmark, 
+  FaRegBookmark 
 } from 'react-icons/fa'
 import { BsTwitterX } from "react-icons/bs";
-import { 
-  BiNetworkChart, 
-  BiTrendingUp, 
-  BiTrendingDown, 
-  BiStats,
-  BiRefresh
-} from 'react-icons/bi'
+import { BiNetworkChart, BiTrendingUp, BiTrendingDown, BiStats, BiRefresh } from 'react-icons/bi'
 import { BsArrowRightCircle, BsChatDots, BsLightningCharge } from 'react-icons/bs'
 import Image from 'next/image'
+import ReactMarkdown from 'react-markdown'
 
 const WebAgent = () => {
   // Enhanced state management
@@ -48,13 +43,13 @@ const WebAgent = () => {
   const [marketStats, setMarketStats] = useState({})
   const [activeTab, setActiveTab] = useState('coins')
   const [coinAlerts, setCoinAlerts] = useState({})
-
+  
   const chatEndRef = useRef(null)
   const topCoinsRef = useRef(null)
 
   // Top 15 coins configuration
   const TOP_COINS = [
-    'bitcoin', 'ethereum', 'binancecoin', 'ripple', 'cardano',
+    'bitcoin', 'ethereum', 'binancecoin', 'ripple', 'cardano', 
     'solana', 'polkadot', 'dogecoin', 'shiba-inu', 'polygon-ecosystem-token',
     'litecoin', 'tron', 'avalanche-2', 'chainlink', 'uniswap'
   ]
@@ -113,7 +108,7 @@ const WebAgent = () => {
       
       const response = await fetch(url)
       const data = await response.json()
-      
+
       // Add WLFI as special coin
       const wlfiCoin = {
         id: 'wlfiai',
@@ -153,7 +148,7 @@ const WebAgent = () => {
       setCoinsData(allCoins)
       setFilteredCoins(allCoins)
       setLastUpdated(new Date())
-      
+
       // Cache data
       localStorage.setItem('wlfi-coins-data', JSON.stringify({
         coins: allCoins,
@@ -164,14 +159,13 @@ const WebAgent = () => {
       const totalMarketCap = data.reduce((sum, coin) => sum + (coin.market_cap || 0), 0)
       const totalVolume = data.reduce((sum, coin) => sum + (coin.total_volume || 0), 0)
       const avgChange24h = data.reduce((sum, coin) => sum + (coin.price_change_percentage_24h || 0), 0) / data.length
-      
+
       setMarketStats({
         totalMarketCap,
         totalVolume,
         avgChange24h,
         coinsCount: data.length
       })
-      
     } catch (error) {
       console.error('Error fetching coin data:', error)
     } finally {
@@ -232,8 +226,8 @@ const WebAgent = () => {
     if (e && e.preventDefault) e.preventDefault()
     if (!input.trim() || loading) return
 
-    const userMessage = { 
-      role: 'user', 
+    const userMessage = {
+      role: 'user',
       content: input,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       coinContext: activeCoin?.id || null
@@ -293,13 +287,13 @@ CURRENT COIN CONTEXT: ${activeCoin.name} (${activeCoin.symbol.toUpperCase()})
       })
 
       const data = await response.json()
-      
+
       if (data.reply) {
         setConversation((prev) => [
           ...prev,
-          { 
-            role: 'assistant', 
-            content: data.reply, 
+          {
+            role: 'assistant',
+            content: data.reply,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             coinContext: activeCoin?.id || null
           }
@@ -330,21 +324,21 @@ CURRENT COIN CONTEXT: ${activeCoin.name} (${activeCoin.symbol.toUpperCase()})
       window.open('https://twitter.com/worldlibertyai', '_blank')
       return
     }
-    
+
     setActiveCoin(coin)
     setActiveTab('chat')
-    
+
     // Add contextual greeting
     const contextMessage = {
       role: 'assistant',
       content: `📊 Now analyzing **${coin.name} (${coin.symbol.toUpperCase()})**
 
-Current Price: **$${coin.current_price?.toFixed(6) || 'N/A'}**
-24h Change: **${coin.price_change_percentage_24h >= 0 ? '📈' : '📉'} ${coin.price_change_percentage_24h?.toFixed(2) || 'N/A'}%**
+**Current Price:** $${coin.current_price?.toFixed(6) || 'N/A'}
+**24h Change:** ${coin.price_change_percentage_24h >= 0 ? '📈' : '📉'} ${coin.price_change_percentage_24h?.toFixed(2) || 'N/A'}%
 
 What would you like to know about ${coin.name}? I can analyze:
 • Price trends and patterns
-• Market sentiment
+• Market sentiment  
 • Technical indicators
 • Investment potential
 • Risk assessment`,
@@ -352,9 +346,8 @@ What would you like to know about ${coin.name}? I can analyze:
       coinContext: coin.id,
       isContextual: true
     }
-    
+
     setConversation(prev => [...prev, contextMessage])
-    
     setTimeout(() => {
       chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, 100)
@@ -388,683 +381,424 @@ What would you like to know about ${coin.name}? I can analyze:
   }
 
   return (
-    <div className="min-h-screen bg-[#171412] text-[#fafaf9] overflow-x-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 opacity-[0.02]">
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(231, 172, 8, 0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(231, 172, 8, 0.3) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px'
-          }}
-        />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
-        
-        {/* Enhanced Header */}
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <motion.div
-              className="w-20 h-20 rounded-3xl flex items-center justify-center"
-              transition={{ duration: 4, repeat: Infinity }}
-            >
-              <Image src="/logo.png" alt="logo" width={80} height={80} quality={100} className='scale-200 mr-2.5'/>
-            </motion.div>
-            <div className="text-left">
-              <h1 className="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
-              WLFIAI
-              </h1>
-              <p className="text-xl text-[#aaa29d] font-medium">Premium Web Agent</p>
+    <div className="min-h-screen bg-[#000000] text-[#FFFFFF]">
+      {/* Header */}
+      <header className="bg-[#0D0D0D] border-b border-[#2E2E2E] sticky top-0 z-40">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Image src="/logo.png" alt="WLFI AI" width={40} height={40} />
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-[#39FF14]">Premium Web Agent</h1>
+                <p className="text-sm text-[#AAAAAA] hidden sm:block">
+                  Advanced AI-powered cryptocurrency intelligence with real-time data, market analytics, and personalized insights.
+                </p>
+              </div>
             </div>
-          </div>
-          
-          <p className="text-lg sm:text-xl text-[#d7d3d0]/80 max-w-4xl mx-auto text-balance leading-relaxed mb-6">
-            Advanced <span className="text-[#fdd949] font-medium">AI-powered cryptocurrency intelligence</span> with 
-            real-time data, market analytics, and personalized insights.
-          </p>
-          
-          {/* Market Stats */}
-          {Object.keys(marketStats).length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-              {[
-                { label: 'Total Market Cap', value: `$${(marketStats.totalMarketCap / 1e12).toFixed(2)}T`, icon: FaCoins },
-                { label: '24h Volume', value: `$${(marketStats.totalVolume / 1e9).toFixed(2)}B`, icon: BiStats },
-                { label: 'Average Change', value: `${marketStats.avgChange24h.toFixed(2)}%`, icon: marketStats.avgChange24h >= 0 ? BiTrendingUp : BiTrendingDown },
-                { label: 'Coins Tracked', value: marketStats.coinsCount, icon: FaEye }
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className="p-4 bg-[#1c1917]/50 border border-[#44403c]/30 rounded-xl backdrop-blur-sm"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <stat.icon className="text-[#e7ac08]" />
-                    <span className="text-sm text-[#aaa29d]">{stat.label}</span>
-                  </div>
-                  <div className={`text-xl font-bold ${
-                    stat.label === 'Average Change' 
-                      ? marketStats.avgChange24h >= 0 ? 'text-[#4ade80]' : 'text-[#f87171]'
-                      : 'text-[#ffffff]'
-                  }`}>
-                    {stat.value}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
-          
-          {lastUpdated && (
-            <div className="flex items-center justify-center gap-2 mt-6 text-[#4ade80] text-sm">
-              <motion.div 
-                className="w-2 h-2 bg-[#4ade80] rounded-full"
-                animate={{ scale: [1, 1.3, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <span>Live • Last updated {lastUpdated.toLocaleTimeString()}</span>
+            
+            <div className="flex items-center gap-3">
               <motion.button
-                onClick={fetchCoinData}
-                className="ml-2 p-1 hover:bg-[#4ade80]/10 rounded"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                onClick={() => fetchCoinData()}
                 disabled={dataLoading}
-              >
-                <BiRefresh className={`text-[#4ade80] ${dataLoading ? 'animate-spin' : ''}`} />
-              </motion.button>
-            </div>
-          )}
-        </motion.div>
-
-        {/* Enhanced Tab Navigation */}
-        <div className="flex justify-center mb-8">
-          <div className="flex bg-[#1c1917]/50 rounded-2xl p-2 border border-[#44403c]/30">
-            {[
-              { id: 'coins', label: 'Market Overview', icon: FaChartLine },
-              { id: 'chat', label: 'AI Assistant', icon: BsChatDots, badge: activeCoin ? '1' : null }
-            ].map((tab) => (
-              <motion.button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-8 py-4 rounded-xl font-medium transition-all duration-300 relative ${
-                  activeTab === tab.id 
-                    ? 'bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412]' 
-                    : 'text-[#aaa29d] hover:text-[#fdd949]'
-                }`}
+                className="flex items-center gap-2 px-3 py-2 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#39FF14] hover:border-[#39FF14] transition-colors duration-300 text-sm"
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <tab.icon className="text-lg" />
-                {tab.label}
-                {tab.badge && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#f87171] text-[#ffffff] text-xs rounded-full flex items-center justify-center">
-                    {tab.badge}
-                  </span>
-                )}
+                <BiRefresh className={dataLoading ? 'animate-spin' : ''} />
+                <span className="hidden sm:inline">Refresh</span>
               </motion.button>
-            ))}
+              
+              <motion.a
+                href="https://t.me/WLFIai_bot/live"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] text-[#000000] rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 text-sm"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaTelegram />
+                <span className="hidden sm:inline">Mini App</span>
+              </motion.a>
+            </div>
           </div>
         </div>
+      </header>
 
-        <AnimatePresence mode="wait">
-          {activeTab === 'coins' ? (
-            <motion.div
-              key="coins"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.5 }}
-            >
-              {/* Enhanced Controls */}
-              <div className="flex flex-col md:flex-row gap-4 mb-8">
-                {/* Search */}
+      <div className="container mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          {/* Left Panel - Coins */}
+          <div className="lg:col-span-8 order-2 lg:order-1">
+            <div className="bg-[#0D0D0D] border border-[#2E2E2E] rounded-xl p-6">
+              
+              {/* Market Stats */}
+              {Object.keys(marketStats).length > 0 && (
+                <motion.div
+                  className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#2E2E2E]">
+                    <div className="text-[#39FF14] text-lg font-bold">
+                      ${(marketStats.totalMarketCap / 1e12).toFixed(2)}T
+                    </div>
+                    <div className="text-[#AAAAAA] text-xs">Total Cap</div>
+                  </div>
+                  <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#2E2E2E]">
+                    <div className="text-[#39FF14] text-lg font-bold">
+                      ${(marketStats.totalVolume / 1e9).toFixed(1)}B
+                    </div>
+                    <div className="text-[#AAAAAA] text-xs">24h Volume</div>
+                  </div>
+                  <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#2E2E2E]">
+                    <div className={`text-lg font-bold ${marketStats.avgChange24h >= 0 ? 'text-[#39FF14]' : 'text-[#FF4444]'}`}>
+                      {marketStats.avgChange24h >= 0 ? '+' : ''}{marketStats.avgChange24h.toFixed(1)}%
+                    </div>
+                    <div className="text-[#AAAAAA] text-xs">24h Change</div>
+                  </div>
+                  <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#2E2E2E]">
+                    <div className="text-[#39FF14] text-lg font-bold">{marketStats.coinsCount}</div>
+                    <div className="text-[#AAAAAA] text-xs">Coins</div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Controls */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <div className="relative flex-1">
-                  <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#aaa29d]" />
+                  <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#AAAAAA]" />
                   <input
                     type="text"
-                    placeholder="Search coins by name or symbol..."
+                    placeholder="Search coins..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-[#1c1917]/50 border border-[#44403c]/40 rounded-xl text-[#fafaf9] placeholder-[#aaa29d] focus:outline-none focus:ring-2 focus:ring-[#e7ac08]/50 focus:border-[#e7ac08]/60 transition-all duration-300"
+                    className="w-full pl-10 pr-4 py-3 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#FFFFFF] placeholder-[#AAAAAA] focus:border-[#39FF14] focus:outline-none transition-colors duration-300"
                   />
                 </div>
-
-                {/* Filter & Sort Controls */}
-                <div className="flex gap-3">
+                
+                <div className="flex gap-2">
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="px-4 py-3 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#FFFFFF] focus:border-[#39FF14] focus:outline-none transition-colors duration-300"
+                  >
+                    <option value="market_cap_rank">Rank</option>
+                    <option value="price">Price</option>
+                    <option value="change_24h">24h %</option>
+                    <option value="volume">Volume</option>
+                    <option value="name">Name</option>
+                  </select>
+                  
                   <select
                     value={filterBy}
                     onChange={(e) => setFilterBy(e.target.value)}
-                    className="px-4 py-3 bg-[#1c1917]/50 border border-[#44403c]/40 rounded-xl text-[#fafaf9] focus:outline-none focus:ring-2 focus:ring-[#e7ac08]/50"
+                    className="px-4 py-3 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#FFFFFF] focus:border-[#39FF14] focus:outline-none transition-colors duration-300"
                   >
                     <option value="all">All Coins</option>
                     <option value="gainers">Gainers</option>
                     <option value="losers">Losers</option>
                     <option value="watchlist">Watchlist</option>
                   </select>
-
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="px-4 py-3 bg-[#1c1917]/50 border border-[#44403c]/40 rounded-xl text-[#fafaf9] focus:outline-none focus:ring-2 focus:ring-[#e7ac08]/50"
-                  >
-                    <option value="market_cap_rank">Market Cap</option>
-                    <option value="price">Price</option>
-                    <option value="change_24h">24h Change</option>
-                    <option value="volume">Volume</option>
-                    <option value="name">Name</option>
-                  </select>
-
-                  <motion.button
-                    onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-                    className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 ${
-                      showOnlyFavorites
-                        ? 'bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412]'
-                        : 'bg-[#1c1917]/50 border border-[#44403c]/40 text-[#aaa29d] hover:text-[#fdd949]'
-                    }`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <FaStar />
-                    Favorites
-                  </motion.button>
                 </div>
               </div>
 
-              {/* Enhanced Coin Grid */}
+              {/* Coins Grid */}
               {dataLoading ? (
-                <div className="text-center py-20">
-                  <FaSpinner className="text-6xl text-[#e7ac08] mx-auto mb-4 animate-spin" />
-                  <p className="text-[#aaa29d] text-xl">Loading market data...</p>
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-center">
+                    <FaSpinner className="animate-spin text-4xl text-[#39FF14] mb-4 mx-auto" />
+                    <p className="text-[#AAAAAA]">Loading market data...</p>
+                  </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                   {filteredCoins.map((coin, index) => (
                     <motion.div
                       key={coin.id}
-                      className="group relative bg-gradient-to-br from-[#1c1917]/60 to-[#171412]/40 border border-[#44403c]/40 rounded-2xl p-6 backdrop-blur-sm hover:border-[#e7ac08]/60 transition-all duration-300 cursor-pointer"
-                      initial={{ opacity: 0, y: 30 }}
+                      className={`bg-[#1A1A1A] border rounded-xl p-4 cursor-pointer transition-all duration-300 hover:border-[#39FF14] ${
+                        coin.special ? 'border-[#39FF14] bg-gradient-to-br from-[#39FF14]/10 to-[#1A1A1A]' : 'border-[#2E2E2E]'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: index * 0.05 }}
-                      whileHover={{ 
-                        scale: 1.02,
-                        y: -5,
-                        boxShadow: "0 20px 40px rgba(231, 172, 8, 0.1)"
-                      }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
                       onClick={() => selectCoin(coin)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      {/* Special Badge for WLFI */}
-                      {coin.special && (
-                        <div className="absolute -top-2 -right-2 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412] text-xs font-bold px-3 py-1 rounded-full">
-                          COMING SOON
-                        </div>
-                      )}
-
-                      {/* Coin Header */}
-                      <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
                           <div className="relative">
-                          {coin.special ? (
-                                    <Image src="/logo.png" alt="logo" width={50} height={50} quality={100} className='scale-200'/>
-                                ) : (
-                                    <img
-                                        src={coin.image}
-                                        alt={coin.name}
-                                        className="w-12 h-12 rounded-xl object-cover"
-                                        onError={(e) => {
-                                            e.target.src = `https://via.placeholder.com/48/e7ac08/171412?text=${coin.symbol.charAt(0).toUpperCase()}`;
-                                        }}
-                                    />
-                                )}
-                            {coin.market_cap_rank <= 10 && !coin.special && (
-                              <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#fdd949] text-[#171412] text-xs font-bold rounded-full flex items-center justify-center">
-                                {coin.market_cap_rank}
-                              </div>
+                            <img
+                              src={coin.image}
+                              alt={coin.name}
+                              width={40}
+                              height={40}
+                              className="rounded-full"
+                              onError={(e) => {
+                                e.target.src = '/logo.png'
+                              }}
+                            />
+                            {coin.coming_soon && (
+                              <div className="absolute -top-1 -right-1 w-3 h-3 bg-[#39FF14] rounded-full animate-pulse"></div>
                             )}
                           </div>
                           <div>
-                            <h3 className="text-lg font-bold text-[#ffffff] group-hover:text-[#fdd949] transition-colors">
-                              {coin.name}
-                            </h3>
-                            <p className="text-sm text-[#aaa29d] uppercase font-medium">
-                              {coin.symbol}
-                            </p>
+                            <h3 className="font-bold text-[#FFFFFF] text-sm">{coin.name}</h3>
+                            <p className="text-[#AAAAAA] text-xs uppercase">{coin.symbol}</p>
                           </div>
                         </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex flex-col gap-2">
-                          {!coin.special && (
-                            <>
-                              <motion.button
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  toggleFavorite(coin.id)
-                                }}
-                                className="text-[#e7ac08] hover:text-[#fdd949] transition-colors"
-                                whileHover={{ scale: 1.2 }}
-                                whileTap={{ scale: 0.9 }}
-                              >
-                                {favoriteCoins.includes(coin.id) ? <FaStar /> : <FaRegStar />}
-                              </motion.button>
-                              <motion.button
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  toggleWatchlist(coin.id)
-                                }}
-                                className="text-[#e7ac08] hover:text-[#fdd949] transition-colors"
-                                whileHover={{ scale: 1.2 }}
-                                whileTap={{ scale: 0.9 }}
-                              >
-                                {watchlist.includes(coin.id) ? <FaBookmark /> : <FaRegBookmark />}
-                              </motion.button>
-                            </>
-                          )}
+                        
+                        <div className="flex gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              toggleFavorite(coin.id)
+                            }}
+                            className="text-[#AAAAAA] hover:text-[#39FF14] transition-colors duration-300"
+                          >
+                            {favoriteCoins.includes(coin.id) ? <FaStar className="text-[#39FF14]" /> : <FaRegStar />}
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              toggleWatchlist(coin.id)
+                            }}
+                            className="text-[#AAAAAA] hover:text-[#39FF14] transition-colors duration-300"
+                          >
+                            {watchlist.includes(coin.id) ? <FaBookmark className="text-[#39FF14]" /> : <FaRegBookmark />}
+                          </button>
                         </div>
                       </div>
 
-                      {coin.special ? (
-                        /* WLFI Special Content */
-                        <div className="space-y-4">
-                          <p className="text-[#d7d3d0] text-xs leading-relaxed">
-                            {coin.description}
-                          </p>
-                          <div className="space-y-2">
-                            <div className="flex justify-between">
-                              <span className="text-[#aaa29d]">Max Supply:</span>
-                              <span className="text-[#ffffff] font-semibold">
-                                {coin.max_supply?.toLocaleString()} WLFIAI
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-[#aaa29d]">Status:</span>
-                              <span className="text-[#fdd949] font-semibold">Pre-Launch</span>
-                            </div>
-                          </div>
-                          <motion.div
-                            className="mt-4 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412] font-bold py-3 px-4 rounded-xl text-center"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.98 }}
-                          >
-                            <div className="flex items-center justify-center gap-2">
-                              <BsTwitterX />
-                              Join WLFIAI on X
-                            </div>
-                          </motion.div>
+                      {coin.coming_soon ? (
+                        <div className="text-center py-3">
+                          <div className="text-[#39FF14] font-bold mb-1">Coming Soon</div>
+                          <div className="text-[#AAAAAA] text-xs">{coin.description}</div>
                         </div>
                       ) : (
-                        /* Regular Coin Content */
-                        <div className="space-y-4">
-                          {/* Price Info */}
-                          <div>
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-2xl font-bold text-[#fdd949]">
-                                ${coin.current_price?.toLocaleString(undefined, { 
-                                  minimumFractionDigits: coin.current_price < 1 ? 6 : 2,
-                                  maximumFractionDigits: coin.current_price < 1 ? 6 : 2 
-                                }) || 'N/A'}
-                              </span>
-                              {coin.price_change_percentage_24h !== null && (
-                                <span className={`flex items-center gap-1 text-sm font-bold px-2 py-1 rounded-full ${
-                                  coin.price_change_percentage_24h >= 0 
-                                    ? 'text-[#4ade80] bg-[#4ade80]/10' 
-                                    : 'text-[#f87171] bg-[#f87171]/10'
-                                }`}>
-                                  {coin.price_change_percentage_24h >= 0 ? <BiTrendingUp /> : <BiTrendingDown />}
-                                  {coin.price_change_percentage_24h.toFixed(2)}%
-                                </span>
-                              )}
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="text-[#FFFFFF] font-bold">
+                              ${coin.current_price?.toLocaleString() || 'N/A'}
                             </div>
-                          </div>
-
-                          {/* Stats Grid */}
-                          <div className="grid grid-cols-2 gap-3 text-sm">
-                            <div>
-                              <span className="text-[#aaa29d]">Market Cap</span>
-                              <div className="text-[#ffffff] font-semibold">
-                                ${coin.market_cap ? (coin.market_cap / 1e9).toFixed(2) + 'B' : 'N/A'}
-                              </div>
-                            </div>
-                            <div>
-                              <span className="text-[#aaa29d]">Volume 24h</span>
-                              <div className="text-[#ffffff] font-semibold">
-                                ${coin.total_volume ? (coin.total_volume / 1e6).toFixed(1) + 'M' : 'N/A'}
-                              </div>
-                            </div>
-                            <div>
-                              <span className="text-[#aaa29d]">Rank</span>
-                              <div className="text-[#ffffff] font-semibold">
-                                #{coin.market_cap_rank || 'N/A'}
-                              </div>
-                            </div>
-                            <div>
-                              <span className="text-[#aaa29d]">7d Change</span>
-                              <div className={`font-semibold ${
-                                coin.price_change_percentage_7d_in_currency >= 0 
-                                  ? 'text-[#4ade80]' : 'text-[#f87171]'
+                            {coin.price_change_percentage_24h !== null && (
+                              <div className={`flex items-center gap-1 text-sm font-medium ${
+                                coin.price_change_percentage_24h >= 0 ? 'text-[#39FF14]' : 'text-[#FF4444]'
                               }`}>
-                                {coin.price_change_percentage_7d_in_currency?.toFixed(1) || 'N/A'}%
+                                {coin.price_change_percentage_24h >= 0 ? <BiTrendingUp /> : <BiTrendingDown />}
+                                {coin.price_change_percentage_24h.toFixed(2)}%
                               </div>
-                            </div>
+                            )}
                           </div>
-
-                          {/* Quick Actions */}
-                          <div className="flex gap-2 mt-4">
-                            <motion.button
-                              className="flex-1 bg-[#e7ac08]/10 border border-[#e7ac08]/30 text-[#e7ac08] py-2 px-3 rounded-lg text-sm font-medium hover:bg-[#e7ac08]/20 transition-colors flex items-center justify-center gap-2"
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                selectCoin(coin)
-                              }}
-                            >
-                              <BsChatDots />
-                              Ask AI
-                            </motion.button>
-                            <motion.button
-                              className="bg-[#1c1917]/50 hidden border border-[#44403c]/40 text-[#aaa29d] p-2 rounded-lg hover:text-[#fdd949] hover:border-[#e7ac08]/40 transition-colors"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                // Add price alert functionality
-                              }}
-                            >
-                              <FaBolt />
-                            </motion.button>
+                          
+                          <div className="text-[#AAAAAA] text-xs space-y-1">
+                            <div className="flex justify-between">
+                              <span>Rank:</span>
+                              <span>#{coin.market_cap_rank || 'N/A'}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Market Cap:</span>
+                              <span>${coin.market_cap ? (coin.market_cap / 1e9).toFixed(2) + 'B' : 'N/A'}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Volume:</span>
+                              <span>${coin.total_volume ? (coin.total_volume / 1e6).toFixed(1) + 'M' : 'N/A'}</span>
+                            </div>
                           </div>
                         </div>
                       )}
-
-                      {/* Hover Glow */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#e7ac08]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
                     </motion.div>
                   ))}
                 </div>
               )}
 
-              {filteredCoins.length === 0 && !dataLoading && (
+              {!dataLoading && filteredCoins.length === 0 && (
                 <div className="text-center py-20">
-                  <FaSearch className="text-6xl text-[#aaa29d] mx-auto mb-4 opacity-50" />
-                  <p className="text-[#aaa29d] text-xl">No coins found matching your criteria</p>
+                  <FaCoins className="text-6xl text-[#2E2E2E] mb-4 mx-auto" />
+                  <p className="text-[#AAAAAA]">No coins found matching your criteria</p>
                 </div>
               )}
-            </motion.div>
-          ) : (
-            /* Enhanced Chat Interface */
-            <motion.div
-              key="chat"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.5 }}
-              className="max-w-4xl mx-auto"
-            >
+            </div>
+          </div>
+
+          {/* Right Panel - Chat */}
+          <div className="lg:col-span-4 order-1 lg:order-2">
+            <div className="bg-[#0D0D0D] border border-[#2E2E2E] rounded-xl overflow-hidden sticky top-24">
               {/* Chat Header */}
-              <div className="flex items-center justify-between mb-6 p-4 bg-[#1c1917]/50 border border-[#44403c]/30 rounded-2xl backdrop-blur-sm">
-                <div className="flex items-center gap-3">
-                  <BsChatDots className="text-[#e7ac08] text-2xl" />
+              <div className="p-4 border-b border-[#2E2E2E] bg-[#1A1A1A]">
+                <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-2xl font-bold text-[#ffffff]">AI Assistant</h2>
-                    {activeCoin ? (
-                      <p className="text-[#aaa29d]">
-                        Analyzing {activeCoin.name} ({activeCoin.symbol.toUpperCase()})
-                      </p>
-                    ) : (
-                      <p className="text-[#aaa29d]">Ask me about any cryptocurrency</p>
-                    )}
+                    <h3 className="font-bold text-[#FFFFFF]">
+                      {activeCoin ? (
+                        `Analyzing ${activeCoin.name} (${activeCoin.symbol.toUpperCase()})`
+                      ) : (
+                        'Ask me about any cryptocurrency'
+                      )}
+                    </h3>
+                    <p className="text-[#AAAAAA] text-xs">AI-powered market intelligence</p>
                   </div>
-                </div>
-                
-                <div className="flex items-center gap-3">
-                  <span className="px-3 py-1 bg-[#4ade80]/20 text-[#4ade80] text-sm rounded-full border border-[#4ade80]/30">
-                    Preview Mode
-                  </span>
-                  {activeCoin && (
-                    <motion.button
-                      onClick={() => {
-                        setActiveCoin(null)
-                        setConversation(prev => prev.filter(msg => !msg.isContextual))
-                      }}
-                      className="text-[#aaa29d] hover:text-[#f87171] transition-colors"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      ✕
-                    </motion.button>
-                  )}
+                  <div className="w-2 h-2 bg-[#39FF14] rounded-full animate-pulse"></div>
                 </div>
               </div>
 
               {/* Chat Messages */}
-              <div className="bg-[#1c1917]/50 border border-[#44403c]/30 rounded-2xl p-6 mb-6 h-96 overflow-y-auto backdrop-blur-sm">
-                {conversation.length === 0 ? (
-                  <div className="text-center py-12">
-                    <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200 mx-auto mb-5'/>
-                    <p className="text-[#aaa29d] text-lg mb-4">Welcome to WLFIAI AI Assistant</p>
-                    <p className="text-[#aaa29d] text-sm mb-6">
+              <div className="h-96 overflow-y-auto p-4 space-y-4">
+                {conversation.length === 0 && (
+                  <div className="text-center py-8">
+                    <BsChatDots className="text-4xl text-[#39FF14] mb-4 mx-auto" />
+                    <h4 className="font-bold text-[#FFFFFF] mb-2">Welcome to WLFIAI AI Assistant</h4>
+                    <p className="text-[#AAAAAA] text-sm mb-4">
                       I can help you analyze cryptocurrencies, understand market trends, and make informed decisions.
                     </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
-                      {[
-                        'Analyze Bitcoin price trends',
-                        'Compare ETH vs other altcoins',
-                        'Explain market volatility',
-                        'Investment risk assessment'
-                      ].map((suggestion, index) => (
-                        <motion.button
-                          key={index}
-                          onClick={() => setInput(suggestion)}
-                          className="p-3 bg-[#171412]/50 border border-[#44403c]/30 rounded-lg text-sm text-[#aaa29d] hover:text-[#fdd949] hover:border-[#e7ac08]/40 transition-all duration-300 text-left"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          💡 {suggestion}
-                        </motion.button>
-                      ))}
+                    <div className="bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg p-4 text-left">
+                      <h5 className="font-medium text-[#39FF14] mb-2">Try asking:</h5>
+                      <ul className="text-[#AAAAAA] text-sm space-y-1">
+                        <li>• "What's the outlook for Bitcoin?"</li>
+                        <li>• "Analyze Ethereum's recent performance"</li>
+                        <li>• "Should I buy or sell this coin?"</li>
+                      </ul>
                     </div>
                   </div>
-                ) : (
-                  <div className="space-y-4">
-                    {conversation.map((msg, idx) => (
-                      <motion.div
-                        key={idx}
-                        className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: idx * 0.1 }}
-                      >
-                        <div className={`max-w-[80%] p-4 rounded-2xl relative ${
-                          msg.role === 'user' 
-                            ? 'bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412]' 
-                            : msg.isContextual
-                            ? 'bg-gradient-to-r from-[#e7ac08]/10 to-[#fdd949]/10 border border-[#e7ac08]/30 text-[#fafaf9]'
-                            : 'bg-[#171412]/70 text-[#fafaf9] border border-[#44403c]/30'
-                        }`}>
-                          {msg.coinContext && !msg.isContextual && (
-                            <div className="text-xs mb-2 opacity-70 flex items-center gap-1">
-                              <FaCoins />
-                              {coinsData.find(c => c.id === msg.coinContext)?.name}
-                            </div>
-                          )}
-                          <div className="whitespace-pre-line leading-relaxed">
-                            {msg.content}
-                          </div>
-                          <div className={`text-xs mt-2 opacity-70 ${
-                            msg.role === 'user' ? 'text-[#171412]' : 'text-[#aaa29d]'
-                          }`}>
-                            {msg.timestamp}
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                    
-                    {isTyping && (
-                      <motion.div
-                        className="flex justify-start"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                      >
-                        <div className="bg-[#171412]/70 border border-[#44403c]/30 p-4 rounded-2xl flex items-center gap-2">
-                          <FaSpinner className="animate-spin text-[#e7ac08]" />
-                          <span className="text-[#aaa29d]">WLFIAI AI is analyzing...</span>
-                        </div>
-                      </motion.div>
-                    )}
-                  </div>
                 )}
+
+                {conversation.map((msg, index) => (
+                  <motion.div
+                    key={index}
+                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className={`max-w-[85%] p-3 rounded-lg ${
+                      msg.role === 'user' 
+                        ? 'bg-[#39FF14] text-[#000000]' 
+                        : 'bg-[#1A1A1A] border border-[#2E2E2E] text-[#FFFFFF]'
+                    }`}>
+                      {msg.role === 'assistant' ? (
+                        <ReactMarkdown 
+                          // className="text-sm leading-relaxed"
+                          components={{
+                            p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
+                            strong: ({children}) => <strong className="text-[#39FF14] font-semibold">{children}</strong>,
+                            ul: ({children}) => <ul className="list-disc list-inside space-y-1 my-2">{children}</ul>,
+                            li: ({children}) => <li className="text-sm">{children}</li>,
+                            code: ({children}) => <code className="bg-[#000000] px-1 py-0.5 rounded text-[#39FF14] text-xs">{children}</code>
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+                      ) : (
+                        <div className="text-sm">{msg.content}</div>
+                      )}
+                      <div className={`text-xs mt-2 ${msg.role === 'user' ? 'text-[#000000]/70' : 'text-[#AAAAAA]'}`}>
+                        {msg.timestamp}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+
+                {isTyping && (
+                  <motion.div
+                    className="flex justify-start"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <div className="bg-[#1A1A1A] border border-[#2E2E2E] p-3 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <FaSpinner className="animate-spin text-[#39FF14]" />
+                        <span className="text-[#AAAAAA] text-sm">AI is thinking...</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
                 <div ref={chatEndRef} />
               </div>
 
-              {/* Enhanced Chat Input */}
-              <form onSubmit={handleSendMessage} className="flex gap-4">
-                <div className="flex-1 relative">
+              {/* Chat Input */}
+              <form onSubmit={handleSendMessage} className="p-4 border-t border-[#2E2E2E]">
+                <div className="flex gap-2">
                   <input
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder={
-                      activeCoin 
-                        ? `Ask about ${activeCoin.name}...` 
-                        : "Ask WLFIAI about crypto markets, trends, or specific coins..."
-                    }
-                    className="w-full pl-4 pr-12 py-4 bg-[#1c1917]/50 border border-[#44403c]/40 rounded-xl text-[#fafaf9] placeholder-[#aaa29d] focus:outline-none focus:ring-2 focus:ring-[#e7ac08]/50 focus:border-[#e7ac08]/60 transition-all duration-300"
+                    placeholder="Ask about cryptocurrency analysis..."
                     disabled={loading}
+                    className="flex-1 px-4 py-3 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#FFFFFF] placeholder-[#AAAAAA] focus:border-[#39FF14] focus:outline-none transition-colors duration-300 disabled:opacity-50"
                   />
-                  {input && (
-                    <motion.button
-                      type="button"
-                      onClick={() => setInput('')}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#aaa29d] hover:text-[#f87171] transition-colors"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      ✕
-                    </motion.button>
-                  )}
+                  <motion.button
+                    type="submit"
+                    disabled={loading || !input.trim()}
+                    className="px-4 py-3 bg-[#39FF14] text-[#000000] rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    whileHover={!loading && input.trim() ? { scale: 1.05 } : {}}
+                    whileTap={!loading && input.trim() ? { scale: 0.95 } : {}}
+                  >
+                    {loading ? <FaSpinner className="animate-spin" /> : <FaPaperPlane />}
+                  </motion.button>
                 </div>
-                <motion.button
-                  type="submit"
-                  disabled={loading || !input.trim()}
-                  className="px-6 py-4 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412] font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center gap-2 min-w-[120px] justify-center"
-                  whileHover={{ scale: loading ? 1 : 1.05 }}
-                  whileTap={{ scale: loading ? 1 : 0.98 }}
-                >
-                  {loading ? (
-                    <FaSpinner className="animate-spin" />
-                  ) : (
-                    <>
-                      <FaPaperPlane />
-                      Send
-                    </>
-                  )}
-                </motion.button>
               </form>
+            </div>
+          </div>
+        </div>
 
-              {/* Quick Actions */}
-              {!loading && (
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {[
-                    'What are today\'s top gainers?',
-                    'Explain DeFi trends',
-                    'Should I buy Bitcoin now?',
-                    'Compare Layer 1 blockchains'
-                  ].map((suggestion, index) => (
-                    <motion.button
-                      key={index}
-                      onClick={() => setInput(suggestion)}
-                      className="px-3 py-2 bg-[#1c1917]/30 border border-[#44403c]/20 text-[#aaa29d] text-sm rounded-lg hover:text-[#fdd949] hover:border-[#e7ac08]/40 transition-all duration-300"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      {suggestion}
-                    </motion.button>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Enhanced CTA Section */}
-        <motion.section
-          className="text-center mt-20"
-          initial={{ opacity: 0, y: 30 }}
+        {/* Footer CTA */}
+        <motion.div
+          className="text-center py-12"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <div className="max-w-4xl mx-auto p-8 bg-gradient-to-br from-[#e7ac08]/10 to-[#fdd949]/10 border border-[#e7ac08]/30 rounded-3xl backdrop-blur-sm">
-            <div className="mb-8">
-              <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
-                Ready for Advanced AI Intelligence?
-              </h3>
-              <p className="text-[#aaa29d] leading-relaxed text-lg mb-6 text-balance">
-                Unlock the full power of WLFIAI AI with our Telegram Mini App. Get real-time blockchain analytics, 
-                whale tracking, portfolio optimization, and advanced market intelligence.
-              </p>
-              
-              <div className="grid md:grid-cols-3 gap-4 mb-8">
-                {[
-                  { icon: FaEye, title: 'Whale Tracking', desc: 'Monitor large transactions and wallet movements' },
-                  { icon: BiStats, title: 'Portfolio Analytics', desc: 'Advanced performance tracking and insights' },
-                  { icon: FaBolt, title: 'Real-time Alerts', desc: 'Instant notifications for market opportunities' }
-                ].map((feature, index) => (
-                  <div key={index} className="text-center p-4">
-                    <feature.icon className="text-3xl text-[#e7ac08] mx-auto mb-3" />
-                    <h4 className="text-[#ffffff] font-semibold mb-2">{feature.title}</h4>
-                    <p className="text-[#aaa29d] text-sm">{feature.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="bg-[#0D0D0D] border border-[#39FF14]/30 rounded-2xl p-8 max-w-4xl mx-auto">
+            <BsLightningCharge className="text-5xl text-[#39FF14] mb-4 mx-auto" />
+            <h2 className="text-2xl md:text-3xl font-bold text-[#FFFFFF] mb-4">
+              Unlock the full power of WLFIAI AI with our Telegram Mini App
+            </h2>
+            <p className="text-[#AAAAAA] mb-8 max-w-2xl mx-auto">
+              Get real-time blockchain analytics, whale tracking, portfolio optimization, and advanced market intelligence.
+            </p>
             
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {[
+                { icon: FaBolt, title: "Real-time Analytics", desc: "Live blockchain data analysis" },
+                { icon: FaEye, title: "Whale Tracking", desc: "Monitor large transactions" },
+                { icon: BiStats, title: "Portfolio Optimization", desc: "AI-powered investment strategies" }
+              ].map((feature, index) => (
+                <div key={index} className="text-center">
+                  <feature.icon className="text-3xl text-[#39FF14] mb-3 mx-auto" />
+                  <h3 className="font-semibold text-[#FFFFFF] mb-2">{feature.title}</h3>
+                  <p className="text-[#AAAAAA] text-sm">{feature.desc}</p>
+                </div>
+              ))}
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
                 href="https://t.me/WLFIai_bot/live"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#e7ac08] to-[#fdd949] text-[#171412] font-bold rounded-xl transition-all duration-300"
-                whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(231, 172, 8, 0.4)" }}
-                whileTap={{ scale: 0.98 }}
+                className="flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] text-[#000000] rounded-xl font-bold text-lg hover:opacity-90 transition-opacity duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <FaTelegram className="text-xl" />
-                Launch Full WLFIAI
-                <BsArrowRightCircle className="text-lg group-hover:translate-x-1 transition-transform" />
+                Launch Mini App
               </motion.a>
               
               <motion.a
                 href="https://twitter.com/worldlibertyai"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#1c1917]/50 border border-[#44403c]/50 text-[#fafaf9] font-medium rounded-xl hover:border-[#e7ac08]/60 transition-all duration-300"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                className="flex items-center justify-center gap-3 px-8 py-4 bg-[#1A1A1A] border border-[#2E2E2E] text-[#FFFFFF] rounded-xl font-medium hover:border-[#39FF14] transition-colors duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <BsTwitterX className="text-xl" />
+                <BsTwitterX className="text-lg" />
                 Follow Updates
               </motion.a>
-              
-              <motion.button
-                onClick={() => window.location.reload()}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#1c1917]/50 border border-[#44403c]/50 text-[#fafaf9] font-medium rounded-xl hover:border-[#e7ac08]/60 transition-all duration-300"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <BiRefresh className="text-xl" />
-                Refresh Data
-              </motion.button>
             </div>
           </div>
-        </motion.section>
+        </motion.div>
       </div>
     </div>
   )
