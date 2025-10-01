@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll, useTransform, useInView } from 'motion/react'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { 
   FaRocket, 
@@ -11,7 +11,6 @@ import {
   FaArrowRight
 } from 'react-icons/fa'
 import { BsTwitterX } from "react-icons/bs";
-
 import { BiGlobe, BiStats } from 'react-icons/bi'
 
 const RoadmapSection = () => {
@@ -42,7 +41,7 @@ const RoadmapSection = () => {
         "Telegram Mini App Beta Release",
         "Initial User Testing & Feedback"
       ],
-      color: "#e7ac08",
+      color: "#39FF14",
       delay: 0
     },
     {
@@ -58,7 +57,7 @@ const RoadmapSection = () => {
         "Automated Report Generation",
         "Advanced Whale Tracking System"
       ],
-      color: "#fdd949",
+      color: "#B3FF66",
       delay: 0.2
     },
     {
@@ -74,7 +73,7 @@ const RoadmapSection = () => {
         "1M+ Active User Milestone",
         "Global Market Intelligence Hub"
       ],
-      color: "#fac514",
+      color: "#00E0FF",
       delay: 0.4
     }
   ]
@@ -83,24 +82,24 @@ const RoadmapSection = () => {
     <section 
       id='roadmap'
       ref={sectionRef}
-      className="relative py-14 lg:py-28 bg-[#171412] overflow-hidden"
+      className="relative py-14 lg:py-28 bg-[#000000] overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
         
-        {/* Animated connecting dots */}
+        {/* Subtle animated connecting dots */}
         <div className="absolute inset-0 opacity-[0.02]">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-[#e7ac08] rounded-full"
+              className="absolute w-1 h-1 bg-[#39FF14] rounded-full"
               style={{
                 left: `${20 + Math.random() * 60}%`,
                 top: `${Math.random() * 100}%`,
               }}
               animate={{
                 scale: [0, 1, 0],
-                opacity: [0, 0.5, 0],
+                opacity: [0, 0.4, 0],
               }}
               transition={{
                 duration: Math.random() * 4 + 3,
@@ -129,23 +128,23 @@ const RoadmapSection = () => {
             animate={isInView ? { width: 120 } : { width: 0 }}
             transition={{ duration: 1.2, delay: 0.3 }}
           >
-            <div className="h-[3px] bg-gradient-to-r from-transparent via-[#e7ac08] to-transparent rounded-full" />
+            <div className="h-[3px] bg-gradient-to-r from-transparent via-[#39FF14] to-transparent rounded-full" />
           </motion.div>
           
           <motion.h2 
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#ffffff] leading-tight mb-6"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#FFFFFF] leading-tight mb-6"
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             Our{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#39FF14] to-[#B3FF66]">
               Roadmap
             </span>
           </motion.h2>
           
           <motion.p
-            className="text-xl text-[#d7d3d0] text-balance max-w-3xl mx-auto leading-relaxed"
+            className="text-xl text-[#E5E5E5] text-balance max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -160,12 +159,11 @@ const RoadmapSection = () => {
           {/* Timeline Line */}
           <motion.div
             ref={timelineRef}
-            className="sm:flex hidden absolute left-8 lg:left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#e7ac08]/30 via-[#fdd949]/50 to-[#e7ac08]/30"
+            className="sm:flex hidden absolute left-8 lg:left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#39FF14]/30 via-[#39FF14]/60 to-[#39FF14]/30"
             initial={{ scaleY: 0 }}
             animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
             transition={{ duration: 1.5, delay: 0.8 }}
             style={{
-              boxShadow: '0 0 10px rgba(231, 172, 8, 0.3)',
               transformOrigin: 'top',
             }}
           />
@@ -190,22 +188,15 @@ const RoadmapSection = () => {
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {/* Glowing Node */}
+                  {/* Clean Node */}
                   <motion.div
-                    className="w-16 h-16 rounded-full flex items-center justify-center relative z-10"
+                    className="w-16 h-16 rounded-full flex items-center justify-center relative z-10 border-2"
                     style={{
-                      background: `
-                        radial-gradient(circle at center, ${phase.color} 0%, ${phase.color}CC 70%),
-                        linear-gradient(135deg, ${phase.color} 0%, ${phase.color}DD 100%)
-                      `,
-                      boxShadow: `0 0 20px ${phase.color}60, inset 0 2px 0 rgba(255, 255, 255, 0.2)`,
+                      background: `linear-gradient(135deg, ${phase.color} 0%, ${phase.color}DD 100%)`,
+                      borderColor: `${phase.color}`,
                     }}
                     animate={{
-                      boxShadow: [
-                        `0 0 20px ${phase.color}60, inset 0 2px 0 rgba(255, 255, 255, 0.2)`,
-                        `0 0 30px ${phase.color}80, inset 0 2px 0 rgba(255, 255, 255, 0.3)`,
-                        `0 0 20px ${phase.color}60, inset 0 2px 0 rgba(255, 255, 255, 0.2)`,
-                      ]
+                      scale: [1, 1.05, 1],
                     }}
                     transition={{
                       duration: 3,
@@ -213,25 +204,25 @@ const RoadmapSection = () => {
                       delay: phase.delay,
                     }}
                   >
-                    <phase.icon className="text-2xl text-[#171412]" />
+                    <phase.icon className="text-2xl text-[#000000]" />
                   </motion.div>
                   
                   {/* Status Indicator */}
                   <motion.div
-                    className={`absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                      phase.status === 'in-progress' ? 'bg-[#4ade80]' :
-                      phase.status === 'upcoming' ? 'bg-[#fbbf24]' :
-                      'bg-[#6b7280]'
+                    className={`absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full flex items-center justify-center text-xs border-2 border-[#000000] ${
+                      phase.status === 'in-progress' ? 'bg-[#39FF14]' :
+                      phase.status === 'upcoming' ? 'bg-[#B3FF66]' :
+                      'bg-[#AAAAAA]'
                     }`}
                     initial={{ scale: 0 }}
                     animate={isInView ? { scale: 1 } : { scale: 0 }}
                     transition={{ duration: 0.5, delay: 1.2 + phase.delay }}
                   >
                     {phase.status === 'in-progress' ? 
-                      <FaClock className="text-[#171412]" /> :
+                      <FaClock className="text-[#000000]" /> :
                       phase.status === 'upcoming' ?
-                      <FaArrowRight className="text-[#171412]" /> :
-                      <FaCheckCircle className="text-[#171412]" />
+                      <FaArrowRight className="text-[#000000]" /> :
+                      <FaCheckCircle className="text-[#000000]" />
                     }
                   </motion.div>
                 </motion.div>
@@ -245,14 +236,14 @@ const RoadmapSection = () => {
                   {/* Phase Header */}
                   <div className="mb-6">
                     <div className="flex items-center gap-4 mb-3">
-                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#ffffff]">
+                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#FFFFFF]">
                         Phase {phase.id} – {phase.phase}
                       </h3>
                       <span 
                         className="px-3 py-1 rounded-full sm:text-sm text-xs font-medium border"
                         style={{
                           backgroundColor: `${phase.color}20`,
-                          borderColor: `${phase.color}40`,
+                          borderColor: `${phase.color}60`,
                           color: phase.color,
                         }}
                       >
@@ -260,22 +251,22 @@ const RoadmapSection = () => {
                       </span>
                     </div>
                     
-                    <p className="text-sm sm:text-lg text-[#d7d3d0] leading-relaxed mb-6">
+                    <p className="text-sm sm:text-lg text-[#E5E5E5] leading-relaxed mb-6">
                       {phase.description}
                     </p>
                   </div>
 
                   {/* Deliverables */}
                   <motion.div
-                    className="p-6 bg-gradient-to-br from-[#1c1917]/50 to-[#171412]/30 border border-[#44403c]/30 rounded-xl"
+                    className="p-6 bg-[#1A1A1A]/60 border border-[#2E2E2E] rounded-xl"
                     whileHover={{ 
-                      borderColor: `${phase.color}40`,
-                      backgroundColor: "rgba(28, 25, 23, 0.6)"
+                      borderColor: `${phase.color}`,
+                      backgroundColor: "#1A1A1A"
                     }}
                     transition={{ duration: 0.3 }}
                   >
-                    <h4 className="text-lg font-semibold text-[#ffffff] mb-4 flex items-center gap-2">
-                      <BiStats className="text-[#e7ac08]" />
+                    <h4 className="text-lg font-semibold text-[#FFFFFF] mb-4 flex items-center gap-2">
+                      <BiStats className="text-[#39FF14]" />
                       Key Deliverables
                     </h4>
                     
@@ -283,14 +274,18 @@ const RoadmapSection = () => {
                       {phase.deliverables.map((item, itemIndex) => (
                         <motion.div
                           key={itemIndex}
-                          className="flex items-center gap-3 p-3 bg-[#171412]/40 border border-[#44403c]/20 rounded-lg"
+                          className="flex items-center gap-3 p-3 bg-[#0D0D0D]/60 border border-[#2E2E2E] rounded-lg"
                           initial={{ opacity: 0, x: 20 }}
                           animate={isInView ? { opacity: 1, x: 0 } : {}}
                           transition={{ 
                             duration: 0.5, 
                             delay: 1.4 + phase.delay + itemIndex * 0.1 
                           }}
-                          whileHover={{ x: 5, backgroundColor: "rgba(28, 25, 23, 0.6)" }}
+                          whileHover={{ 
+                            x: 5, 
+                            backgroundColor: "#1A1A1A",
+                            borderColor: phase.color
+                          }}
                         >
                           <motion.div
                             className="w-2 h-2 rounded-full flex-shrink-0"
@@ -305,7 +300,7 @@ const RoadmapSection = () => {
                               delay: itemIndex * 0.3,
                             }}
                           />
-                          <span className="text-[#e7e5e4] text-sm leading-snug">
+                          <span className="text-[#FFFFFF] text-sm leading-snug">
                             {item}
                           </span>
                         </motion.div>
@@ -326,16 +321,16 @@ const RoadmapSection = () => {
           transition={{ duration: 0.8, delay: 2 }}
         >
           <a href='https://x.com/worldlibertyai' target='_blank'>
-          <motion.button
-            className="group px-8 py-4 bg-gradient-to-r from-[#e7ac08]/10 to-[#fdd949]/10 border border-[#e7ac08]/30 rounded-xl text-[#fdd949] font-medium hover:bg-gradient-to-r hover:from-[#e7ac08]/20 hover:to-[#fdd949]/20 hover:border-[#e7ac08]/50 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <span className="flex items-center gap-3">
-              Join Our Journey
-              <BsTwitterX className="text-lg transition-transform duration-300" />
-            </span>
-          </motion.button>
+            <motion.button
+              className="group px-8 py-4 bg-[#39FF14]/10 border border-[#39FF14]/40 rounded-xl text-[#39FF14] font-medium hover:bg-[#39FF14]/20 hover:border-[#39FF14] transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="flex items-center gap-3">
+                Join Our Journey
+                <BsTwitterX className="text-lg transition-transform duration-300 group-hover:scale-110" />
+              </span>
+            </motion.button>
           </a>
         </motion.div>
       </motion.div>
