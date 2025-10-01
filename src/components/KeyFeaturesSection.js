@@ -62,7 +62,7 @@ const KeyFeaturesSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative bg-[#000000] overflow-hidden py-20 lg:py-32"
+      className="relative bg-[#000000] overflow-hidden py-20 "
     >
       {/* Futuristic Background Elements */}
       <div className="absolute inset-0">
@@ -123,32 +123,6 @@ const KeyFeaturesSection = () => {
             }}
           />
         </svg>
-
-        {/* Floating cyber elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 rounded-full bg-[#39FF14]"
-              style={{
-                left: `${20 + i * 15}%`,
-                top: `${30 + i * 10}%`,
-                boxShadow: '0 0 10px rgba(57, 255, 20, 0.8)'
-              }}
-              animate={{
-                y: [0, -20, 0],
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                delay: i * 0.6,
-                ease: "easeInOut"
-              }}
-            />
-          ))}
-        </div>
       </div>
 
       <motion.div 
@@ -195,7 +169,7 @@ const KeyFeaturesSection = () => {
           >
             Key{' '}
             <span 
-              className="text-transparent bg-clip-text bg-gradient-to-r from-[#39FF14] to-[#B3FF66]"
+              className="text-[#39FF14]"
               style={{
                 textShadow: '0 0 30px rgba(57, 255, 20, 0.3)'
               }}
@@ -316,7 +290,7 @@ const KeyFeaturesSection = () => {
               {/* Connecting neon lines */}
               {index < features.length - 1 && (
                 <motion.div
-                  className="hidden lg:block absolute top-1/2 -right-4 w-8 h-[2px] rounded-full"
+                  className="hidden lg:block absolute top-1/2 -left-8 w-8 h-[2px] rounded-full"
                   style={{
                     background: `linear-gradient(90deg, ${feature.accentColor}60 0%, transparent 100%)`,
                     boxShadow: `0 0 10px ${feature.accentColor}40`
