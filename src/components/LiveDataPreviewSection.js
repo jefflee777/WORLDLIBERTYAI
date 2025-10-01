@@ -19,7 +19,6 @@ const LiveDataPreviewSection = () => {
   const [wlfiCoins, setWlfiCoins] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [whaleIndex, setWhaleIndex] = useState(0)
   
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -31,105 +30,106 @@ const LiveDataPreviewSection = () => {
   
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
 
-// Fetch real WLFI and USD1 coin data from CoinGecko
-useEffect(() => {
-  const fetchCoinData = async () => {
-    try {
-      setLoading(true)
+  // Fetch real WLFI and USD1 coin data from CoinGecko
+  useEffect(() => {
+    const fetchCoinData = async () => {
+      try {
+        setLoading(true)
 
-      // API call to get World Liberty Financial data
-      const wlfiRequest = fetch(
-        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=world-liberty-financial&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d'
-      ).then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch WLFI data')
-        }
-        return response.json()
-      })
-      
-      // API call to get USD1 data using the correct ID from the search results
-      const usd1Request = fetch(
-        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=usd1-wlfi&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d'
-      ).then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch USD1 data')
-        }
-        return response.json()
-      })
-      
-      // Use Promise.all to fetch both data sets concurrently
-      const [wlfiData, usd1Data] = await Promise.all([wlfiRequest, usd1Request])
-
-      // Combine the results into a single array
-      const combinedData = [...wlfiData, ...usd1Data];
-
-      setWlfiCoins(combinedData)
-      setError(null)
-    } catch (err) {
-      console.error('Error fetching coin data:', err)
-      setError(err.message)
-
-      // Fallback data for World Liberty Financial and USD1
-      const fallbackData = [
-        {
-          id: 'world-liberty-financial',
-          symbol: 'wlfi',
-          name: 'World Liberty Financial',
-          image: 'https://via.placeholder.com/64/e7ac08/171412?text=WLFI',
-          current_price: 0.0034,
-          price_change_percentage_24h: 12.45,
-          price_change_percentage_7d: 28.67,
-          market_cap: 3400000000,
-          total_volume: 125000000,
-          sparkline_in_7d: {
-            price: [0.0028, 0.0031, 0.0029, 0.0032, 0.0035, 0.0033, 0.0034]
+        // API call to get World Liberty Financial data
+        const wlfiRequest = fetch(
+          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=world-liberty-financial&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d'
+        ).then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch WLFI data')
           }
-        },
-        {
-          id: 'usd1-wlfi',
-          symbol: 'usd1',
-          name: 'USD1',
-          image: 'https://via.placeholder.com/64/2775CA/ffffff?text=USD1',
-          current_price: 1.00,
-          price_change_percentage_24h: 0.02,
-          price_change_percentage_7d: 0.01,
-          market_cap: 32000000000,
-          total_volume: 4200000000,
-          sparkline_in_7d: {
-            price: [0.999, 1.001, 1.000, 0.999, 1.001, 1.000, 1.000]
+          return response.json()
+        })
+        
+        // API call to get USD1 data
+        const usd1Request = fetch(
+          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=usd1-wlfi&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d'
+        ).then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch USD1 data')
           }
-        }
-      ]
-      setWlfiCoins(fallbackData)
-    } finally {
-      setLoading(false)
+          return response.json()
+        })
+        
+        // Use Promise.all to fetch both data sets concurrently
+        const [wlfiData, usd1Data] = await Promise.all([wlfiRequest, usd1Request])
+
+        // Combine the results into a single array
+        const combinedData = [...wlfiData, ...usd1Data];
+
+        setWlfiCoins(combinedData)
+        setError(null)
+      } catch (err) {
+        console.error('Error fetching coin data:', err)
+        setError(err.message)
+
+        // Fallback data for World Liberty Financial and USD1
+        const fallbackData = [
+          {
+            id: 'world-liberty-financial',
+            symbol: 'wlfi',
+            name: 'World Liberty Financial',
+            image: 'https://via.placeholder.com/64/39FF14/000000?text=WLFI',
+            current_price: 0.0034,
+            price_change_percentage_24h: 12.45,
+            price_change_percentage_7d: 28.67,
+            market_cap: 3400000000,
+            total_volume: 125000000,
+            sparkline_in_7d: {
+              price: [0.0028, 0.0031, 0.0029, 0.0032, 0.0035, 0.0033, 0.0034, 0.0036, 0.0038, 0.0040, 0.0042, 0.0039, 0.0037, 0.0041, 0.0043]
+            }
+          },
+          {
+            id: 'usd1-wlfi',
+            symbol: 'usd1',
+            name: 'USD1',
+            image: 'https://via.placeholder.com/64/00E0FF/000000?text=USD1',
+            current_price: 1.00,
+            price_change_percentage_24h: 0.02,
+            price_change_percentage_7d: 0.01,
+            market_cap: 32000000000,
+            total_volume: 4200000000,
+            sparkline_in_7d: {
+              price: [0.999, 1.001, 1.000, 0.999, 1.001, 1.000, 1.000, 0.998, 1.002, 1.001, 0.999, 1.000, 1.001, 0.999, 1.000]
+            }
+          }
+        ]
+        setWlfiCoins(fallbackData)
+      } finally {
+        setLoading(false)
+      }
     }
-  }
 
-  fetchCoinData()
-  
-  // Refresh data every 30 seconds
-  const interval = setInterval(fetchCoinData, 30000)
-  return () => clearInterval(interval)
-}, [])
+    fetchCoinData()
+    
+    // Refresh data every 30 seconds
+    const interval = setInterval(fetchCoinData, 30000)
+    return () => clearInterval(interval)
+  }, [])
 
-  // Generate dynamic chart points based on real price data
+  // Generate enhanced chart points for bigger, cleaner charts
   const generateChartPoints = (sparklineData) => {
     if (!sparklineData || !sparklineData.length) {
-      return [
-        { x: 10, y: 60 }, { x: 25, y: 45 }, { x: 40, y: 55 }, { x: 55, y: 35 },
-        { x: 70, y: 50 }, { x: 85, y: 25 }, { x: 100, y: 40 }, { x: 115, y: 20 },
-        { x: 130, y: 35 }, { x: 145, y: 15 }
-      ]
+      // Generate more points for smoother curve
+      return Array.from({ length: 20 }, (_, i) => ({
+        x: 20 + (i * 320 / 19),
+        y: 60 + Math.sin(i * 0.5) * 20 + Math.cos(i * 0.3) * 10
+      }))
     }
     
     const minPrice = Math.min(...sparklineData)
     const maxPrice = Math.max(...sparklineData)
     const range = maxPrice - minPrice || 1
     
+    // Create more chart points with better spacing for larger charts
     return sparklineData.map((price, index) => ({
-      x: 10 + (index * 135 / (sparklineData.length - 1)),
-      y: 70 - ((price - minPrice) / range * 50)
+      x: 20 + (index * 320 / (sparklineData.length - 1)),
+      y: 100 - ((price - minPrice) / range * 60)
     }))
   }
 
@@ -150,35 +150,34 @@ useEffect(() => {
       ref={sectionRef}
       className="relative py-24 overflow-hidden"
     >
-      {/* Enhanced WLFI Background */}
+      {/* Clean Futuristic Background */}
       <div 
         className="absolute inset-0"
         style={{
           background: `
-            linear-gradient(135deg, rgba(231, 172, 8, 0.15) 0%, rgba(231, 172, 8, 0.08) 25%, rgba(28, 25, 23, 0.95) 60%, rgba(23, 20, 18, 1) 100%),
-            radial-gradient(circle at 20% 30%, rgba(231, 172, 8, 0.1) 0%, transparent 50%),
-            linear-gradient(180deg, rgba(23, 20, 18, 0.9) 0%, rgba(23, 20, 18, 1) 100%)
+            linear-gradient(135deg, rgba(57, 255, 20, 0.05) 0%, rgba(13, 13, 13, 1) 25%, rgba(0, 0, 0, 1) 100%),
+            radial-gradient(circle at 20% 30%, rgba(57, 255, 20, 0.03) 0%, transparent 50%)
           `
         }}
       />
       
-      {/* Animated WLFI Particles */}
+      {/* Subtle Animated Particles */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(12)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-[#e7ac08]/30 rounded-full"
+            className="absolute w-1 h-1 bg-[#39FF14]/20 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             animate={{
-              y: [0, -50, 0],
-              opacity: [0, 1, 0],
-              scale: [0, 1.5, 0],
+              y: [0, -40, 0],
+              opacity: [0, 0.6, 0],
+              scale: [0, 1, 0],
             }}
             transition={{
-              duration: Math.random() * 3 + 4,
+              duration: Math.random() * 4 + 3,
               repeat: Infinity,
               delay: Math.random() * 2,
             }}
@@ -190,11 +189,11 @@ useEffect(() => {
         className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8"
         style={{ y, opacity }}
       >
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* Left Content */}
           <motion.div 
-            className="lg:col-span-5 space-y-8"
+            className="lg:col-span-4 space-y-8"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1, ease: "easeOut" }}
@@ -206,17 +205,17 @@ useEffect(() => {
                 animate={isInView ? { width: 80 } : { width: 0 }}
                 transition={{ duration: 1.2, delay: 0.3 }}
               >
-                <div className="h-[3px] bg-gradient-to-r from-[#e7ac08] to-[#fdd949] rounded-full" />
+                <div className="h-[3px] bg-gradient-to-r from-[#39FF14] to-[#B3FF66] rounded-full" />
               </motion.div>
               
               <motion.h2 
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight"
+                className="text-4xl sm:text-5xl lg:text-5xl font-bold leading-tight"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <span className="text-[#ffffff] block">Track WLFI</span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e7ac08] to-[#fdd949]">
+                <span className="text-[#FFFFFF] block">Track WLFI</span>
+                <span className="text-[#39FF14]">
                   Performance Live
                 </span>
               </motion.h2>
@@ -228,13 +227,13 @@ useEffect(() => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              <p className="text-xl lg:text-2xl text-[#d7d3d0] leading-relaxed">
+              <p className="text-xl text-[#E5E5E5] leading-relaxed">
                 Real-time intelligence for{' '}
-                <span className="text-[#fdd949] font-medium">World Liberty Financial & USD1</span> tokens.
+                <span className="text-[#39FF14] font-medium">World Liberty Financial & USD1</span> tokens.
               </p>
               
-              <p className="text-lg text-[#e7e5e4] leading-relaxed">
-                From whale movements to price predictions, stay ahead with live WLFI market intelligence.
+              <p className="text-lg text-[#AAAAAA] leading-relaxed">
+                From whale movements to price predictions, stay ahead with live market intelligence.
               </p>
             </motion.div>
 
@@ -244,161 +243,136 @@ useEffect(() => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.7 }}
             >
-              <div className="p-4 bg-[#1c1917]/40 border border-[#e7ac08]/30 rounded-lg">
+              <div className="p-4 bg-[#1A1A1A]/60 border border-[#2E2E2E] rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <FaEye className="text-[#e7ac08]" />
-                  <span className="text-sm text-[#aaa29d]">Monitoring</span>
+                  <FaEye className="text-[#39FF14]" />
+                  <span className="text-sm text-[#AAAAAA]">Monitoring</span>
                 </div>
-                <div className="text-2xl font-bold text-[#fdd949]">24/7</div>
+                <div className="text-2xl font-bold text-[#FFFFFF]">24/7</div>
               </div>
               
-              <div className="p-4 bg-[#1c1917]/40 border border-[#e7ac08]/30 rounded-lg">
+              <div className="p-4 bg-[#1A1A1A]/60 border border-[#2E2E2E] rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <FaBolt className="text-[#fdd949]" />
-                  <span className="text-sm text-[#aaa29d]">WLFI Tokens</span>
+                  <FaBolt className="text-[#39FF14]" />
+                  <span className="text-sm text-[#AAAAAA]">Tokens</span>
                 </div>
-                <div className="text-2xl font-bold text-[#e7ac08]">{wlfiCoins.length}</div>
+                <div className="text-2xl font-bold text-[#FFFFFF]">{wlfiCoins.length}</div>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Right Data Visualization */}
+          {/* Right Data Visualization - Larger Charts */}
           <motion.div 
-            className="lg:col-span-7 relative"
+            className="lg:col-span-8 relative"
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
           >
             <div className="relative">
               
-              {/* WLFI Coins Display */}
+              {/* Enhanced WLFI Coins Display */}
               <motion.div
-                className="relative overflow-hidden p-6 bg-gradient-to-br from-[#1c1917]/80 to-[#171412]/60 backdrop-blur-sm border border-[#e7ac08]/20 rounded-2xl mb-6"
+                className="relative overflow-hidden p-6 bg-[#0D0D0D]/90 backdrop-blur-sm border border-[#2E2E2E] rounded-2xl"
                 whileHover={{ 
-                  borderColor: "rgba(231, 172, 8, 0.4)",
-                  boxShadow: "0 20px 40px rgba(231, 172, 8, 0.1)"
+                  borderColor: "#39FF14",
                 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
-                    <FaGem className="text-[#e7ac08] text-xl" />
+                    <FaChartLine className="text-[#39FF14] text-xl" />
                     <div>
-                      <h3 className="text-lg font-semibold text-[#ffffff]">WLFIAI Ecosystem</h3>
+                      <h3 className="text-xl font-semibold text-[#FFFFFF]">Live Market Data</h3>
                       <div className="flex items-center gap-2">
                         <motion.div 
-                          className="w-2 h-2 bg-[#4ade80] rounded-full"
-                          animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
+                          className="w-2 h-2 bg-[#39FF14] rounded-full"
+                          animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
                           transition={{ duration: 2, repeat: Infinity }}
                         />
-                        <span className="text-[#4ade80] text-sm font-medium">Live Data</span>
+                        <span className="text-[#39FF14] text-sm font-medium">Real-time Updates</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {loading ? (
-                  <div className="flex items-center justify-center py-8">
+                  <div className="flex items-center justify-center py-12">
                     <motion.div 
-                      className="w-8 h-8 border-2 border-[#e7ac08]/30 border-t-[#e7ac08] rounded-full"
+                      className="w-8 h-8 border-2 border-[#2E2E2E] border-t-[#39FF14] rounded-full"
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     />
-                    <span className="ml-3 text-[#e7ac08]">Loading WLFI data...</span>
+                    <span className="ml-3 text-[#39FF14]">Loading market data...</span>
                   </div>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-8">
                     {wlfiCoins.map((coin, index) => {
                       const chartPoints = generateChartPoints(coin.sparkline_in_7d?.price)
                       
                       return (
                         <motion.div
                           key={coin.id}
-                          className="p-4 bg-[#171412]/40 border border-[#44403c]/20 rounded-xl"
+                          className="p-6 bg-[#1A1A1A]/80 border border-[#2E2E2E] rounded-xl"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          whileHover={{ borderColor: "rgba(231, 172, 8, 0.4)" }}
+                          transition={{ delay: index * 0.2 }}
+                          whileHover={{ borderColor: "#39FF14" }}
                         >
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-3">
+                          {/* Coin Header */}
+                          <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center gap-4">
                               <div className="relative">
                                 <img 
                                   src={coin.image} 
                                   alt={coin.name}
-                                  className="w-10 h-10 rounded-full border-2 border-[#e7ac08]/30"
+                                  className="w-12 h-12 rounded-full border-2 border-[#2E2E2E]"
                                   onError={(e) => {
-                                    e.target.src = `https://via.placeholder.com/40/e7ac08/171412?text=${coin.symbol.charAt(0).toUpperCase()}`
+                                    e.target.src = `https://via.placeholder.com/48/39FF14/000000?text=${coin.symbol.charAt(0).toUpperCase()}`
                                   }}
                                 />
                               </div>
                               <div>
-                                <h4 className="text-[#ffffff] font-bold flex items-center gap-2">
+                                <h4 className="text-[#FFFFFF] font-bold text-lg">
                                   {coin.name}
                                 </h4>
-                                <p className="text-[#aaa29d] text-sm">{coin.symbol.toUpperCase()}</p>
+                                <p className="text-[#AAAAAA] text-sm font-medium">{coin.symbol.toUpperCase()}</p>
                               </div>
                             </div>
                             
                             <div className="text-right">
-                              <div className="text-xl font-bold text-[#fdd949]">
+                              <motion.div 
+                                className="text-3xl font-bold text-[#39FF14]"
+                                key={coin.current_price}
+                                initial={{ scale: 1.1 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.3 }}
+                              >
                                 {formatPrice(coin.current_price)}
-                              </div>
+                              </motion.div>
                               {coin.price_change_percentage_24h !== null && (
-                                <div className={`flex items-center gap-1 text-sm ${
-                                  coin.price_change_percentage_24h >= 0 ? 'text-[#4ade80]' : 'text-[#f87171]'
+                                <div className={`flex items-center gap-2 text-sm font-medium justify-end ${
+                                  coin.price_change_percentage_24h >= 0 ? 'text-[#39FF14]' : 'text-[#FF4444]'
                                 }`}>
                                   {coin.price_change_percentage_24h >= 0 ? 
-                                    <BiTrendingUp /> : <BiTrendingDown />
+                                    <BiTrendingUp className="text-lg" /> : <BiTrendingDown className="text-lg" />
                                   }
                                   {Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
                                 </div>
                               )}
                             </div>
                           </div>
-
-                          {/* Mini Chart */}
-                          <div className="relative h-16 mb-3">
-                            <svg className="w-full h-full" viewBox="0 0 160 50">
-                              <defs>
-                                <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                                  <stop offset="0%" stopColor="rgba(231, 172, 8, 0.3)" />
-                                  <stop offset="100%" stopColor="rgba(231, 172, 8, 0.05)" />
-                                </linearGradient>
-                              </defs>
-                              
-                              <motion.path
-                                d={`M ${chartPoints.map(p => `${p.x},${p.y}`).join(' L ')}`}
-                                stroke="#e7ac08"
-                                strokeWidth="2"
-                                fill="none"
-                                initial={{ pathLength: 0 }}
-                                animate={{ pathLength: 1 }}
-                                transition={{ duration: 2, delay: 0.5 + index * 0.2 }}
-                              />
-                              
-                              <motion.path
-                                d={`M ${chartPoints[0].x},${chartPoints[0].y} L ${chartPoints.map(p => `${p.x},${p.y}`).join(' L ')} L ${chartPoints[chartPoints.length - 1].x},50 L ${chartPoints[0].x},50 Z`}
-                                fill={`url(#gradient-${index})`}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 1, delay: 1.5 + index * 0.2 }}
-                              />
-                            </svg>
-                          </div>
-
-                          {/* Coin Stats */}
-                          <div className="grid grid-cols-2 gap-4 text-xs">
-                            <div>
-                              <span className="text-[#aaa29d]">Market Cap</span>
-                              <div className="text-[#fafaf9] font-semibold">
-                                {coin.market_cap ? formatMarketCap(coin.market_cap) : 'Coming Soon'}
+                          {/* Enhanced Stats Grid */}
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="p-3 bg-[#000000]/40 border border-[#2E2E2E] rounded-lg">
+                              <div className="text-xs text-[#AAAAAA] mb-1">Market Cap</div>
+                              <div className="text-sm font-bold text-[#FFFFFF]">
+                                {coin.market_cap ? formatMarketCap(coin.market_cap) : 'N/A'}
                               </div>
                             </div>
-                            <div>
-                              <span className="text-[#aaa29d]">Volume 24h</span>
-                              <div className="text-[#fafaf9] font-semibold">
-                                {coin.total_volume ? formatMarketCap(coin.total_volume) : 'TBD'}
+                            <div className="p-3 bg-[#000000]/40 border border-[#2E2E2E] rounded-lg">
+                              <div className="text-xs text-[#AAAAAA] mb-1">Volume 24h</div>
+                              <div className="text-sm font-bold text-[#FFFFFF]">
+                                {coin.total_volume ? formatMarketCap(coin.total_volume) : 'N/A'}
                               </div>
                             </div>
                           </div>
