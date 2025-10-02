@@ -277,7 +277,7 @@ const HeroSection = () => {
                     width={700} 
                     height={700} 
                     quality={100} 
-                    className='scale-150'
+                    className='scale-125'
                     style={{
                       filter: 'drop-shadow(0 0 40px rgba(57, 255, 20, 0.3))'
                     }}
@@ -285,7 +285,7 @@ const HeroSection = () => {
                   
                   {/* Cyber Rings Around Globe */}
                   <motion.div
-                    className="absolute inset-0 rounded-full border-2 border-[#39FF14]/20"
+                    className="absolute hidden inset-0 rounded-full border-2 border-[#39FF14]/20"
                     animate={{
                       rotate: 360,
                       scale: [1, 1.05, 1],
@@ -301,7 +301,7 @@ const HeroSection = () => {
                   
                   {/* Inner Neon Ring */}
                   <motion.div
-                    className="absolute inset-12 rounded-full border border-[#39FF14]/40"
+                    className="absolute hidden inset-12 rounded-full border border-[#39FF14]/40"
                     animate={{
                       rotate: -360,
                       scale: [1, 1.03, 1],
@@ -314,29 +314,6 @@ const HeroSection = () => {
                       boxShadow: '0 0 20px rgba(57, 255, 20, 0.4)',
                     }}
                   />
-                  
-                  {/* Pulsing Data Points */}
-                  {[...Array(6)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute w-3 h-3 bg-[#39FF14] rounded-full"
-                      style={{
-                        left: `${50 + 35 * Math.cos((i * 2 * Math.PI) / 6)}%`,
-                        top: `${50 + 35 * Math.sin((i * 2 * Math.PI) / 6)}%`,
-                        boxShadow: '0 0 15px rgba(57, 255, 20, 0.8)',
-                      }}
-                      animate={{
-                        scale: [1, 1.5, 1],
-                        opacity: [0.6, 1, 0.6],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        delay: i * 0.3,
-                        ease: "easeInOut"
-                      }}
-                    />
-                  ))}
                 </div>
               </motion.div>
               
