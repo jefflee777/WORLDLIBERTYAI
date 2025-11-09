@@ -9,7 +9,6 @@ const HeroSection = () => {
   const globeRef = useRef(null)
   const containerRef = useRef(null)
   
-  // Scroll-based animations
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
