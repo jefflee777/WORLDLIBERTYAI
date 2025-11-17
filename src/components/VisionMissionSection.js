@@ -3,7 +3,6 @@
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { FaSearch, FaChartLine, FaBell, FaTelegram } from 'react-icons/fa'
-import { BiAnalyse } from 'react-icons/bi'
 import Image from 'next/image'
 
 const VisionMissionSection = () => {
