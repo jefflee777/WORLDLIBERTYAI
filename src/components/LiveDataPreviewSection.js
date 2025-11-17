@@ -7,7 +7,6 @@ import {
   FaChartLine
 } from 'react-icons/fa'
 import { BiTrendingUp, BiTrendingDown } from 'react-icons/bi'
-import Image from 'next/image'
 
 const LiveDataPreviewSection = () => {
   const sectionRef = useRef(null)
