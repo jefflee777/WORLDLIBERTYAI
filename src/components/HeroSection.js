@@ -10,7 +10,7 @@ const HeroSection = () => {
   const containerRef = useRef(null)
   
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: containerRef, 
     offset: ["start start", "end start"]
   })
   
@@ -99,8 +99,6 @@ const HeroSection = () => {
         style={{ opacity, scale, y }}
       >
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          
-          {/* Left Content */}
           <motion.div 
             className="text-center lg:text-left space-y-8 lg:space-y-10"
             initial={{ opacity: 0, x: -30 }}
