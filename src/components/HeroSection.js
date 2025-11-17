@@ -55,8 +55,6 @@ const HeroSection = () => {
             `
           }}
         />
-        
-        {/* Futuristic Grid Pattern */}
         <div 
           className="absolute inset-0 opacity-[0.03]"
           style={{
