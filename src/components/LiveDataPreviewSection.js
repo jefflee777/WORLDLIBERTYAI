@@ -2,14 +2,9 @@
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
 import { 
-  FaArrowUp, 
-  FaArrowDown, 
-  FaCircle, 
   FaEye,
   FaBolt,
-  FaChartLine,
-  FaStar,
-  FaGem
+  FaChartLine
 } from 'react-icons/fa'
 import { BiTrendingUp, BiTrendingDown } from 'react-icons/bi'
 import Image from 'next/image'
