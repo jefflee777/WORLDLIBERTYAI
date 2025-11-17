@@ -11,7 +11,7 @@ import {
   FaArrowRight
 } from 'react-icons/fa'
 import { BsTwitterX } from "react-icons/bs";
-import { BiGlobe, BiStats } from 'react-icons/bi'
+import { BiStats } from 'react-icons/bi'
 
 const RoadmapSection = () => {
   const sectionRef = useRef(null)
