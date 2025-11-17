@@ -6,10 +6,8 @@ import {
   FaBrain, 
   FaChartLine, 
   FaEye, 
-  FaTelegram,
-  FaArrowRight
+  FaTelegram
 } from 'react-icons/fa'
-import { BiTrendingUp } from 'react-icons/bi'
 import { BsTwitterX } from "react-icons/bs";
 
 const KeyFeaturesSection = () => {
