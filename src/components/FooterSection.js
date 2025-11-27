@@ -81,7 +81,7 @@ const Footer = () => {
           >
             {/* Logo */}
             <div className="flex items-center gap-4">
-              <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200'/>
+              <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200 ml-0 sm:ml-5'/>
             </div>
             
             {/* Tagline */}
