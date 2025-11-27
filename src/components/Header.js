@@ -73,7 +73,6 @@ const Navbar = () => {
     return () => document.removeEventListener('click', handleClickOutside)
   }, [isMobileMenuOpen])
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden'
@@ -216,20 +215,6 @@ const Navbar = () => {
                     )
                   })}
                 </div>
-
-                {/* CTA Button */}
-                {/* <motion.button
-                  className="px-4 py-2 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] text-[#000000] font-bold text-sm rounded-lg hover:shadow-lg transition-all duration-400"
-                  whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 8px 25px rgba(57, 255, 20, 0.4)"
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.3 }}
-                  onClick={() => handleLinkClick('#community')}
-                >
-                  Join Beta
-                </motion.button> */}
               </div>
 
               {/* Mobile: Hamburger Menu Button */}
