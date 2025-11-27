@@ -36,9 +36,7 @@ const socialLinks = [
 const navigationLinks = [
   { name: 'Home', href: '/' },
   { name: 'Web Agent', href: '/ai' },
-  { name: 'Tokenomics', href: '#tokenomics' },
-//   { name: 'Roadmap', href: '#roadmap' },
-//   { name: 'Community', href: '#community' }
+  { name: 'Tokenomics', href: '#tokenomics' }
 ]
 
 const Navbar = () => {
