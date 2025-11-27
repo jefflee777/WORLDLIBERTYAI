@@ -6,7 +6,6 @@ import {
   FaTelegram, 
   FaExternalLinkAlt
 } from 'react-icons/fa'
-import { BiNetworkChart } from 'react-icons/bi'
 import { BsTwitterX } from "react-icons/bs";
 import { RiBnbFill } from "react-icons/ri";
 import Image from 'next/image'
@@ -79,12 +78,9 @@ const Footer = () => {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {/* Logo */}
             <div className="flex items-center gap-4">
               <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200 ml-0 sm:ml-5'/>
             </div>
-            
-            {/* Tagline */}
             <motion.div
               className="space-y-4"
               initial={{ opacity: 0, y: 20 }}
