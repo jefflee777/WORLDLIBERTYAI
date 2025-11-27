@@ -5,7 +5,7 @@ import { useRef } from 'react'
 import { FaSearch, FaChartLine, FaBell, FaTelegram } from 'react-icons/fa'
 import Image from 'next/image'
 
-const VisionMissionSection = () => {
+const VisionMissionSection = () => {    
   const sectionRef = useRef(null)
   const leftRef = useRef(null)
   const rightRef = useRef(null)
@@ -13,17 +13,17 @@ const VisionMissionSection = () => {
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start 0.8", "end 0.2"]
-  })
+  })   
   
-  // Enhanced scroll animations
+  // Enhanced scroll animations                                   
   const leftY = useTransform(scrollYProgress, [0, 1], [100, -100])
   const rightY = useTransform(scrollYProgress, [0, 1], [-50, 50])
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])                   
   
   const leftInView = useInView(leftRef, { once: true, amount: 0.3 })
-  const rightInView = useInView(rightRef, { once: true, amount: 0.2 })
-
+  const rightInView = useInView(rightRef, { once: true, amount: 0.2 }) 
+         
   const missions = [
     {
       icon: FaSearch,
