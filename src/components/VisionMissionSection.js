@@ -60,7 +60,6 @@ const VisionMissionSection = () => {
       ref={sectionRef}
       className="relative overflow-hidden bg-[#000000]"
     >
-      {/* Futuristic black background with cyber grid */}
       <div className="absolute inset-0">
         <div 
           className="absolute inset-0 opacity-[0.03]"
@@ -102,8 +101,6 @@ const VisionMissionSection = () => {
               />
             </div>
           </motion.div>
-
-          {/* Right Content - 7 columns */}
           <motion.div 
             ref={rightRef}
             className="lg:col-span-7 space-y-10"
@@ -112,7 +109,6 @@ const VisionMissionSection = () => {
             animate={rightInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
           >
-            {/* Section Header */}
             <div className="space-y-6">
               <motion.div
                 initial={{ width: 0 }}
