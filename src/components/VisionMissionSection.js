@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { PiScan, PiTrendUp, PiBellRinging, PiTelegramLogo, PiCaretRight } from 'react-icons/pi';
 import Image from 'next/image';
 
@@ -122,10 +122,7 @@ const VisionMissionSection = () => {
                 We believe financial intelligence should be transparent and accessible. 
                 WLFI unlocks the hidden patterns of global markets using <span className="text-white">AI and blockchain consensus</span>.
               </p>
-              <div className="flex items-center gap-2 text-sm text-[#39FF14] font-medium cursor-pointer group w-fit">
-                Explore the Protocol 
-                <PiCaretRight className="group-hover:translate-x-1 transition-transform"/>
-              </div>
+    
             </motion.div>
           </div>
         </div>
