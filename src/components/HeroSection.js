@@ -1,45 +1,102 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate, animate } from 'framer-motion';
-import { PiRocketLaunchDuotone, PiArrowRight, PiChartLineUpBold, PiLockKeyDuotone, PiGlobeHemisphereWestDuotone, PiCpuDuotone, PiLightningDuotone } from 'react-icons/pi';
+import { 
+  motion, 
+  useScroll, 
+  useTransform, 
+  useSpring, 
+  useMotionValue, 
+  useMotionTemplate, 
+  animate,
+  useMotionValueEvent 
+} from 'framer-motion';
+import { 
+  PiRocketLaunchDuotone, 
+  PiArrowRight, 
+  PiChartLineUpBold, 
+  PiLockKeyDuotone, 
+  PiGlobeHemisphereWestDuotone, 
+  PiLightningDuotone,
+  PiCaretDownBold
+} from 'react-icons/pi';
 import Lenis from 'lenis';
 
-// --- UTILITY: COUNTING NUMBER HOOK ---
-const Counter = ({ from, to, prefix = '', suffix = '', delay = 0 }) => {
+// --- UTILITY: COUNTING NUMBER ---
+const Counter = ({ from, to, prefix = '', suffix = '', decimals = 0 }) => {
   const nodeRef = useRef();
 
   useEffect(() => {
     const node = nodeRef.current;
     if (!node) return;
 
-    // Wait for delay then animate
     const controls = animate(from, to, {
       duration: 2.5,
-      delay: delay,
-      ease: [0.16, 1, 0.3, 1], // Expo out for "snap" feel
+      delay: 0.5,
+      ease: [0.25, 1, 0.5, 1], // Soft expo out
       onUpdate(value) {
-        node.textContent = `${prefix}${value.toLocaleString(undefined, { maximumFractionDigits: 0 })}${suffix}`;
+        node.textContent = `${prefix}${value.toLocaleString(undefined, { 
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals 
+        })}${suffix}`;
       },
     });
-
     return () => controls.stop();
-  }, [from, to, prefix, suffix, delay]);
+  }, [from, to, prefix, suffix, decimals]);
 
   return <span ref={nodeRef} />;
 };
 
-// --- COMPONENT: HERO SECTION ---
+// --- COMPONENT: MAGNETIC BUTTON ---
+// A micro-interaction wrapper that pulls the button toward the cursor
+const MagneticWrapper = ({ children, strength = 0.5 }) => {
+  const ref = useRef(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    // Calculate distance from center and apply strength
+    x.set((clientX - centerX) * strength);
+    y.set((clientY - centerY) * strength);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  // Spring physics for smooth return
+  const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: springX, y: springY }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// --- MAIN COMPONENT: HERO SECTION ---
 const HeroSection = () => {
   const containerRef = useRef(null);
-  const [isHovering, setIsHovering] = useState(false);
 
-  // 1. Setup Smooth Scroll (Lenis)
+  // 1. Initialize Smooth Scroll
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
+      gestureOrientation: 'vertical',
       smoothWheel: true,
     });
     function raf(time) {
@@ -50,7 +107,13 @@ const HeroSection = () => {
     return () => lenis.destroy();
   }, []);
 
-  // 2. Mouse Spotlight Logic
+  // 2. Parallax & Scroll Transforms
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
+  const yBackground = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const opacityContent = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scaleContent = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+
+  // 3. Mouse Spotlight for Grid
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -60,218 +123,226 @@ const HeroSection = () => {
     mouseY.set(clientY - top);
   };
 
-  const backgroundGradient = useMotionTemplate`radial-gradient(
-    600px circle at ${mouseX}px ${mouseY}px,
-    rgba(57, 255, 20, 0.06),
+  const spotlightBg = useMotionTemplate`radial-gradient(
+    500px circle at ${mouseX}px ${mouseY}px,
+    rgba(57, 255, 20, 0.08),
     transparent 80%
   )`;
-
-  // 3. Parallax Transforms
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
-  const smoothY = useSpring(scrollYProgress, { mass: 0.1, stiffness: 100, damping: 20 });
-  
-  const yContent = useTransform(smoothY, [0, 1], [0, -50]);
-  const opacityContent = useTransform(smoothY, [0, 0.5], [1, 0]);
-  const scaleHUD = useTransform(smoothY, [0, 1], [1, 1.1]);
 
   return (
     <section 
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505] selection:bg-[#39FF14] selection:text-black"
+      className="relative min-h-[110vh] flex flex-col items-center justify-center overflow-hidden bg-[#050505] selection:bg-[#39FF14] selection:text-black"
     >
       
-      {/* =========================================================
-          BACKGROUND LAYER (Grid + Spotlight)
-      ========================================================= */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* Dynamic Spotlight */}
-        <motion.div
-          className="absolute inset-0 transition-opacity duration-300"
-          style={{ background: backgroundGradient }}
-        />
-        
-        {/* Architectural Grid */}
-        <div 
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px)
-            `,
-            backgroundSize: '64px 64px',
-            maskImage: 'radial-gradient(circle at center, black 0%, transparent 80%)'
-          }}
-        />
+      {/* =========================================
+          BACKGROUND LAYERS
+      ========================================= */}
+      
+      {/* 1. Grain Texture (Adds cinematic feel) */}
+      <div className="absolute inset-0 z-20 pointer-events-none opacity-[0.03] mix-blend-overlay" 
+           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+      />
 
-        {/* Ambient Top Glow */}
-        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[60%] h-[400px] bg-[#39FF14] opacity-[0.08] blur-[120px] rounded-full" />
-      </div>
-
-      {/* =========================================================
-          CONTENT LAYER
-      ========================================================= */}
+      {/* 2. Architectural Grid with Mouse Spotlight */}
       <motion.div 
-        className="relative z-10 container mx-auto px-6 py-24 flex flex-col items-center text-center"
-        style={{ y: yContent, opacity: opacityContent }}
+        className="absolute inset-0 z-0"
+        style={{ y: yBackground }}
+      >
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+        {/* Spotlight Overlay */}
+        <motion.div 
+          className="absolute inset-0 transition-opacity duration-500"
+          style={{ background: spotlightBg }}
+        />
+      </motion.div>
+
+      {/* 3. Top Glow */}
+      <div className="absolute top-[-20%] left-0 right-0 h-[500px] bg-[#39FF14] opacity-[0.06] blur-[150px] rounded-full pointer-events-none" />
+
+
+      {/* =========================================
+          MAIN CONTENT
+      ========================================= */}
+      <motion.div 
+        className="relative z-30 container mx-auto px-6 flex flex-col items-center text-center pt-20"
+        style={{ opacity: opacityContent, scale: scaleContent }}
       >
         
-        {/* --- 1. System Badge --- */}
+        {/* --- Badge --- */}
         <motion.div 
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mb-8 group cursor-default"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/5 bg-white/[0.02] backdrop-blur-sm transition-colors hover:border-[#39FF14]/30 hover:bg-[#39FF14]/5">
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/5 bg-white/5 backdrop-blur-md">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#39FF14] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#39FF14]"></span>
             </span>
-            <span className="text-[11px] font-mono uppercase tracking-widest text-[#888] group-hover:text-[#39FF14] transition-colors">
-              Mainnet Online
+            <span className="text-xs font-medium tracking-wide text-white/80">
+              Live on Mainnet
             </span>
           </div>
         </motion.div>
 
-        {/* --- 2. Cinematic Headline --- */}
-        <div className="mb-8 max-w-5xl mx-auto overflow-hidden">
-          <motion.h1 
-            className="text-4xl md:text-7xl lg:text-8xl font-medium tracking-tight text-white leading-[1.05]"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          >
-            The Architecture of 
-            <span className="text-transparent  sm:pl-4 pl-2 bg-clip-text bg-gradient-to-b from-white via-white to-white/40">
-              On-Chain Alpha
-            </span>
-          </motion.h1>
+        {/* --- Headline (Masked Animation) --- */}
+        <div className="mb-6 max-w-5xl mx-auto">
+          <div className="overflow-hidden">
+            <motion.h1 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl md:text-7xl lg:text-9xl font-medium tracking-tighter text-white leading-[0.95]"
+            >
+              Liquidity.
+            </motion.h1>
+          </div>
+          <div className="overflow-hidden flex justify-center gap-2 md:gap-6 flex-wrap">
+             <motion.h1 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl md:text-7xl lg:text-9xl font-medium tracking-tighter text-[#555] leading-[0.95]"
+            >
+              Without
+            </motion.h1>
+            <motion.h1 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl md:text-7xl lg:text-9xl font-medium tracking-tighter text-white leading-[0.95]"
+            >
+              Limits.
+            </motion.h1>
+          </div>
         </div>
 
-        {/* --- 3. Refined Subtext --- */}
+        {/* --- Subtext --- */}
         <motion.p 
-          className="max-w-xl mx-auto text-sm sm:text-lg text-balance text-[#888] font-light leading-relaxed mb-12"
+          className="max-w-xl mx-auto text-base sm:text-lg text-white/60 font-light leading-relaxed mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          transition={{ duration: 1, delay: 0.4 }}
         >
-          Execute institutional-grade trades with <span className="text-[#39FF14]">zero latency</span>. 
-          The first decentralized order book powered by predictive liquidity engines.
+          Institutional-grade trading for everyone. The first decentralized 
+          exchange with <span className="text-[#39FF14]">zero latency</span> and deep liquidity.
         </motion.p>
 
-        {/* --- 4. CTA Buttons --- */}
+        {/* --- Buttons (Magnetic) --- */}
         <motion.div 
-          className="flex flex-col sm:flex-row items-center gap-6 mb-24"
+          className="flex flex-col sm:flex-row items-center gap-4 mb-20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 1, delay: 0.5 }}
         >
-          <a href="#" className="relative group">
-            <div className="absolute inset-0 bg-[#39FF14] rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
-            <button className="relative px-8 py-4 bg-[#0F0F0F] text-white rounded-full leading-none overflow-hidden border border-[#39FF14]/20 hover:border-[#39FF14]/50 transition-all shadow-xl flex items-center gap-3">
-              <span className="font-semibold tracking-wide">Launch App</span>
-              <PiRocketLaunchDuotone className="text-[#39FF14] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </button>
-          </a>
+          <MagneticWrapper>
+            <a href="#" className="relative group block">
+              <div className="absolute inset-0 bg-[#39FF14] rounded-full blur-[10px] opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+              <button className="relative px-8 py-4 bg-white text-black rounded-full overflow-hidden flex items-center gap-2 transition-transform active:scale-95">
+                <span className="font-bold tracking-tight text-sm uppercase">Launch Terminal</span>
+                <PiRocketLaunchDuotone className="text-black group-hover:rotate-45 transition-transform duration-300" size={18} />
+              </button>
+            </a>
+          </MagneticWrapper>
 
-          <a href="#" className="group flex items-center gap-2 text-[#666] hover:text-white transition-colors text-sm font-medium tracking-wide">
-            View Documentation
-            <PiArrowRight className="group-hover:translate-x-1 transition-transform" />
-          </a>
+          <MagneticWrapper strength={0.2}>
+            <a href="#" className="px-8 py-4 rounded-full border border-white/10 text-white hover:bg-white/5 transition-colors flex items-center gap-2 group">
+              <span className="font-medium tracking-tight text-sm uppercase">Read Docs</span>
+              <PiArrowRight className="text-white/50 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </MagneticWrapper>
         </motion.div>
 
-        {/* --- 5. The "System HUD" (Replaces Image) --- */}
+        {/* --- Stats HUD --- */}
         <motion.div 
-          className="w-full max-w-5xl mx-auto perspective-1000"
-          style={{ scale: scaleHUD }}
-          initial={{ opacity: 0, rotateX: 20, y: 50 }}
-          animate={{ opacity: 1, rotateX: 0, y: 0 }}
-          transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full max-w-5xl"
+          initial={{ opacity: 0, y: 40, rotateX: 10 }}
+          animate={{ opacity: 1, y: 0, rotateX: 0 }}
+          transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ perspective: '1000px' }}
         >
-          {/* Glass Panel */}
-          <div className="relative rounded-2xl border border-white/10 bg-[#080808]/80 backdrop-blur-2xl overflow-hidden shadow-2xl">
+          <div className="relative bg-[#0A0A0A]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-1 shadow-2xl overflow-hidden">
             
-            {/* Top Scanning Line */}
-            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#39FF14] to-transparent opacity-50">
-              <motion.div 
-                className="absolute inset-0 bg-[#39FF14] blur-[2px]" 
-                animate={{ x: ['-100%', '100%'] }} 
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              />
-            </div>
-
-            {/* Content Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/5">
+            {/* HUD Top Shine */}
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#39FF14]/50 to-transparent" />
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/5">
               
-              <HUDItem 
-                icon={PiLockKeyDuotone} 
-                label="TVL" 
-                value={<Counter from={0} to={489542639} prefix="$" />} 
-                trend="+12.4%"
+              <StatCard 
+                label="Total Volume"
+                value={<Counter from={0} to={842} prefix="$" suffix="M" decimals={0} />}
+                trend="+12%"
+                icon={PiChartLineUpBold}
               />
-              
-              <HUDItem 
-                icon={PiChartLineUpBold} 
-                label="24h Volume" 
-                value={<Counter from={0} to={124000000} prefix="$" />} 
-                trend="+5.2%"
-              />
-              
-              <HUDItem 
-                icon={PiGlobeHemisphereWestDuotone} 
-                label="Active Users" 
-                value={<Counter from={0} to={89240} />} 
-                sub="Global"
-              />
-              
-              <HUDItem 
-                icon={PiLightningDuotone} 
-                label="Latency" 
-                value="< 400ms" 
-                sub="Real-time"
+              <StatCard 
+                label="Trades / Sec"
+                value={<Counter from={0} to={12500} />}
+                sub="Lightning Fast"
+                icon={PiLightningDuotone}
                 highlight
+              />
+              <StatCard 
+                label="Total Locked"
+                value={<Counter from={0} to={245} prefix="$" suffix="M" />}
+                trend="+4.5%"
+                icon={PiLockKeyDuotone}
+              />
+              <StatCard 
+                label="Active Wallets"
+                value={<Counter from={0} to={89} suffix="K" />}
+                sub="Global"
+                icon={PiGlobeHemisphereWestDuotone}
               />
 
             </div>
           </div>
           
-          {/* Reflection / Floor Glow */}
-          <div className="absolute -bottom-10 left-10 right-10 h-10 bg-[#39FF14] blur-[80px] opacity-10 rounded-full" />
+          {/* Scroll Indicator */}
+          <motion.div 
+            className="mt-16 text-white/20 flex flex-col items-center gap-2"
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <span className="text-[10px] uppercase tracking-widest">Scroll to Explore</span>
+            <PiCaretDownBold />
+          </motion.div>
+
         </motion.div>
 
       </motion.div>
-
     </section>
   );
 };
 
-// --- SUB-COMPONENT: HUD ITEM ---
-const HUDItem = ({ icon: Icon, label, value, trend, sub, highlight }) => (
-  <div className="relative group p-8 flex flex-col gap-2 hover:bg-white/[0.02] transition-colors cursor-default">
-    {/* Hover Glow */}
-    <div className="absolute inset-0 bg-gradient-to-b from-[#39FF14]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-    
-    <div className="flex items-center justify-between mb-2">
-      <div className="flex items-center gap-2 text-[#555] group-hover:text-[#888] transition-colors text-xs font-mono uppercase tracking-widest">
-        <Icon className={highlight ? "text-[#39FF14]" : ""} size={16} />
-        {label}
+// --- SUB-COMPONENT: STAT CARD ---
+const StatCard = ({ label, value, trend, sub, icon: Icon, highlight = false }) => {
+  return (
+    <div className="relative bg-[#050505] p-6 group hover:bg-[#080808] transition-colors duration-500">
+      {/* Scanning Line Effect on Hover */}
+      <div className="absolute top-0 bottom-0 left-0 w-[2px] bg-[#39FF14] opacity-0 group-hover:opacity-100 transition-opacity h-full shadow-[0_0_10px_#39FF14]" />
+      
+      <div className="flex items-center justify-between mb-4">
+        <Icon className={`text-xl ${highlight ? 'text-[#39FF14]' : 'text-white/40 group-hover:text-white transition-colors'}`} />
+        {(trend || sub) && (
+          <div className={`text-[10px] font-bold px-2 py-1 rounded-full ${trend ? 'text-[#39FF14] bg-[#39FF14]/10' : 'text-white/30 bg-white/5'}`}>
+            {trend || sub}
+          </div>
+        )}
       </div>
-      {(trend || sub) && (
-        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-          trend 
-            ? "bg-[#39FF14]/10 text-[#39FF14]" 
-            : "bg-white/5 text-[#666]"
-        }`}>
-          {trend || sub}
-        </span>
-      )}
+
+      <div className="space-y-1">
+        <div className={`text-3xl font-medium tracking-tight ${highlight ? 'text-[#39FF14] drop-shadow-[0_0_8px_rgba(57,255,20,0.3)]' : 'text-white'}`}>
+          {value}
+        </div>
+        <div className="text-xs text-white/40 uppercase tracking-wider font-medium">
+          {label}
+        </div>
+      </div>
     </div>
-    
-    <div className={`text-2xl md:text-3xl font-light tracking-tight ${highlight ? "text-[#39FF14]" : "text-white"}`}>
-      {value}
-    </div>
-  </div>
-);
+  );
+};
 
 export default HeroSection;
