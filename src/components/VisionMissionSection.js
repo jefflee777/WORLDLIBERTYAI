@@ -77,7 +77,7 @@ const VisionMissionSection = () => {
               <div className="relative aspect-square sm:aspect-[4/3] w-full bg-[#111]">
                  {/* Placeholder for your actual image source */}
                  <Image 
-                  src='/ourmission.png' 
+                  src='/mission/4.png' 
                   alt='Platform Interface' 
                   fill
                   className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 group-hover:scale-105"
