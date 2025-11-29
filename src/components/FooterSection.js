@@ -5,9 +5,6 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'fram
 import { 
   PiTelegramLogoDuotone, 
   PiXLogoBold, 
-  PiArrowUpRightBold,
-  PiPaperPlaneRightFill,
-  PiLightningFill
 } from 'react-icons/pi'
 import { SiBinance } from "react-icons/si";
 import Image from 'next/image'
@@ -90,9 +87,7 @@ const Footer = () => {
             <div>
               <div className="flex items-center gap-3 mb-6">
                  {/* Replace with your Image Logo if needed */}
-                 <div className="w-10 h-10 bg-[#39FF14] rounded-lg flex items-center justify-center text-black font-bold text-xl">
-                   W
-                 </div>
+                 <Image src='/navlogo.png' alt='logo' width={100} height={50}/>
                  <span className="text-2xl font-medium text-white tracking-tight">World Liberty AI</span>
               </div>
               <p className="text-[#888] text-lg leading-relaxed max-w-md">
