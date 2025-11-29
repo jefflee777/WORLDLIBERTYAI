@@ -12,7 +12,7 @@ import Image from 'next/image'
 
 const Footer = () => {
   const footerRef = useRef(null)
-  const isInView = useInView(footerRef, { once: true, amount: 0.3 })
+  const isInView = useInView(footerRef, { once: true, amoun: 0.3 })
 
   const quickLinks = [
     { label: "Web Agent", href: "/ai" },
