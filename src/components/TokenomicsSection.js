@@ -1,410 +1,364 @@
 'use client'
 
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
-import { PieChart } from 'react-minimal-pie-chart'
 import { 
   FaKey, 
   FaBolt, 
   FaGift,
   FaChartPie,
   FaCoins,
-  FaUsers
+  FaUsers,
+  FaRocket,
+  FaLock,
+  FaHandHoldingHeart
 } from 'react-icons/fa'
-import { BiTrendingUp } from 'react-icons/bi'
 
 const TokenomicsSection = () => {
   const sectionRef = useRef(null)
-  const chartRef = useRef(null)
-  const [selectedSegment, setSelectedSegment] = useState(null)
-  const [hovered, setHovered] = useState(null)
-  
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 0.8", "end 0.2"]
-  })
-  
-  const y = useTransform(scrollYProgress, [0, 1], [30, -30])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
-  
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
+  const [activeIndex, setActiveIndex] = useState(null)
 
-  // Updated tokenomics data with new color scheme
+  // --- DATA CONFIGURATION ---
   const tokenomicsData = [
     { 
-      title: 'Data Rewards', 
+      title: 'Data Mining Rewards', 
       value: 40, 
-      color: '#39FF14',
-      description: 'Incentivize community data verification and contribution',
-      icon: FaGift
+      color: '#39FF14', 
+      icon: FaGift, 
+      desc: 'Incentivized community nodes & validation',
+      details: '40% allocated to reward node operators and data validators over a 5-year halving schedule.'
     },
     { 
-      title: 'Ecosystem & Growth', 
+      title: 'Ecosystem Growth', 
       value: 25, 
-      color: '#B3FF66',
-      description: 'Platform development and strategic partnerships',
-      icon: BiTrendingUp
+      color: '#00E0FF', 
+      icon: FaRocket, 
+      desc: 'Partnerships, Grants & Development',
+      details: 'Funds for strategic partnerships, developer grants, and expanding the WLFI protocol.'
     },
     { 
-      title: 'Team & Advisors', 
+      title: 'Core Team', 
       value: 15, 
-      color: '#00E0FF',
-      description: 'Core team and advisor allocations with vesting',
-      icon: FaUsers
+      color: '#FFFFFF', 
+      icon: FaUsers, 
+      desc: 'Founders & Contributors (Vested)',
+      details: '12-month cliff followed by linear vesting over 36 months to ensure long-term alignment.'
     },
     { 
-      title: 'Liquidity & Reserve', 
+      title: 'Liquidity Reserves', 
       value: 10, 
-      color: '#AAAAAA',
-      description: 'Market stability and emergency reserves',
-      icon: FaCoins
+      color: '#B3FF66', 
+      icon: FaCoins, 
+      desc: 'CEX/DEX Market Making',
+      details: 'Provided to market makers to ensure deep liquidity and low slippage on all pairs.'
     },
     { 
-      title: 'Marketing', 
+      title: 'Marketing & Treasury', 
       value: 10, 
-      color: '#2E2E2E',
-      description: 'Community building and user acquisition',
-      icon: FaChartPie
+      color: '#444444', 
+      icon: FaChartPie, 
+      desc: 'Global Awareness & Operations',
+      details: 'Used for global campaigns, exchange listings, and operational costs.'
     },
   ]
 
-  const utilityFeatures = [
-    {
-      icon: FaKey,
-      title: "Access AI reports",
-      description: "Unlock premium market intelligence and whale tracking reports"
-    },
-    {
-      icon: FaBolt,
-      title: "Advanced transaction analysis",
-      description: "Pay for real-time pattern recognition and anomaly detection"
-    },
-    {
-      icon: FaGift,
-      title: "Earn verification rewards",
-      description: "Get WLFIAI tokens for validating transaction data and insights"
-    }
-  ]
-
-  const formatLabel = ({ dataEntry }) => {
-    return hovered === dataEntry.title ? `${dataEntry.value}%` : ''
-  }
+  const totalAllocation = tokenomicsData.reduce((acc, item) => acc + item.value, 0)
 
   return (
     <section 
-      id='tokenomics'
       ref={sectionRef}
-      className="relative py-10 bg-[#000000] overflow-hidden"
+      className="relative py-24 bg-[#050505] overflow-hidden min-h-screen flex items-center"
     >
-      {/* Background with Neon Green Highlights */}
-      <div className="absolute inset-0">
+      {/* --- Background FX --- */}
+      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" 
+           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+      />
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#39FF14] opacity-[0.03] blur-[150px] rounded-full pointer-events-none" />
+
+      <div className="relative z-10 container mx-auto px-6">
         
-        {/* Animated Chart Pattern Background */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.02]" viewBox="0 0 1000 1000">
-          <defs>
-            <pattern id="chart-pattern" width="150" height="150" patternUnits="userSpaceOnUse">
-              <circle cx="75" cy="75" r="30" fill="none" stroke="#39FF14" strokeWidth="1" opacity="0.4"/>
-              <circle cx="75" cy="75" r="15" fill="none" stroke="#B3FF66" strokeWidth="1" opacity="0.2"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#chart-pattern)" />
-          
-          {/* Rotating elements */}
-          <motion.g
-            animate={{ rotate: 360 }}
-            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-            style={{ transformOrigin: "500px 500px" }}
-          >
-            {[0, 72, 144, 216, 288].map((angle, i) => (
-              <motion.line
-                key={i}
-                x1="500"
-                y1="400"
-                x2="500"
-                y2="350"
-                stroke="rgba(57, 255, 20, 0.1)"
-                strokeWidth="2"
-                transform={`rotate(${angle} 500 500)`}
-                animate={{
-                  strokeDasharray: ["0,10", "5,5", "0,10"],
-                  opacity: [0.1, 0.2, 0.1],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                }}
-              />
-            ))}
-          </motion.g>
-        </svg>
-      </div>
-
-      <motion.div 
-        className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8"
-        style={{ y, opacity }}
-      >
-        {/* Section Header */}
-        <motion.div
-          className="text-center mb-16 lg:mb-20"
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-          <motion.div
-            className="flex justify-center mb-6"
-            initial={{ width: 0 }}
-            animate={isInView ? { width: 100 } : { width: 0 }}
-            transition={{ duration: 1.2, delay: 0.3 }}
-          >
-            <div className="h-[3px] bg-gradient-to-r from-transparent via-[#39FF14] to-transparent rounded-full" />
-          </motion.div>
-          
-          <motion.h2 
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#FFFFFF] leading-tight mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#39FF14] to-[#B3FF66]">
-              WLFIAI
-            </span>{' '}
-            Tokenomics
-          </motion.h2>
-          
-          <motion.p
-            className="text-xl lg:text-2xl text-[#E5E5E5] text-balance max-w-3xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            Fueling the ecosystem through{' '}
-            <span className="text-[#39FF14] font-medium">strategic token allocation</span> and{' '}
-            <span className="text-[#39FF14] font-medium">community incentives</span>.
-          </motion.p>
-        </motion.div>
-
-        {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Interactive Pie Chart */}
-          <motion.div 
-            className="lg:col-span-7 flex justify-center"
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-          >
-            <div className="relative w-full max-w-lg">
-              {/* Chart Container */}
-              <motion.div
-                ref={chartRef}
-                className="relative p-8 bg-[#0D0D0D]/80 backdrop-blur-sm border border-[#2E2E2E] rounded-3xl"
-                whileHover={{ 
-                  borderColor: "#39FF14",
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Chart */}
-                <motion.div
-                  className="w-full aspect-square"
-                  initial={{ scale: 0, rotate: -90 }}
-                  animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -90 }}
-                  transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
-                >
-                  <PieChart
-                    data={tokenomicsData}
-                    animate={isInView}
-                    animationDuration={1500}
-                    animationEasing="easeOutCubic"
-                    label={formatLabel}
-                    labelStyle={{
-                      fontSize: '6px',
-                      fontWeight: 'bold',
-                      fill: '#FFFFFF',
-                      fontFamily: 'system-ui',
-                    }}
-                    labelPosition={85}
-                    radius={45}
-                    lineWidth={25}
-                    paddingAngle={2}
-                    segmentsShift={(index) => (selectedSegment === index ? 8 : hovered === tokenomicsData[index]?.title ? 4 : 0)}
-                    segmentsStyle={(index) => ({
-                      cursor: 'pointer',
-                      filter: hovered === tokenomicsData[index]?.title ? 'brightness(1.2)' : 'brightness(1)',
-                      transition: 'all 0.3s ease',
-                    })}
-                    onMouseOver={(_, index) => {
-                      setHovered(tokenomicsData[index]?.title)
-                    }}
-                    onMouseOut={() => {
-                      setHovered(null)
-                    }}
-                    onClick={(_, index) => {
-                      setSelectedSegment(selectedSegment === index ? null : index)
-                    }}
-                  />
-                </motion.div>
-                
-                {/* Center Label */}
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 0.8, delay: 1.2 }}
-                >
-                  <div className="text-center">
-                    <div className="text-3xl lg:text-4xl font-bold text-[#39FF14] mb-2">WLFIAI</div>
-                    <div className="text-sm text-[#AAAAAA]">Token Distribution</div>
-                  </div>
-                </motion.div>
-              </motion.div>
-              
-              {/* Chart Legend */}
-              <motion.div
-                className="mt-8 space-y-4 grid grid-cols-2 gap-2"
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 1 }}
-              >
-                {tokenomicsData.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    className={`group flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 cursor-pointer ${
-                      selectedSegment === index 
-                        ? 'border-[#39FF14] bg-[#1A1A1A]/80' 
-                        : hovered === item.title
-                        ? 'border-[#39FF14]/60 bg-[#1A1A1A]/60'
-                        : 'border-[#2E2E2E] bg-[#1A1A1A]/40'
-                    }`}
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setSelectedSegment(selectedSegment === index ? null : index)}
-                    onMouseEnter={() => setHovered(item.title)}
-                    onMouseLeave={() => setHovered(null)}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3">
-                        <item.icon className="text-[#39FF14] text-sm" />
-                        <h4 className="font-semibold text-[#FFFFFF] group-hover:text-[#39FF14] transition-colors">
-                          {item.title}
-                        </h4>
-                        <span className="font-bold text-[#39FF14] text-lg ml-auto">
-                          {item.value}%
-                        </span>
-                      </div>
-                      {selectedSegment === index && (
-                        <motion.p 
-                          className="text-sm text-[#AAAAAA] mt-2 leading-relaxed"
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          {item.description}
-                        </motion.p>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Utility Features */}
-          <motion.div 
-            className="lg:col-span-5 space-y-8"
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
-          >
-            <div className="space-y-6">
-              <motion.h3 
-                className="text-2xl lg:text-3xl font-bold text-[#FFFFFF] flex items-center gap-3"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.8 }}
-              >
-                <div className="w-1 h-8 bg-gradient-to-b from-[#39FF14] to-[#B3FF66] rounded-full" />
-                Token Utility
-              </motion.h3>
-              
-              <motion.p
-                className="text-lg text-[#E5E5E5] leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.9 }}
-              >
-                WLFIAI tokens power the entire ecosystem, enabling access to premium features and rewarding community participation.
-              </motion.p>
-            </div>
-
-            <div className="space-y-6">
-              {utilityFeatures.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  className="group flex items-start gap-4 p-6 bg-[#1A1A1A]/60 border border-[#2E2E2E] rounded-2xl hover:border-[#39FF14] hover:bg-[#1A1A1A]/80 transition-all duration-300"
-                  whileHover={{ 
-                    scale: 1.02,
-                  }}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 1 + index * 0.1 }}
-                >
-                  <motion.div
-                    className="w-12 h-12 bg-gradient-to-br from-[#39FF14] to-[#B3FF66] rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
-                    whileHover={{ rotate: 5 }}
-                  >
-                    <feature.icon className="text-xl text-[#000000]" />
-                  </motion.div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-xl font-bold text-[#FFFFFF] mb-2 group-hover:text-[#39FF14] transition-colors duration-300">
-                      {feature.title}
-                    </h4>
-                    <p className="text-[#AAAAAA] leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Total Supply Info */}
+        {/* --- Header --- */}
+        <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20 border-b border-white/5 pb-8">
+          <div className="max-w-2xl">
             <motion.div
-              className="p-6 bg-[#39FF14]/10 border border-[#39FF14]/30 rounded-2xl"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 1.3 }}
-              whileHover={{ 
-                borderColor: "#39FF14",
-                backgroundColor: "rgba(57, 255, 20, 0.15)"
-              }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm"
             >
-              <div className="flex items-center gap-4">
-                <motion.div
-                  className="w-16 h-16 bg-gradient-to-br from-[#39FF14] to-[#B3FF66] rounded-2xl flex items-center justify-center"
-                  animate={{
-                    scale: [1, 1.05, 1],
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <FaCoins className="text-2xl text-[#000000]" />
-                </motion.div>
-                <div>
-                  <h4 className="text-2xl font-bold text-[#FFFFFF] mb-1">Total Supply</h4>
-                  <p className="text-3xl font-bold text-[#39FF14]">1,000,000,000</p>
-                  <p className="text-sm text-[#AAAAAA]">WLFIAI Tokens</p>
-                </div>
-              </div>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse" />
+              <span className="text-[10px] font-mono uppercase tracking-widest text-white/60">Token Economy</span>
             </motion.div>
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl md:text-6xl font-medium text-white tracking-tight leading-[1.1]"
+            >
+              Strategic <br/> <span className="text-[#666]">Distribution Model.</span>
+            </motion.h2>
+          </div>
+          
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-right hidden md:block"
+          >
+            <div className="text-sm text-[#888] font-mono mb-1">TOTAL SUPPLY</div>
+            <div className="text-3xl font-medium text-white tracking-tight">1,000,000,000</div>
+            <div className="text-xs text-[#39FF14] font-mono mt-1">FIXED CAP</div>
           </motion.div>
         </div>
-      </motion.div>
+
+        {/* --- Main Dashboard Grid --- */}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
+          
+          {/* LEFT: Chart Visualization */}
+          <motion.div 
+            className="lg:col-span-5 relative"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <div className="sticky top-24 bg-[#0A0A0A]/50 backdrop-blur-md border border-white/5 rounded-3xl p-8 lg:p-12 flex flex-col items-center justify-center aspect-square shadow-2xl">
+              
+              {/* Custom SVG Donut Chart */}
+              <div className="relative w-full h-full max-w-[400px] max-h-[400px]">
+                <DonutChart 
+                  data={tokenomicsData} 
+                  activeIndex={activeIndex} 
+                  onHover={setActiveIndex}
+                />
+                
+                {/* Center Dynamic Text */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <motion.div
+                    key={activeIndex !== null ? activeIndex : 'default'}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-center"
+                  >
+                    <div className="text-xs text-[#666] font-mono uppercase tracking-widest mb-1">
+                      {activeIndex !== null ? 'Allocation' : 'Total Supply'}
+                    </div>
+                    <div className="text-4xl md:text-5xl font-medium text-white tracking-tighter">
+                      {activeIndex !== null ? `${tokenomicsData[activeIndex].value}%` : '1B'}
+                    </div>
+                    <div className="text-sm font-medium mt-1" style={{ color: activeIndex !== null ? tokenomicsData[activeIndex].color : '#39FF14' }}>
+                      {activeIndex !== null ? tokenomicsData[activeIndex].title : '$WLFI'}
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+
+            </div>
+          </motion.div>
+
+          {/* RIGHT: Detailed Breakdown (Bento Grid) */}
+          <div className="lg:col-span-7 flex flex-col gap-4">
+            
+            {tokenomicsData.map((item, index) => (
+              <TokenCard 
+                key={index}
+                item={item}
+                index={index}
+                isActive={activeIndex === index}
+                onHover={() => setActiveIndex(index)}
+                onLeave={() => setActiveIndex(null)}
+              />
+            ))}
+
+            {/* Bottom Info Cards */}
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div className="bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 hover:border-[#39FF14]/30 transition-colors group">
+                <FaLock className="text-[#39FF14] mb-4 text-xl group-hover:scale-110 transition-transform" />
+                <h4 className="text-white font-medium mb-1">Vesting Schedule</h4>
+                <p className="text-xs text-[#666] leading-relaxed">Smart contract enforced linear vesting for team & advisors.</p>
+              </div>
+              <div className="bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 hover:border-[#39FF14]/30 transition-colors group">
+                <FaHandHoldingHeart className="text-[#00E0FF] mb-4 text-xl group-hover:scale-110 transition-transform" />
+                <h4 className="text-white font-medium mb-1">Community Governance</h4>
+                <p className="text-xs text-[#666] leading-relaxed">Token holders vote on treasury usage and protocol upgrades.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
     </section>
   )
 }
+
+// --- SUB-COMPONENT: TOKEN CARD ---
+const TokenCard = ({ item, index, isActive, onHover, onLeave }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      className={`relative group p-6 rounded-2xl border transition-all duration-300 cursor-default overflow-hidden ${
+        isActive 
+          ? 'bg-[#121212] border-[#39FF14]/40 scale-[1.02] shadow-[0_0_30px_rgba(57,255,20,0.1)]' 
+          : 'bg-[#0A0A0A] border-white/5 hover:border-white/10'
+      }`}
+    >
+      {/* Active Glow Background */}
+      <div 
+        className={`absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-transparent opacity-0 transition-opacity duration-500 ${isActive ? 'opacity-10' : ''}`}
+        style={{ background: `linear-gradient(90deg, ${item.color}10 0%, transparent 100%)` }}
+      />
+
+      <div className="relative z-10 flex items-start gap-5">
+        {/* Icon Box */}
+        <div 
+          className="w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-300 shrink-0"
+          style={{ 
+            backgroundColor: isActive ? `${item.color}20` : 'rgba(255,255,255,0.03)',
+            borderColor: isActive ? `${item.color}40` : 'rgba(255,255,255,0.05)',
+            color: isActive ? item.color : '#666'
+          }}
+        >
+          <item.icon size={20} />
+        </div>
+
+        <div className="flex-1">
+          <div className="flex justify-between items-center mb-1">
+            <h3 className={`text-lg font-medium transition-colors ${isActive ? 'text-white' : 'text-[#DDD]'}`}>
+              {item.title}
+            </h3>
+            <span className="font-mono text-xl font-bold" style={{ color: isActive ? item.color : '#444' }}>
+              {item.value}%
+            </span>
+          </div>
+          
+          <p className="text-sm text-[#666] mb-3">{item.desc}</p>
+          
+          {/* Animated Details Expand */}
+          <motion.div
+            initial={false}
+            animate={{ height: isActive ? 'auto' : 0, opacity: isActive ? 1 : 0 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-3 border-t border-white/5 text-xs text-[#888] leading-relaxed">
+              {item.details}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+      
+      {/* Progress Bar Visual at bottom */}
+      <div className="absolute bottom-0 left-0 h-1 bg-white/5 w-full">
+        <motion.div 
+          className="h-full"
+          initial={{ width: 0 }}
+          whileInView={{ width: `${item.value}%` }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+          style={{ backgroundColor: item.color }}
+        />
+      </div>
+    </motion.div>
+  )
+}
+
+// --- SUB-COMPONENT: ADVANCED SVG DONUT CHART ---
+const DonutChart = ({ data, activeIndex, onHover }) => {
+  const radius = 90;
+  const strokeWidth = 20; // Thick, premium look
+  const center = 100; // SVG ViewBox center
+  const circumference = 2 * Math.PI * radius;
+
+  // We rotate the chart so the first segment starts at the top (-90deg)
+  let accumulatedAngle = -90; 
+
+  return (
+    <svg viewBox="0 0 200 200" className="w-full h-full overflow-visible">
+      
+      {/* Glow Filter Definition */}
+      <defs>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      {/* Track Background */}
+      <circle
+        cx={center}
+        cy={center}
+        r={radius}
+        fill="transparent"
+        stroke="#151515"
+        strokeWidth={strokeWidth}
+      />
+
+      {/* Segments */}
+      {data.map((item, index) => {
+        const percentage = item.value / 100;
+        const strokeLength = circumference * percentage;
+        const gapLength = circumference - strokeLength;
+        const isActive = activeIndex === index;
+        
+        // Calculate current rotation for this segment
+        const currentRotation = accumulatedAngle;
+        
+        // Update accumulator for next segment (360 * percentage)
+        accumulatedAngle += (percentage * 360);
+
+        return (
+          <motion.circle
+            key={index}
+            cx={center}
+            cy={center}
+            r={radius}
+            fill="transparent"
+            stroke={item.color}
+            strokeWidth={strokeWidth}
+            
+            // The magic: Dasharray defines the stroke length, Dashoffset is 0 because we handle position via rotation
+            strokeDasharray={`${strokeLength} ${gapLength}`} 
+            strokeDashoffset={0}
+            strokeLinecap="round" // Rounded ends for premium feel
+            
+            initial={{ strokeDasharray: `0 ${circumference}`, opacity: 0 }}
+            animate={{ 
+              strokeDasharray: `${strokeLength} ${gapLength}`,
+              opacity: activeIndex !== null && !isActive ? 0.3 : 1, // Dim others
+              strokeWidth: isActive ? 26 : 20, // Expand on hover
+            }}
+            transition={{ 
+              strokeDasharray: { duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 + (index * 0.1) }, // Staggered draw
+              strokeWidth: { duration: 0.3 },
+              opacity: { duration: 0.3 }
+            }}
+            
+            // Rotation is static based on data position
+            style={{ 
+              transformOrigin: 'center', 
+              rotate: `${currentRotation}deg`,
+              filter: isActive ? `url(#glow)` : 'none', // Apply neon glow on hover
+              cursor: 'pointer'
+            }}
+
+            onMouseEnter={() => onHover(index)}
+            onMouseLeave={() => onHover(null)}
+          />
+        );
+      })}
+    </svg>
+  );
+};
 
 export default TokenomicsSection
