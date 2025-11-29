@@ -26,7 +26,7 @@ const BottomCTASection = () => {
       title: "Join Our Telegram",
       desc: "Connect with the community",
       icon: PiTelegramLogoDuotone,
-      link: "#",
+      link: "https://t.me/WLFIai_bot",
       color: "#2AABEE"
     },
     {
@@ -34,7 +34,7 @@ const BottomCTASection = () => {
       title: "Follow on X",
       desc: "Stay updated with news",
       icon: PiXLogoBold,
-      link: "#",
+      link: "https://x.com/worldlibertyai",
       color: "#FFFFFF"
     },
     {
@@ -42,7 +42,7 @@ const BottomCTASection = () => {
       title: "Launch Mini App",
       desc: "Trade directly on Telegram",
       icon: PiAppStoreLogoDuotone,
-      link: "#",
+      link: "https://t.me/WLFIai_bot/live",
       color: "#39FF14"
     }
   ]
