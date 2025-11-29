@@ -1,257 +1,206 @@
 'use client'
 
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion'
 import { 
-  FaTelegram,  
-  FaUsers,
-  FaGlobe,
-  FaArrowRight
-} from 'react-icons/fa'
-import { BiRocket, BiNetworkChart } from 'react-icons/bi'
-import { BsTwitterX } from "react-icons/bs";
-import { MdOutlineAppShortcut } from "react-icons/md";
+  PiTelegramLogoDuotone, 
+  PiXLogoBold, 
+  PiAppStoreLogoDuotone,
+  PiArrowRightBold,
+  PiArrowUpRightBold
+} from 'react-icons/pi'
 
-const CommunitySection = () => {
-  const sectionRef = useRef(null)
-  
+const BottomCTASection = () => {
+  const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 0.8", "end 0.2"]
+    target: containerRef,
+    offset: ["start end", "end end"]
   })
-  
-  const y = useTransform(scrollYProgress, [0, 1], [30, -30])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
-  
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
 
-  const communityButtons = [
+  const yParallax = useTransform(scrollYProgress, [0, 1], [100, 0])
+  const opacityFade = useTransform(scrollYProgress, [0, 0.5], [0, 1])
+
+  const actions = [
     {
-      icon: FaTelegram,
-      label: "Join Our Telegram",
-      description: "Connect with the community",
-      href: "#telegram",
-      color: "#0088cc",
-      gradient: "from-[#39FF14] to-[#39FF14]",
-      delay: 0
+      id: "telegram",
+      title: "Join Our Telegram",
+      desc: "Connect with the community",
+      icon: PiTelegramLogoDuotone,
+      link: "#",
+      color: "#2AABEE"
     },
     {
-      icon: BsTwitterX,
-      label: "Follow on X/Twitter",
-      description: "Stay updated with news",
-      href: "https://x.com/worldlibertyai",
-      color: "#1da1f2", 
-      gradient: "from-[#39FF14] to-[#39FF14]",
-      delay: 0.1
+      id: "twitter",
+      title: "Follow on X",
+      desc: "Stay updated with news",
+      icon: PiXLogoBold,
+      link: "#",
+      color: "#FFFFFF"
     },
     {
-      icon: MdOutlineAppShortcut,
-      label: "Mini App",
-      description: "Learn about the platform",
-      href: "https://t.me/WLFIai_bot/live",
-      color: "#39FF14",
-      gradient: "from-[#39FF14] to-[#39FF14]",
-      delay: 0.2
+      id: "miniapp",
+      title: "Launch Mini App",
+      desc: "Trade directly on Telegram",
+      icon: PiAppStoreLogoDuotone,
+      link: "#",
+      color: "#39FF14"
     }
   ]
 
   return (
     <section 
-      id='community'
-      ref={sectionRef}
-      className="relative py-14 bg-[#000000] overflow-hidden"
+      ref={containerRef}
+      className="relative py-32 bg-[#050505] overflow-hidden flex flex-col items-center justify-center min-h-[90vh]"
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        
-        {/* Decorative network pattern */}
-        <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1000 800">
-          <defs>
-            <pattern id="network-pattern" width="200" height="200" patternUnits="userSpaceOnUse">
-              <circle cx="100" cy="100" r="2" fill="#39FF14" opacity="0.4"/>
-              <line x1="100" y1="100" x2="200" y2="100" stroke="#39FF14" strokeWidth="1" opacity="0.2"/>
-              <line x1="100" y1="100" x2="100" y2="200" stroke="#39FF14" strokeWidth="1" opacity="0.2"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#network-pattern)" />
-          
-          {/* Animated connection lines */}
-          {[...Array(5)].map((_, i) => (
-            <motion.line
-              key={i}
-              x1={i * 200 + 100}
-              y1="200"
-              x2={i * 200 + 300}
-              y2="600"
-              stroke="rgba(57, 255, 20, 0.08)"
-              strokeWidth="2"
-              strokeDasharray="10,10"
-              animate={{
-                strokeDashoffset: [0, -20],
-                opacity: [0.08, 0.2, 0.08],
-              }}
-              transition={{
-                duration: 4 + i,
-                repeat: Infinity,
-                delay: i * 0.5,
-              }}
-            />
-          ))}
-        </svg>
+      {/* --- Background VFX --- */}
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-screen" 
+           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+      />
+      
+      {/* Radar Scanner Animation */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] border border-[#39FF14]/5 rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] border border-[#39FF14]/5 rounded-full" />
+        <motion.div 
+           animate={{ rotate: 360 }}
+           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[conic-gradient(from_0deg,transparent_0deg,transparent_340deg,rgba(57,255,20,0.05)_360deg)] rounded-full"
+        />
       </div>
 
       <motion.div 
-        className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8"
-        style={{ y, opacity }}
+        className="relative z-10 container mx-auto px-6"
+        style={{ y: yParallax, opacity: opacityFade }}
       >
-        {/* Section Header */}
-        <motion.div
-          className="text-center mb-16 lg:mb-20"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-          {/* Decorative top accent */}
+        
+        {/* --- Header Content --- */}
+        <div className="max-w-4xl mx-auto text-center mb-24">
           <motion.div
-            className="flex justify-center"
-            initial={{ width: 0 }}
-            animate={isInView ? { width: 150 } : { width: 0 }}
-            transition={{ duration: 1.5, delay: 0.3 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full bg-[#39FF14]/5 border border-[#39FF14]/10 backdrop-blur-md"
           >
-            <div className="h-[3px] bg-gradient-to-r from-transparent via-[#39FF14] to-transparent rounded-full" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse" />
+            <span className="text-xs font-mono uppercase tracking-widest text-[#39FF14]">System Online</span>
           </motion.div>
-          
-          {/* Main Headline */}
-          <motion.h2 
-            className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <span className="text-[#FFFFFF] block mb-2">Join the</span>
-            <span className="text-[#39FF14]">
+
+          <h2 className="text-5xl md:text-7xl font-medium text-white tracking-tight leading-[1.05] mb-8">
+            Join the <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40">
               Liberty Network
             </span>
-          </motion.h2>
-          
-          {/* Subheading */}
-          <motion.p
-            className="text-lg text-balance lg:text-2xl text-[#e5e5e5c3] max-w-4xl mx-auto leading-relaxed mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            Be part of a global movement redefining{' '}
-            <span className="text-[#39FF14] font-medium">transparency</span> in financial intelligence.
-            <br />
-            Connect, learn, and shape the future of AI-powered market insights.
-          </motion.p>
-        </motion.div>
+          </h2>
 
-        {/* CTA Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          {communityButtons.map((button, index) => (
-            <motion.a
-              key={index}
-              href={button.href}
-              className="group relative flex-1 w-full sm:w-auto"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ 
-                duration: 0.6, 
-                delay: 1 + button.delay,
-                ease: "easeOut"
-              }}
-              whileHover={{ y: -5 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <motion.div
-                className="relative px-8 py-6 bg-[#1A1A1A]/60 border border-[#2E2E2E] rounded-2xl backdrop-blur-sm overflow-hidden transition-all duration-300 group-hover:border-[#39FF14]"
-                whileHover={{
-                  backgroundColor: "#1A1A1A",
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Hover glow effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-[#39FF14]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                />
-                
-                {/* Button Content */}
-                <div className="relative z-10 text-center">
-                  {/* Icon */}
-                  <motion.div
-                    className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-br ${button.gradient} rounded-xl flex items-center justify-center`}
-                    whileHover={{ 
-                      scale: 1.1,
-                      rotate: 5,
-                    }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <button.icon className="text-2xl text-[#000000]" />
-                  </motion.div>
-                  
-                  {/* Label */}
-                  <h3 className="text-lg lg:text-xl font-bold text-[#FFFFFF] mb-2 group-hover:text-[#39FF14] transition-colors duration-300">
-                    {button.label}
-                  </h3>
-                  
-                  {/* Description */}
-                  <p className="text-sm text-[#AAAAAA] mb-4 leading-relaxed">
-                    {button.description}
-                  </p>
-                  
-                  {/* Arrow */}
-                  <motion.div
-                    className="flex items-center justify-center text-[#39FF14] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    whileHover={{ x: 5 }}
-                  >
-                    <span className="text-sm font-medium mr-2">Get Started</span>
-                    <FaArrowRight className="text-xs" />
-                  </motion.div>
-                </div>
-                
-                {/* Corner accent */}
-                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-[#39FF14]/10 to-transparent rounded-bl-2xl" />
-              </motion.div>
-            </motion.a>
+          <p className="text-xl text-[#888] font-light leading-relaxed max-w-2xl mx-auto">
+            Be part of a global movement redefining <span className="text-white">transparency</span> in financial intelligence. 
+            Connect, learn, and shape the future.
+          </p>
+        </div>
+
+
+        {/* --- Action Cards Grid --- */}
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-32">
+          {actions.map((action, i) => (
+            <CTACard key={action.id} action={action} index={i} />
           ))}
-        </motion.div>
-        
-        {/* Bottom Message */}
-        <motion.div
-          className="text-center mt-16 lg:mt-20"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 1.5 }}
-        >
-          <motion.div
-            className="inline-flex items-center gap-3 px-6 py-3 bg-[#1A1A1A]/60 border border-[#39FF14]/20 rounded-full"
-            whileHover={{ 
-              borderColor: "#39FF14",
-              backgroundColor: "#1A1A1A"
-            }}
-            transition={{ duration: 0.3 }}
+        </div>
+
+
+        {/* --- Final Footer Tagline --- */}
+        <div className="text-center relative">
+          <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#39FF14]/20 to-transparent" />
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative bg-[#050505] inline-block px-8 py-2"
           >
-            <BiRocket className="text-[#39FF14] text-lg" />
-            <span className="text-[#E5E5E5] text-sm font-medium">
-              Ready to revolutionize financial intelligence?
-            </span>
-            <motion.div 
-              className="w-2 h-2 bg-[#39FF14] rounded-full"
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
+             <p className="text-[#666] uppercase tracking-[0.2em] text-xs font-medium">
+               Ready to revolutionize financial intelligence?
+             </p>
           </motion.div>
-        </motion.div>
+        </div>
+
       </motion.div>
     </section>
   )
 }
 
-export default CommunitySection
+// --- SUB-COMPONENT: HOLOGRAPHIC CARD ---
+const CTACard = ({ action, index }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="group relative h-full"
+    >
+      <div className="relative h-full bg-[#0A0A0A] border border-white/5 rounded-3xl p-8 flex flex-col items-center text-center transition-all duration-500 group-hover:border-[#39FF14]/30 group-hover:bg-[#0E0E0E] group-hover:shadow-[0_0_50px_rgba(57,255,20,0.05)] overflow-hidden">
+        
+        {/* Animated Background Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#39FF14]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        
+        {/* Icon */}
+        <div className="relative mb-6">
+          <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 group-hover:border-[#39FF14]/20 group-hover:bg-[#39FF14]/5">
+            <action.icon size={32} style={{ color: action.color }} />
+          </div>
+          {/* Ripple Effect behind icon */}
+          <div className="absolute inset-0 bg-white/5 rounded-2xl blur-xl -z-10 scale-50 opacity-0 group-hover:scale-150 group-hover:opacity-100 transition-all duration-700" />
+        </div>
+
+        {/* Text */}
+        <div className="relative z-10 mb-10">
+          <h3 className="text-2xl font-medium text-white mb-2">{action.title}</h3>
+          <p className="text-[#666] text-sm group-hover:text-[#999] transition-colors">{action.desc}</p>
+        </div>
+
+        {/* Magnetic Button */}
+        <div className="mt-auto w-full relative z-20">
+          <MagneticButton>
+            <a href={action.link} className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-white text-black font-bold text-sm hover:bg-[#39FF14] transition-colors duration-300">
+              Get Started
+              <PiArrowUpRightBold />
+            </a>
+          </MagneticButton>
+        </div>
+
+      </div>
+    </motion.div>
+  )
+}
+
+// --- SUB-COMPONENT: MAGNETIC BUTTON ---
+const MagneticButton = ({ children }) => {
+  const ref = useRef(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const center = { x: left + width / 2, y: top + height / 2 };
+    x.set((clientX - center.x) * 0.35);
+    y.set((clientY - center.y) * 0.35);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: useSpring(x), y: useSpring(y) }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+export default BottomCTASection
