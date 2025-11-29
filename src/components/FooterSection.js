@@ -25,14 +25,7 @@ const Footer = () => {
     { title: "Platform", items: [
       { label: "Web Agent Terminal", href: "/ai" },
       { label: "Live Tokenomics", href: "#tokenomics" },
-      { label: "System Roadmap", href: "#roadmap" },
-      { label: "Governance", href: "#" }
-    ]},
-    { title: "Resources", items: [
-      { label: "Whitepaper v2.0", href: "#" },
-      { label: "API Documentation", href: "#" },
-      { label: "Security Audits", href: "#" },
-      { label: "Brand Assets", href: "#" }
+      { label: "System Roadmap", href: "#roadmap" }
     ]}
   ]
 
@@ -106,24 +99,6 @@ const Footer = () => {
                 Decentralized intelligence for the modern era. 
                 We provide the tools; you build the future.
               </p>
-            </div>
-
-            {/* Terminal Input */}
-            <div className="space-y-4">
-               <h4 className="text-sm font-mono uppercase tracking-widest text-white/40">Initialize Uplink</h4>
-               <form className="relative group">
-                 <input 
-                   type="email" 
-                   placeholder="Enter email address..." 
-                   className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-[#444] outline-none focus:border-[#39FF14]/50 transition-colors font-mono text-sm"
-                 />
-                 <button className="absolute right-2 top-2 bottom-2 aspect-square bg-white text-black rounded-lg flex items-center justify-center hover:bg-[#39FF14] transition-colors">
-                    <PiPaperPlaneRightFill />
-                 </button>
-               </form>
-               <p className="text-xs text-[#444]">
-                 By subscribing, you agree to receive encrypted transmission updates.
-               </p>
             </div>
           </div>
 
