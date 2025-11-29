@@ -1,340 +1,271 @@
 'use client'
 
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { 
-  FaRocket, 
-  FaExpand, 
-  FaNetworkWired,
-  FaCheckCircle,
-  FaClock,
-  FaArrowRight
-} from 'react-icons/fa'
-import { BsTwitterX } from "react-icons/bs";
-import { BiStats } from 'react-icons/bi'
+  PiRocketLaunchDuotone, 
+  PiChartLineUpDuotone, 
+  PiGlobeHemisphereWestDuotone, 
+  PiCheckCircleFill, 
+  PiCircleDashedBold, 
+  PiLockKeyDuotone, 
+  PiCpuDuotone, 
+  PiHandshakeDuotone,
+  PiLightningDuotone
+} from 'react-icons/pi'
 
 const RoadmapSection = () => {
-  const sectionRef = useRef(null)
-  const timelineRef = useRef(null)
+  const containerRef = useRef(null)
   
+  // Track scroll for the "Laser Beam" path
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 0.8", "end 0.2"]
+    target: containerRef,
+    offset: ["start 20%", "end 50%"]
   })
-  
-  const y = useTransform(scrollYProgress, [0, 1], [50, -50])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
-  
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 })
 
-  const roadmapPhases = [
+  // Smooth out the beam drawing
+  const pathLength = useSpring(scrollYProgress, {
+    stiffness: 60,
+    damping: 20,
+    restDelta: 0.001
+  })
+
+  const phases = [
     {
-      id: 1,
-      phase: "Foundation",
-      timeline: "0–6 months",
-      status: "in-progress",
-      icon: FaRocket,
-      description: "AI engine development, WLFI/USD1 datasets integration, and Telegram Mini App beta launch.",
-      deliverables: [
-        "Core AI Transaction Analysis Engine",
-        "WLFI & USD1 Real-time Data Integration", 
-        "Telegram Mini App Beta Release",
-        "Initial User Testing & Feedback"
+      id: "01",
+      title: "Foundation",
+      status: "completed", // completed | processing | upcoming
+      timeframe: "Q1 - Q2 2024",
+      icon: PiCpuDuotone,
+      focus: "Infrastructure",
+      specs: [
+        "AI Engine Core Development v1.0",
+        "WLFI & USD1 Data Integration",
+        "Telegram Mini-App Beta Launch",
+        "Smart Contract Security Audit"
       ],
-      color: "#39FF14",
-      delay: 0
+      color: "#39FF14"
     },
     {
-      id: 2,
-      phase: "Expansion",
-      timeline: "6–12 months",
+      id: "02",
+      title: "Expansion",
+      status: "processing",
+      timeframe: "Q3 - Q4 2024",
+      icon: PiChartLineUpDuotone,
+      focus: "Intelligence",
+      specs: [
+        "Multi-Asset Analysis (ETH, SOL, BTC)",
+        "Automated Whale Tracking Bot",
+        "Exchange API Partnerships (CEX)",
+        "Real-time Sentiment Analysis Engine"
+      ],
+      color: "#00E0FF"
+    },
+    {
+      id: "03",
+      title: "Ecosystem",
       status: "upcoming",
-      icon: FaExpand,
-      description: "Multi-asset analysis expansion, strategic exchange partnerships, and automated intelligence reports.",
-      deliverables: [
-        "Multi-Asset Support (BTC, ETH, SOL)",
-        "Exchange API Partnerships",
-        "Automated Report Generation",
-        "Advanced Whale Tracking System"
+      timeframe: "2025 & Beyond",
+      icon: PiGlobeHemisphereWestDuotone,
+      focus: "Global Scale",
+      specs: [
+        "Decentralized Validator Nodes",
+        "Cross-Chain Liquidity Bridge",
+        "Institutional API Access",
+        "Global DAO Governance Launch"
       ],
-      color: "#B3FF66",
-      delay: 0.2
-    },
-    {
-      id: 3,
-      phase: "Ecosystem Growth",
-      timeline: "1–2 years",
-      status: "planned",
-      icon: FaNetworkWired,
-      description: "Scale to 100+ strategic partnerships, deploy real-time on-chain index, and reach 1M+ active users.",
-      deliverables: [
-        "100+ Strategic Partnerships",
-        "Real-time On-chain Market Index",
-        "1M+ Active User Milestone",
-        "Global Market Intelligence Hub"
-      ],
-      color: "#00E0FF",
-      delay: 0.4
+      color: "#B3FF66"
     }
   ]
 
   return (
     <section 
-      id='roadmap'
-      ref={sectionRef}
-      className="relative py-14 lg:py-28 bg-[#000000] overflow-hidden"
+      ref={containerRef}
+      className="relative py-32 bg-[#050505] overflow-hidden"
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        
-        {/* Subtle animated connecting dots */}
-        <div className="absolute inset-0 opacity-[0.02]">
-          {[...Array(15)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-[#39FF14] rounded-full"
-              style={{
-                left: `${20 + Math.random() * 60}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                scale: [0, 1, 0],
-                opacity: [0, 0.4, 0],
-              }}
-              transition={{
-                duration: Math.random() * 4 + 3,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      {/* --- Background Noise & Ambience --- */}
+      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" 
+           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+      />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#39FF14] opacity-[0.02] blur-[200px] rounded-full pointer-events-none" />
 
-      <motion.div 
-        className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8"
-        style={{ y, opacity }}
-      >
-        {/* Section Header */}
-        <motion.div
-          className="text-center mb-16 lg:mb-20"
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
+
+      <div className="relative z-10 container mx-auto px-6">
+        
+        {/* --- Header --- */}
+        <div className="text-center max-w-4xl mx-auto mb-32">
           <motion.div
-            className="flex justify-center mb-6"
-            initial={{ width: 0 }}
-            animate={isInView ? { width: 120 } : { width: 0 }}
-            transition={{ duration: 1.2, delay: 0.3 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm"
           >
-            <div className="h-[3px] bg-gradient-to-r from-transparent via-[#39FF14] to-transparent rounded-full" />
+             <PiLightningDuotone className="text-[#39FF14]" />
+             <span className="text-[10px] font-mono uppercase tracking-widest text-white/60">System Roadmap</span>
           </motion.div>
           
           <motion.h2 
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#FFFFFF] leading-tight mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Our{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#39FF14] to-[#B3FF66]">
-              Roadmap
-            </span>
-          </motion.h2>
-          
-          <motion.p
-            className="text-xl text-[#E5E5E5] text-balance max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-6xl font-medium text-white tracking-tight leading-[1.1]"
           >
-            Building the future of financial intelligence through strategic phases of growth and innovation
-          </motion.p>
-        </motion.div>
+            Executing the <br/><span className="text-white/40">Master Plan.</span>
+          </motion.h2>
+        </div>
 
-        {/* Timeline Container */}
-        <div className="relative max-w-4xl mx-auto">
+
+        {/* --- The "Snake" Beam Timeline --- */}
+        <div className="relative max-w-6xl mx-auto">
           
-          {/* Timeline Line */}
-          <motion.div
-            ref={timelineRef}
-            className="sm:flex hidden absolute left-8 lg:left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#39FF14]/30 via-[#39FF14]/60 to-[#39FF14]/30"
-            initial={{ scaleY: 0 }}
-            animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-            transition={{ duration: 1.5, delay: 0.8 }}
-            style={{
-              transformOrigin: 'top',
-            }}
-          />
+          {/* SVG PATH BEAM 
+              Note: This path is hardcoded to weave through center. 
+              On mobile, we hide this and just show a vertical line.
+          */}
+          <div className="absolute top-0 bottom-0 left-0 right-0 hidden md:block pointer-events-none">
+             <svg className="w-full h-full" viewBox="0 0 1000 1200" preserveAspectRatio="none">
+               {/* 1. The faint track path */}
+               <path 
+                 d="M 500 0 V 100 Q 500 200 750 250 T 500 450 Q 250 550 250 650 T 500 850 V 1200"
+                 fill="none"
+                 stroke="rgba(255,255,255,0.05)"
+                 strokeWidth="2"
+               />
+               
+               {/* 2. The Active Laser Beam */}
+               <motion.path 
+                 d="M 500 0 V 100 Q 500 200 750 250 T 500 450 Q 250 550 250 650 T 500 850 V 1200"
+                 fill="none"
+                 stroke="#39FF14"
+                 strokeWidth="2"
+                 style={{ pathLength }}
+                 strokeLinecap="round"
+                 filter="drop-shadow(0 0 8px rgba(57,255,20,0.5))"
+               />
+             </svg>
+          </div>
           
-          {/* Timeline Phases */}
-          <div className="space-y-16 lg:space-y-20">
-            {roadmapPhases.map((phase, index) => (
-              <motion.div
-                key={phase.id}
-                className="relative flex items-start"
-                initial={{ opacity: 0, x: 50 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ 
-                  duration: 0.8, 
-                  delay: 1 + phase.delay,
-                  ease: "easeOut"
-                }}
-              >
-                {/* Timeline Node */}
-                <motion.div
-                  className="relative sm:block hidden flex-shrink-0 mr-8 lg:mr-12"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {/* Clean Node */}
-                  <motion.div
-                    className="w-16 h-16 rounded-full flex items-center justify-center relative z-10 border-2"
-                    style={{
-                      background: `linear-gradient(135deg, ${phase.color} 0%, ${phase.color}DD 100%)`,
-                      borderColor: `${phase.color}`,
-                    }}
-                    animate={{
-                      scale: [1, 1.05, 1],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      delay: phase.delay,
-                    }}
-                  >
-                    <phase.icon className="text-2xl text-[#000000]" />
-                  </motion.div>
-                  
-                  {/* Status Indicator */}
-                  <motion.div
-                    className={`absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full flex items-center justify-center text-xs border-2 border-[#000000] ${
-                      phase.status === 'in-progress' ? 'bg-[#39FF14]' :
-                      phase.status === 'upcoming' ? 'bg-[#B3FF66]' :
-                      'bg-[#AAAAAA]'
-                    }`}
-                    initial={{ scale: 0 }}
-                    animate={isInView ? { scale: 1 } : { scale: 0 }}
-                    transition={{ duration: 0.5, delay: 1.2 + phase.delay }}
-                  >
-                    {phase.status === 'in-progress' ? 
-                      <FaClock className="text-[#000000]" /> :
-                      phase.status === 'upcoming' ?
-                      <FaArrowRight className="text-[#000000]" /> :
-                      <FaCheckCircle className="text-[#000000]" />
-                    }
-                  </motion.div>
-                </motion.div>
+          {/* Mobile Vertical Line */}
+          <div className="absolute left-[28px] top-0 bottom-0 w-px bg-white/10 md:hidden" />
 
-                {/* Phase Content */}
-                <motion.div
-                  className="flex-1 min-w-0"
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {/* Phase Header */}
-                  <div className="mb-6">
-                    <div className="flex items-center gap-4 mb-3">
-                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#FFFFFF]">
-                        Phase {phase.id} – {phase.phase}
-                      </h3>
-                      <span 
-                        className="px-3 py-1 rounded-full sm:text-sm text-xs font-medium border"
-                        style={{
-                          backgroundColor: `${phase.color}20`,
-                          borderColor: `${phase.color}60`,
-                          color: phase.color,
-                        }}
-                      >
-                        {phase.timeline}
-                      </span>
-                    </div>
-                    
-                    <p className="text-sm sm:text-lg text-[#E5E5E5] leading-relaxed mb-6">
-                      {phase.description}
-                    </p>
-                  </div>
 
-                  {/* Deliverables */}
-                  <motion.div
-                    className="p-6 bg-[#1A1A1A]/60 border border-[#2E2E2E] rounded-xl"
-                    whileHover={{ 
-                      borderColor: `${phase.color}`,
-                      backgroundColor: "#1A1A1A"
-                    }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <h4 className="text-lg font-semibold text-[#FFFFFF] mb-4 flex items-center gap-2">
-                      <BiStats className="text-[#39FF14]" />
-                      Key Deliverables
-                    </h4>
-                    
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {phase.deliverables.map((item, itemIndex) => (
-                        <motion.div
-                          key={itemIndex}
-                          className="flex items-center gap-3 p-3 bg-[#0D0D0D]/60 border border-[#2E2E2E] rounded-lg"
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={isInView ? { opacity: 1, x: 0 } : {}}
-                          transition={{ 
-                            duration: 0.5, 
-                            delay: 1.4 + phase.delay + itemIndex * 0.1 
-                          }}
-                          whileHover={{ 
-                            x: 5, 
-                            backgroundColor: "#1A1A1A",
-                            borderColor: phase.color
-                          }}
-                        >
-                          <motion.div
-                            className="w-2 h-2 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: phase.color }}
-                            animate={{ 
-                              scale: [1, 1.2, 1],
-                              opacity: [0.7, 1, 0.7] 
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              delay: itemIndex * 0.3,
-                            }}
-                          />
-                          <span className="text-[#FFFFFF] text-sm leading-snug">
-                            {item}
-                          </span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-                </motion.div>
-              </motion.div>
+          {/* --- Phase Cards --- */}
+          <div className="space-y-16 md:space-y-32 relative z-10">
+            {phases.map((phase, index) => (
+               <PhaseCard key={phase.id} data={phase} index={index} />
             ))}
           </div>
+
         </div>
-        
-        {/* Bottom CTA */}
-        <motion.div
-          className="text-center mt-16 lg:mt-20"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 2 }}
-        >
-          <a href='https://x.com/worldlibertyai' target='_blank'>
-            <motion.button
-              className="group px-8 py-4 bg-[#39FF14]/10 border border-[#39FF14]/40 rounded-xl text-[#39FF14] font-medium hover:bg-[#39FF14]/20 hover:border-[#39FF14] transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className="flex items-center gap-3">
-                Join Our Journey
-                <BsTwitterX className="text-lg transition-transform duration-300 group-hover:scale-110" />
-              </span>
-            </motion.button>
-          </a>
-        </motion.div>
-      </motion.div>
+
+      </div>
     </section>
+  )
+}
+
+// --- SUB-COMPONENT: PHASE CARD ---
+const PhaseCard = ({ data, index }) => {
+  // Determine if card is Left or Right aligned on Desktop
+  // Index 0: Center/Top, Index 1: Right, Index 2: Left... actually, let's do Zig Zag for cleaner look
+  // Better yet: Center alignment for all with alternating slight offsets looks premium.
+  
+  // Let's stick to strict Zig-Zag for the beam logic above:
+  // Phase 1 (Top) -> Center/Rightish
+  // Phase 2 (Mid) -> Leftish
+  // Phase 3 (Bot) -> Center
+  
+  // Adjusted layout logic:
+  const isRight = index % 2 === 0; // Alternating
+
+  // Status Colors & Icons
+  const isCompleted = data.status === 'completed';
+  const isProcessing = data.status === 'processing';
+  const statusColor = isCompleted ? '#39FF14' : isProcessing ? '#00E0FF' : '#444';
+  const StatusIcon = isCompleted ? PiCheckCircleFill : isProcessing ? PiCircleDashedBold : PiLockKeyDuotone;
+
+  return (
+    <div className={`flex flex-col md:flex-row items-center gap-8 md:gap-20 ${!isRight ? 'md:flex-row-reverse' : ''}`}>
+      
+      {/* 1. Date/Info Side */}
+      <div className={`w-full md:w-1/2 flex flex-col ${!isRight ? 'md:items-start md:text-left' : 'md:items-end md:text-right'} text-left pl-16 md:pl-0`}>
+        <motion.div 
+          initial={{ opacity: 0, x: isRight ? -50 : 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="flex items-center gap-3 mb-2 justify-start md:justify-end" style={{ flexDirection: !isRight ? 'row' : 'row-reverse' }}>
+             <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-white/60 uppercase tracking-widest border border-white/5">
+               {data.timeframe}
+             </span>
+             <span className="h-px w-8 bg-white/10" />
+          </div>
+          <h3 className="text-4xl font-mono font-bold text-white opacity-20">{data.id}</h3>
+        </motion.div>
+      </div>
+
+
+      {/* 2. The Node (Connection Point) */}
+      <div className="absolute left-[28px] md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#050505] border border-white/20 shadow-[0_0_10px_rgba(0,0,0,0.5)] z-20 flex items-center justify-center">
+         <div 
+           className={`w-1.5 h-1.5 rounded-full transition-colors duration-500`}
+           style={{ backgroundColor: statusColor, boxShadow: `0 0 8px ${statusColor}` }} 
+         />
+      </div>
+
+
+      {/* 3. The Main Card */}
+      <div className="w-full md:w-1/2 pl-16 md:pl-0">
+        <motion.div
+           initial={{ opacity: 0, y: 30 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true, margin: "-100px" }}
+           transition={{ duration: 0.8 }}
+           className={`relative group ${!isRight ? 'md:pr-12' : 'md:pl-12'}`}
+        >
+          {/* Card Container */}
+          <div className="relative overflow-hidden bg-[#0A0A0A] border border-white/5 rounded-2xl p-8 hover:border-[#39FF14]/20 transition-all duration-500 hover:shadow-[0_0_40px_rgba(57,255,20,0.05)]">
+            
+            {/* Status Badge */}
+            <div className="absolute top-0 right-0 px-4 py-2 bg-white/5 border-l border-b border-white/5 rounded-bl-2xl">
+               <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider" style={{ color: statusColor }}>
+                 <StatusIcon className={`${isProcessing ? 'animate-spin' : ''}`} />
+                 {data.status}
+               </div>
+            </div>
+
+            {/* Header */}
+            <div className="flex items-start gap-5 mb-8">
+               <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-500">
+                  <data.icon size={26} className="text-white group-hover:text-[#39FF14] transition-colors" />
+               </div>
+               <div>
+                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Focus: {data.focus}</div>
+                  <h3 className="text-2xl font-bold text-white group-hover:text-[#39FF14] transition-colors">{data.title}</h3>
+               </div>
+            </div>
+
+            {/* Specs Grid */}
+            <div className="grid gap-3">
+              {data.specs.map((spec, i) => (
+                <div key={i} className="flex items-center gap-3 group/item">
+                  <div className={`w-1 h-1 rounded-full bg-[#333] group-hover/item:bg-[#39FF14] transition-colors`} />
+                  <span className="text-sm text-[#888] group-hover/item:text-[#CCC] transition-colors">
+                    {spec}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Animated Scan Line (Micro interaction) */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#39FF14]/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+            
+          </div>
+        </motion.div>
+      </div>
+
+    </div>
   )
 }
 
