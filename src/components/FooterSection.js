@@ -1,240 +1,230 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion'
 import { 
-  FaTelegram, 
-  FaExternalLinkAlt
-} from 'react-icons/fa'
-import { BsTwitterX } from "react-icons/bs";
-import { RiBnbFill } from "react-icons/ri";
+  PiTelegramLogoDuotone, 
+  PiXLogoBold, 
+  PiArrowUpRightBold,
+  PiPaperPlaneRightFill,
+  PiLightningFill
+} from 'react-icons/pi'
+import { SiBinance } from "react-icons/si";
 import Image from 'next/image'
 
 const Footer = () => {
-  const footerRef = useRef(null)
-  const isInView = useInView(footerRef, { once: true, amoun: 0.3 })
+  const containerRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  })
 
-  const quickLinks = [
-    { label: "Web Agent", href: "/ai" },
-    { label: "Tokenomics", href: "#tokenomics" },
-    { label: "Roadmap", href: "#roadmap" },
-    { label: "Community", href: "#community" }
+  const yParallax = useTransform(scrollYProgress, [0, 1], [-100, 0])
+
+  const links = [
+    { title: "Platform", items: [
+      { label: "Web Agent Terminal", href: "/ai" },
+      { label: "Live Tokenomics", href: "#tokenomics" },
+      { label: "System Roadmap", href: "#roadmap" },
+      { label: "Governance", href: "#" }
+    ]},
+    { title: "Resources", items: [
+      { label: "Whitepaper v2.0", href: "#" },
+      { label: "API Documentation", href: "#" },
+      { label: "Security Audits", href: "#" },
+      { label: "Brand Assets", href: "#" }
+    ]}
   ]
 
-  const socialLinks = [
-    {
-      icon: FaTelegram,
-      href: "https://t.me/worldlibertyai",
-      label: "Telegram",
-      color: "#0088cc"
-    },
-    {
-      icon: BsTwitterX,
-      href: "https://x.com/worldlibertyai",
-      label: "Twitter/X",
-      color: "#1da1f2"
-    },
-    {
-      icon: RiBnbFill,
-      href: "https://bscscan.com",
-      label: "BscScan",
-      color: "#f0b90b"
-    }
+  const socials = [
+    { icon: PiTelegramLogoDuotone, href: "https://t.me/worldlibertyai", label: "Telegram" },
+    { icon: PiXLogoBold, href: "https://x.com/worldlibertyai", label: "X / Twitter" },
+    { icon: SiBinance, href: "https://bscscan.com", label: "BscScan" }
   ]
 
   return (
     <footer 
-      ref={footerRef}
-      className="relative bg-[#000000] border-t border-[#39FF14]/30 overflow-hidden"
+      ref={containerRef}
+      className="relative bg-[#050505] overflow-hidden pt-20"
     >
-      {/* Top Border Glow */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#39FF14] to-transparent"
+      {/* --- Background Elements --- */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" 
+           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
       />
       
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.015]">
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(57, 255, 20, 0.2) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(57, 255, 20, 0.2) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px'
-          }}
-        />
-      </div>
+      {/* Massive Background Typography */}
+      <motion.div 
+        style={{ y: yParallax }}
+        className="absolute bottom-0 left-0 right-0 z-0 pointer-events-none select-none overflow-hidden flex justify-center items-end opacity-[0.03]"
+      >
+        <h1 className="text-[18vw] leading-[0.75] font-bold text-white tracking-tighter whitespace-nowrap">
+          WORLD LIBERTY
+        </h1>
+      </motion.div>
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        
-        {/* Main Footer Content */}
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 mb-12">
-          
-          {/* Logo & Tagline Section */}
-          <motion.div 
-            className="lg:col-span-6 space-y-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="flex items-center gap-4">
-              <Image src='/logo.png' alt='logo' width={70} height={70} quality={100} className='scale-200 ml-0 sm:ml-5'/>
-            </div>
-            <motion.div
-              className="space-y-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <h4 className="text-xl lg:text-2xl font-semibold text-[#FFFFFF] leading-tight">
-                World Liberty AI
-              </h4>
-              <p className="text-lg text-[#E5E5E5] leading-relaxed">
-                <span className="text-[#39FF14] font-medium">Transparent</span>,{' '}
-                <span className="text-[#39FF14] font-medium">Intelligent</span>,{' '}
-                <span className="text-[#39FF14] font-medium">Borderless</span>
-              </p>
-              <p className="text-[#AAAAAA] text-balance leading-relaxed max-w-lg">
-                Revolutionizing financial intelligence through AI-powered blockchain analysis 
-                and real-time market insights.
-              </p>
-            </motion.div>
-          </motion.div>
 
-          {/* Quick Links */}
+      {/* --- Infinite Marquee Ticker --- */}
+      <div className="w-full border-y border-white/5 bg-[#0A0A0A] py-3 overflow-hidden relative z-10">
+        <div className="flex whitespace-nowrap">
           <motion.div 
-            className="lg:col-span-3"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            className="flex gap-12 items-center"
+            animate={{ x: "-50%" }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
           >
-            <h5 className="text-lg font-semibold text-[#FFFFFF] mb-6 flex items-center gap-2">
-              <div className="w-1 h-6 bg-gradient-to-b from-[#39FF14] to-[#B3FF66] rounded-full" />
-              Quick Links
-            </h5>
-            <nav className="space-y-4">
-              {quickLinks.map((link, index) => (
-                <motion.a
-                  key={index}
-                  href={link.href}
-                  className="group flex items-center text-[#AAAAAA] hover:text-[#39FF14] transition-colors duration-300"
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                >
-                  <span className="group-hover:font-medium transition-all duration-300">
-                    {link.label}
-                  </span>
-                  <motion.div
-                    className="w-0 group-hover:w-2 h-[1px] bg-[#39FF14] ml-2 transition-all duration-300"
-                  />
-                </motion.a>
-              ))}
-            </nav>
-          </motion.div>
-
-          {/* Social Links */}
-          <motion.div 
-            className="lg:col-span-3"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          >
-            <h5 className="text-lg font-semibold text-[#FFFFFF] mb-6 flex items-center gap-2">
-              <div className="w-1 h-6 bg-gradient-to-b from-[#39FF14] to-[#B3FF66] rounded-full" />
-              Connect
-            </h5>
-            <div className="space-y-2">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-4 p-3 rounded-xl border border-[#2E2E2E] bg-[#1A1A1A]/40 hover:border-[#39FF14] hover:bg-[#1A1A1A]/80 transition-all duration-300"
-                  whileHover={{ 
-                    scale: 1.02,
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                >
-                  <motion.div
-                    className="w-10 h-10 bg-[#39FF14]/10 border border-[#39FF14]/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                    whileHover={{ rotate: 5 }}
-                  >
-                    <social.icon className="text-[#39FF14] text-lg" />
-                  </motion.div>
-                  <div className="flex-1">
-                    <span className="text-[#FFFFFF] font-medium group-hover:text-[#39FF14] transition-colors duration-300">
-                      {social.label}
-                    </span>
-                  </div>
-                  <motion.div
-                    className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    whileHover={{ x: 3 }}
-                  >
-                    <FaExternalLinkAlt className="text-[#AAAAAA] text-sm" />
-                  </motion.div>
-                </motion.a>
-              ))}
-            </div>
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex items-center gap-12 text-xs font-mono uppercase tracking-[0.2em] text-[#666]">
+                <span>System Status: <span className="text-[#39FF14]">Online</span></span>
+                <span className="w-1.5 h-1.5 bg-white/20 rotate-45" />
+                <span>Next Block: <span className="text-white">Loading...</span></span>
+                <span className="w-1.5 h-1.5 bg-white/20 rotate-45" />
+                <span>AI Consensus: <span className="text-[#39FF14]">Active</span></span>
+                <span className="w-1.5 h-1.5 bg-white/20 rotate-45" />
+                <span>Gas: <span className="text-white">12 Gwei</span></span>
+                <span className="w-1.5 h-1.5 bg-white/20 rotate-45" />
+              </div>
+            ))}
           </motion.div>
         </div>
-
-        {/* Bottom Section */}
-        <motion.div
-          className="pt-8 border-t border-[#2E2E2E] flex flex-col sm:flex-row items-center justify-between gap-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          {/* Copyright */}
-          <div className="flex items-center gap-4 text-[#AAAAAA]">
-            <span className="text-sm">
-              © 2025 World Liberty AI. All rights reserved.
-            </span>
-            <motion.div 
-              className="w-1 h-1 bg-[#39FF14] rounded-full"
-              animate={{ 
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 1, 0.5] 
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-          </div>
-
-          {/* Status Badge */}
-          <motion.div
-            className="flex items-center gap-3 px-4 py-2 bg-[#1A1A1A]/60 border border-[#2E2E2E] rounded-full"
-            whileHover={{ 
-              borderColor: "#39FF14",
-              backgroundColor: "#1A1A1A"
-            }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.div 
-              className="w-2 h-2 bg-[#39FF14] rounded-full"
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <span className="text-[#39FF14] text-sm font-medium">
-              System Online
-            </span>
-            <span className="text-[#AAAAAA] text-xs">
-              99.9% uptime
-            </span>
-          </motion.div>
-        </motion.div>
       </div>
 
-      {/* Bottom Glow Effect */}
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-[#39FF14]/20 to-transparent" />
+
+      {/* --- Main Content --- */}
+      <div className="relative z-10 container mx-auto px-6 py-24">
+        <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
+          
+          {/* Left: Brand & Newsletter */}
+          <div className="lg:col-span-5 space-y-12">
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                 {/* Replace with your Image Logo if needed */}
+                 <div className="w-10 h-10 bg-[#39FF14] rounded-lg flex items-center justify-center text-black font-bold text-xl">
+                   W
+                 </div>
+                 <span className="text-2xl font-medium text-white tracking-tight">World Liberty AI</span>
+              </div>
+              <p className="text-[#888] text-lg leading-relaxed max-w-md">
+                Decentralized intelligence for the modern era. 
+                We provide the tools; you build the future.
+              </p>
+            </div>
+
+            {/* Terminal Input */}
+            <div className="space-y-4">
+               <h4 className="text-sm font-mono uppercase tracking-widest text-white/40">Initialize Uplink</h4>
+               <form className="relative group">
+                 <input 
+                   type="email" 
+                   placeholder="Enter email address..." 
+                   className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-[#444] outline-none focus:border-[#39FF14]/50 transition-colors font-mono text-sm"
+                 />
+                 <button className="absolute right-2 top-2 bottom-2 aspect-square bg-white text-black rounded-lg flex items-center justify-center hover:bg-[#39FF14] transition-colors">
+                    <PiPaperPlaneRightFill />
+                 </button>
+               </form>
+               <p className="text-xs text-[#444]">
+                 By subscribing, you agree to receive encrypted transmission updates.
+               </p>
+            </div>
+          </div>
+
+
+          {/* Right: Navigation & Socials */}
+          <div className="lg:col-span-7 flex flex-col md:flex-row gap-16 md:gap-24 pt-4 lg:pt-0 justify-end">
+            
+            {links.map((section, idx) => (
+              <div key={idx}>
+                <h4 className="text-white font-medium mb-6">{section.title}</h4>
+                <ul className="space-y-4">
+                  {section.items.map((link, i) => (
+                    <li key={i}>
+                      <a href={link.href} className="group flex items-center gap-2 text-[#888] hover:text-[#39FF14] transition-colors text-sm">
+                        <span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-300 text-[#39FF14]"></span>
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+
+            {/* Socials Column */}
+            <div>
+              <h4 className="text-white font-medium mb-6">Network</h4>
+              <div className="flex gap-4">
+                {socials.map((social, i) => (
+                  <MagneticSocial key={i}>
+                    <a 
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer" 
+                      className="w-12 h-12 rounded-full bg-[#111] border border-white/5 flex items-center justify-center text-white hover:bg-[#39FF14] hover:text-black hover:border-[#39FF14] transition-all duration-300"
+                    >
+                      <social.icon size={20} />
+                    </a>
+                  </MagneticSocial>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      {/* --- Footer Bottom --- */}
+      <div className="relative z-10 border-t border-white/5 bg-[#080808]">
+        <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          
+          <div className="text-xs text-[#444] font-mono">
+            COPYRIGHT © 2025 WORLD LIBERTY AI.
+          </div>
+
+          <div className="flex items-center gap-6">
+             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#39FF14]/5 border border-[#39FF14]/10">
+               <div className="w-1.5 h-1.5 rounded-full bg-[#39FF14] animate-pulse" />
+               <span className="text-[10px] text-[#39FF14] font-mono uppercase tracking-widest">
+                 All Systems Operational
+               </span>
+             </div>
+          </div>
+
+        </div>
+      </div>
+
     </footer>
   )
 }
+
+// --- SUB-COMPONENT: MAGNETIC SOCIAL BUTTON ---
+const MagneticSocial = ({ children }) => {
+  const ref = useRef(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    x.set((clientX - centerX) * 0.5);
+    y.set((clientY - centerY) * 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: useSpring(x), y: useSpring(y) }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 export default Footer
