@@ -1,394 +1,187 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { FaTelegram, FaBars, FaTimes } from 'react-icons/fa'
-import { motion, AnimatePresence } from 'framer-motion'
-import { BiAnalyse } from 'react-icons/bi'
-import Image from 'next/image';
 import { RiBnbFill } from "react-icons/ri";
 import { BsTwitterX } from "react-icons/bs";
-
-const socialLinks = [
-  {
-    href: "https://x.com/worldlibertyai",
-    icon: BsTwitterX,
-    label: "X",
-    color: "#1da1f2",
-    hover: "#39FF14"
-  },
-  {
-    href: "https://t.me/worldlibertyai",
-    icon: FaTelegram,
-    label: "Telegram",
-    color: "#0088cc",
-    hover: "#39FF14"
-  },
-  {
-    href: "https://bscscan.com/token/0x649b4cbad977e053fe8d1719d41ecd299812f266",
-    icon: RiBnbFill,
-    label: "BscScan",
-    color: "#f0b90b",
-    hover: "#39FF14"
-  }
-]
-
-const navigationLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Web Agent', href: '/ai' },
-  { name: 'Tokenomics', href: '#tokenomics' }
-]
+import { PiLightningFill } from "react-icons/pi";
 
 const Navbar = () => {
-  const [scrollY, setScrollY] = useState(0)
-  const [isVisible, setIsVisible] = useState(true)
+  const [hidden, setHidden] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { scrollY } = useScroll()
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      setScrollY(currentScrollY)
-      
-      // Hide/show navbar based on scroll direction
-      if (currentScrollY > scrollY && currentScrollY > 100) {
-        setIsVisible(false)
-      } else {
-        setIsVisible(true)
-      }
+  // Intelligent Scroll Logic (Hide on down, Show on up)
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious()
+    if (latest > previous && latest > 150) {
+      setHidden(true)
+    } else {
+      setHidden(false)
     }
+  })
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [scrollY])
-
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = () => {
-      if (isMobileMenuOpen) {
-        setIsMobileMenuOpen(false)
-      }
-    }
-
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [isMobileMenuOpen])
-
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = 'unset'
     }
-    
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
   }, [isMobileMenuOpen])
 
-  const toggleMobileMenu = (e) => {
-    e.stopPropagation()
-    setIsMobileMenuOpen(!isMobileMenuOpen)
-  }
+  const navigationLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'Web Agent', href: '/ai' },
+    { name: 'Tokenomics', href: '#tokenomics' },
+    { name: 'Roadmap', href: '#roadmap' }
+  ]
 
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false)
-  }
-
-  const handleLinkClick = (href) => {
-    closeMobileMenu()
-    // Smooth scroll to section
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+  const socialLinks = [
+    {
+      href: "https://x.com/worldlibertyai",
+      icon: BsTwitterX,
+      label: "X"
+    },
+    {
+      href: "https://t.me/worldlibertyai",
+      icon: FaTelegram,
+      label: "Telegram"
+    },
+    {
+      href: "https://bscscan.com/token/0x649b4cbad977e053fe8d1719d41ecd299812f266",
+      icon: RiBnbFill,
+      label: "BscScan"
     }
-  }
-  
+  ]
+
   return (
     <>
-      <AnimatePresence>
-        {isVisible && (
-          <motion.header
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0 }}
-            transition={{ 
-              duration: 0.8, 
-              ease: [0.16, 1, 0.3, 1],
-              type: "spring",
-              stiffness: 100
-            }}
-            className="fixed left-0 right-0 top-4 z-50 flex justify-center pointer-events-none"
-          >
-            <nav
-              className={`max-w-7xl w-[90%] sm:w-full mx-auto pointer-events-auto transition-all duration-500 ease-out p-3 ${
-                scrollY > 50 
-                  ? 'bg-[#0D0D0D]/98 border-[#39FF14]/60' 
-                  : 'bg-[#0D0D0D]/90 border-[#39FF14]/30'
-              }`}
-              style={{
-                backdropFilter: "blur(20px)",
-                WebkitBackdropFilter: "blur(20px)",
-                border: `1px solid ${scrollY > 50 ? 'rgba(57, 255, 20, 0.6)' : 'rgba(57, 255, 20, 0.3)'}`,
-                borderRadius: '16px',
-                padding: '12px 16px sm:12px 24px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                boxShadow: scrollY > 50 
-                  ? '0 8px 32px rgba(57, 255, 20, 0.2)' 
-                  : '0 4px 16px rgba(0, 0, 0, 0.4)'
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Logo Section */}
-              <Link href="/" className="group inline-flex items-center gap-3" onClick={closeMobileMenu}>
-                <motion.div 
-                  className="flex items-center gap-3"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ 
-                    duration: 0.3, 
-                    ease: [0.16, 1, 0.3, 1] 
-                  }}
-                >
-                  <div className="block">
-                    <Image src='/navlogo.png' alt='logo' width={70} height={70} quality={100} className='scale-150'/>
-                  </div>
-                </motion.div>
+      <motion.header
+        variants={{
+          visible: { y: 0, opacity: 1 },
+          hidden: { y: -100, opacity: 0 }
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
+      >
+        <nav 
+          className="pointer-events-auto flex items-center justify-between pl-4 pr-2 py-2 bg-[#0A0A0A]/80 backdrop-blur-xl border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.5)] w-full max-w-5xl"
+        >
+          {/* --- Logo Section --- */}
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 pr-8">
+            <div className="relative w-18 h-8">
+               {/* Replace with your logo image */}
+               <Image src='/navlogo.png' alt='WLAI' fill className="object-cover " />
+            </div>
+          </Link>
+
+
+          {/* --- Desktop Links --- */}
+          <div className="hidden md:flex items-center gap-1 bg-white/5 rounded-full px-2 py-1.5 border border-white/5">
+            {navigationLinks.map((link) => (
+              <Link key={link.name} href={link.href}>
+                <span className="relative px-5 py-2 text-xs font-medium text-[#AAA] hover:text-white transition-colors uppercase tracking-wide rounded-full hover:bg-white/5 block">
+                  {link.name}
+                </span>
               </Link>
+            ))}
+          </div>
 
-              {/* Desktop Navigation Links */}
-              <div className="hidden lg:flex items-center gap-8">
-                {navigationLinks.map((link) => (
-                  <Link key={link.name} href={link.href}>
-                    <motion.div
-                      className="text-[#E5E5E5] hover:text-[#39FF14] font-medium transition-all duration-400 relative group cursor-pointer"
-                      whileHover={{ y: -1 }}
-                      transition={{ 
-                        duration: 0.3,
-                        ease: [0.16, 1, 0.3, 1]
-                      }}
-                    >
-                      {link.name}
-                      <motion.div 
-                        className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] transition-all duration-400 group-hover:w-full"
-                        initial={{ scaleX: 0 }}
-                        whileHover={{ scaleX: 1 }}
-                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      />
-                    </motion.div>
-                  </Link>
-                ))}
-              </div>
 
-              {/* Desktop: Social Icons + CTA */}
-              <div className="hidden sm:flex items-center gap-4">
-                {/* Social Links */}
-                <div className="flex items-center gap-2">
-                  {socialLinks.map((item, i) => {
-                    const Icon = item.icon
-                    return (
-                      <motion.a
-                        key={item.label}
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group relative flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-400 bg-[#1A1A1A]/70 border border-[#2E2E2E]/50 hover:border-[#39FF14]/60"
-                        whileHover={{
-                          scale: 1.1,
-                          y: -2,
-                          backgroundColor: 'rgba(57, 255, 20, 0.1)',
-                          boxShadow: '0 4px 20px rgba(57, 255, 20, 0.3)',
-                          borderColor: 'rgba(57, 255, 20, 0.8)'
-                        }}
-                        whileTap={{ scale: 0.9 }}
-                        transition={{ 
-                          duration: 0.3,
-                          ease: [0.16, 1, 0.3, 1]
-                        }}
-                        aria-label={item.label}
-                      >
-                        <Icon 
-                          size={16} 
-                          className="text-[#39FF14] group-hover:text-[#B3FF66] transition-colors duration-300" 
-                        />
-                      </motion.a>
-                    )
-                  })}
-                </div>
-              </div>
+          {/* --- Right Actions --- */}
+          <div className="flex items-center pr-8">
+            
+            {/* Socials (Desktop) */}
+            <div className="hidden sm:flex gap-3.5 items-center">
+              {socialLinks.map((item, i) => (
+                <a 
+                  key={i} 
+                  href={item.href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center p-1 justify-center text-[#666] hover:text-[#39FF14] hover:bg-[#39FF14]/10 rounded-full transition-all"
+                >
+                  <item.icon size={28} />
+                </a>
+              ))}
+            </div>
+            {/* Mobile Toggle */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden w-10 h-10 flex items-center justify-center text-white bg-white/5 rounded-full hover:bg-white/10"
+            >
+              <FaBars size={16} />
+            </button>
+          </div>
+        </nav>
+      </motion.header>
 
-              {/* Mobile: Hamburger Menu Button */}
-              <motion.button
-                className="sm:hidden flex items-center justify-center w-10 h-10 rounded-lg bg-[#1A1A1A]/70 border border-[#2E2E2E]/50 text-[#39FF14] transition-all duration-400"
-                onClick={toggleMobileMenu}
-                whileHover={{ 
-                  scale: 1.05, 
-                  backgroundColor: 'rgba(57, 255, 20, 0.1)',
-                  borderColor: 'rgba(57, 255, 20, 0.6)',
-                  boxShadow: "0 4px 16px rgba(57, 255, 20, 0.2)"
-                }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ 
-                  duration: 0.3,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                aria-label="Toggle mobile menu"
-              >
-                <AnimatePresence mode="wait">
-                  {isMobileMenuOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ rotate: -90, opacity: 0, scale: 0.8 }}
-                      animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                      exit={{ rotate: 90, opacity: 0, scale: 0.8 }}
-                      transition={{ 
-                        duration: 0.3,
-                        ease: [0.16, 1, 0.3, 1]
-                      }}
-                    >
-                      <FaTimes size={18} />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="menu"
-                      initial={{ rotate: 90, opacity: 0, scale: 0.8 }}
-                      animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                      exit={{ rotate: -90, opacity: 0, scale: 0.8 }}
-                      transition={{ 
-                        duration: 0.3,
-                        ease: [0.16, 1, 0.3, 1]
-                      }}
-                    >
-                      <FaBars size={18} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
-            </nav>
-          </motion.header>
-        )}
-      </AnimatePresence>
 
-      {/* Mobile Menu Overlay */}
+      {/* --- Mobile Menu Overlay --- */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="fixed inset-0 z-40 sm:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ 
-              duration: 0.4,
-              ease: [0.16, 1, 0.3, 1]
-            }}
+            className="fixed inset-0 z-[60] bg-[#050505]/95 backdrop-blur-2xl md:hidden flex flex-col"
           >
-            {/* Backdrop */}
-            <motion.div 
-              className="absolute inset-0 bg-[#000000]/98 backdrop-blur-md" 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-            />
-            
-            {/* Menu Content */}
-            <motion.div
-              className="relative z-10 flex flex-col h-full pt-24 px-6"
-              initial={{ y: -50, opacity: 0, scale: 0.98 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: -50, opacity: 0, scale: 0.98 }}
-              transition={{ 
-                duration: 0.4, 
-                delay: 0.1,
-                ease: [0.16, 1, 0.3, 1]
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Navigation Links */}
-              <div className="space-y-6 mb-12">
-                {navigationLinks.map((link, index) => (
-                  <motion.a
-                    key={link.name}
-                    href={link.href}
-                    className="block text-2xl font-bold text-[#FFFFFF] hover:text-[#39FF14] transition-colors duration-400"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleLinkClick(link.href)
-                    }}
-                    initial={{ x: -30, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ 
-                      delay: index * 0.1 + 0.2, 
-                      duration: 0.5,
-                      ease: [0.16, 1, 0.3, 1]
-                    }}
-                    whileTap={{ scale: 0.98, x: 4 }}
+            {/* Mobile Header */}
+            <div className="flex items-center justify-between p-6 border-b border-white/5">
+              <span className="text-lg font-bold text-white">Menu</span>
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-10 h-10 flex items-center justify-center text-[#666] hover:text-white bg-white/5 rounded-full"
+              >
+                <FaTimes size={18} />
+              </button>
+            </div>
+
+            {/* Mobile Links */}
+            <div className="flex-1 flex flex-col justify-center px-6 gap-6">
+              {navigationLinks.map((link, i) => (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + (i * 0.1) }}
+                >
+                  <Link 
+                    href={link.href} 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-4xl font-medium text-[#888] hover:text-[#39FF14] transition-colors tracking-tight"
                   >
                     {link.name}
-                  </motion.a>
-                ))}
-              </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
 
-              {/* Mobile CTA Button */}
-              <motion.button
-                className="w-full py-4 mb-8 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] text-[#000000] font-bold text-lg rounded-xl shadow-lg"
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ 
-                  delay: 0.6, 
-                  duration: 0.5,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleLinkClick('#community')}
-              >
-                Join Beta
-              </motion.button>
-
-              {/* Mobile Social Links */}
-              <div className="flex items-center justify-center gap-6">
-                {socialLinks.map((item, index) => {
-                  const Icon = item.icon
-                  return (
-                    <motion.a
-                      key={item.label}
+            {/* Mobile Footer Info */}
+            <div className="p-8 border-t border-white/5 space-y-6">
+               <div className="flex gap-4 justify-center">
+                  {socialLinks.map((item, i) => (
+                    <a 
+                      key={i} 
                       href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-2 text-[#39FF14] hover:text-[#B3FF66] transition-colors duration-400"
-                      initial={{ y: 30, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ 
-                        delay: index * 0.1 + 0.7, 
-                        duration: 0.5,
-                        ease: [0.16, 1, 0.3, 1]
-                      }}
-                      whileTap={{ scale: 0.95 }}
+                      className="w-12 h-12 flex items-center justify-center border border-white/10 rounded-full text-white hover:border-[#39FF14] hover:text-[#39FF14] transition-colors"
                     >
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-400 bg-[#1A1A1A]/70 border border-[#2E2E2E]/50 hover:border-[#39FF14]/60 hover:bg-[#39FF14]/10">
-                        <Icon size={24} />
-                      </div>
-                      <span className="text-xs font-semibold text-[#AAAAAA]">{item.label}</span>
-                    </motion.a>
-                  )
-                })}
-              </div>
+                      <item.icon size={20} />
+                    </a>
+                  ))}
+               </div>
+               
+               <div className="flex items-center justify-center gap-2 text-xs font-mono text-[#444] uppercase tracking-widest">
+                 <div className="w-2 h-2 bg-[#39FF14] rounded-full animate-pulse" />
+                 System Operational
+               </div>
+            </div>
 
-              {/* World Liberty AI Badge - Mobile */}
-              <motion.div
-                className="flex items-center justify-center gap-2 mt-12 text-[#AAAAAA]"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ 
-                  delay: 1, 
-                  duration: 0.5,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-              >
-                <BiAnalyse className="w-4 h-4 text-[#39FF14]" />
-                <span className="text-sm font-medium">World Liberty AI • Financial Intelligence</span>
-              </motion.div>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
