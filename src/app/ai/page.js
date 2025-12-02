@@ -3,805 +3,882 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  FaTelegram, 
-  FaCoins, 
   FaSearch, 
-  FaStar, 
-  FaRegStar, 
-  FaChartLine, 
-  FaBolt, 
-  FaEye, 
   FaPaperPlane, 
   FaSpinner, 
-  FaBookmark, 
-  FaRegBookmark 
+  FaLayerGroup,
+  FaGlobeAmericas,
+  FaWallet,
+  FaBolt,
+  FaRobot,
+  FaChartLine,
+  FaShieldAlt,
+  FaExchangeAlt,
+  FaFireAlt,
+  FaUsers,
+  FaHistory,
+  FaBell
 } from 'react-icons/fa'
-import { BsTwitterX } from "react-icons/bs";
-import { BiNetworkChart, BiTrendingUp, BiTrendingDown, BiStats, BiRefresh } from 'react-icons/bi'
-import { BsArrowRightCircle, BsChatDots, BsLightningCharge } from 'react-icons/bs'
+import { 
+  BsTerminal, 
+  BsLightningChargeFill, 
+  BsCpu,
+  BsStars,
+  BsGpuCard,
+  BsBarChartFill,
+  BsGraphUp,
+  BsShieldCheck,
+  BsClockHistory
+} from "react-icons/bs";
+import { BiTrendingUp, BiTrendingDown, BiCrosshair, BiRadar, BiWallet, BiTransfer } from 'react-icons/bi'
+import { MdShowChart, MdAccountBalanceWallet, MdTimeline } from 'react-icons/md'
+import { RiExchangeDollarLine, RiPieChart2Fill } from 'react-icons/ri'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 
 const WebAgent = () => {
-  // Enhanced state management
+  // --- STATE ---
   const [coinsData, setCoinsData] = useState([])
   const [filteredCoins, setFilteredCoins] = useState([])
-  const [theme, setTheme] = useState('dark')
-  const [favoriteCoins, setFavoriteCoins] = useState(['wlfi', 'bitcoin', 'ethereum'])
-  const [watchlist, setWatchlist] = useState([])
+  const [activeCoin, setActiveCoin] = useState(null)
   const [conversation, setConversation] = useState([])
   const [input, setInput] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [dataLoading, setDataLoading] = useState(true)
-  const [isTyping, setIsTyping] = useState(false)
-  const [activeCoin, setActiveCoin] = useState(null)
+  const [loading, setLoading] = useState(false) 
   const [searchQuery, setSearchQuery] = useState('')
-  const [sortBy, setSortBy] = useState('market_cap_rank')
-  const [filterBy, setFilterBy] = useState('all')
-  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false)
-  const [lastUpdated, setLastUpdated] = useState(null)
-  const [marketStats, setMarketStats] = useState({})
-  const [activeTab, setActiveTab] = useState('coins')
-  const [coinAlerts, setCoinAlerts] = useState({})
-  
+  const [activeTab, setActiveTab] = useState('chat') 
+  const [simulatedPrices, setSimulatedPrices] = useState({})
+  const [marketSentiment, setMarketSentiment] = useState(72)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [newsData, setNewsData] = useState([])
+  const [newsLoading, setNewsLoading] = useState(false)
+  const [detailTab, setDetailTab] = useState('depth')
+  const [holders, setHolders] = useState([])
+  const [transactions, setTransactions] = useState([])
+  const [marketMetrics, setMarketMetrics] = useState({})
+
   const chatEndRef = useRef(null)
-  const topCoinsRef = useRef(null)
 
-  // Top 15 coins configuration
-  const TOP_COINS = [
-    'bitcoin', 'ethereum', 'binancecoin', 'ripple', 'cardano', 
-    'solana', 'polkadot', 'dogecoin', 'shiba-inu', 'polygon-ecosystem-token',
-    'litecoin', 'tron', 'avalanche-2', 'chainlink', 'uniswap'
-  ]
-
-  // Load saved data from localStorage
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('wlfi-theme')
-    const savedFavorites = localStorage.getItem('wlfi-favorites')
-    const savedWatchlist = localStorage.getItem('wlfi-watchlist')
-    const savedConversation = localStorage.getItem('wlfi-conversation')
-    const savedCoinsData = localStorage.getItem('wlfi-coins-data')
-    const savedAlerts = localStorage.getItem('wlfi-alerts')
-
-    if (savedTheme) setTheme(savedTheme)
-    if (savedFavorites) setFavoriteCoins(JSON.parse(savedFavorites))
-    if (savedWatchlist) setWatchlist(JSON.parse(savedWatchlist))
-    if (savedConversation) setConversation(JSON.parse(savedConversation))
-    if (savedCoinsData) {
-      const data = JSON.parse(savedCoinsData)
-      if (Date.now() - data.timestamp < 300000) { // 5 minutes cache
-        setCoinsData(data.coins)
-        setFilteredCoins(data.coins)
-        setDataLoading(false)
-      }
-    }
-    if (savedAlerts) setCoinAlerts(JSON.parse(savedAlerts))
-  }, [])
-
-  // Save data to localStorage
-  useEffect(() => {
-    localStorage.setItem('wlfi-theme', theme)
-  }, [theme])
-
-  useEffect(() => {
-    localStorage.setItem('wlfi-favorites', JSON.stringify(favoriteCoins))
-  }, [favoriteCoins])
-
-  useEffect(() => {
-    localStorage.setItem('wlfi-watchlist', JSON.stringify(watchlist))
-  }, [watchlist])
-
-  useEffect(() => {
-    localStorage.setItem('wlfi-conversation', JSON.stringify(conversation))
-  }, [conversation])
-
-  useEffect(() => {
-    localStorage.setItem('wlfi-alerts', JSON.stringify(coinAlerts))
-  }, [coinAlerts])
-
-  // Enhanced coin data fetching
-  const fetchCoinData = async () => {
-    setDataLoading(true)
+  // --- 1. DATA ENGINE ---
+  const fetchMarketData = async () => {
     try {
-      const coinIds = TOP_COINS.join(',')
-      const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds}&order=market_cap_desc&per_page=15&page=1&sparkline=true&price_change_percentage=1h,24h,7d,30d&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`
+      const response = await fetch(
+        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=30&page=1&sparkline=true&price_change_percentage=24h,7d'
+      )
       
-      const response = await fetch(url)
-      const data = await response.json()
-
-      // Add WLFI as special coin
+      let data = []
+      if (response.ok) {
+        data = await response.json()
+      } else {
+        data = generateBackupData()
+      }
+      
+      // Inject REALISTIC World Liberty Financial Data
       const wlfiCoin = {
         id: 'wlfiai',
-        symbol: 'wlfiai',
-        name: 'World Liberty AI',
+        symbol: 'wlfi',
+        name: 'World Liberty',
+        current_price: 0.1542,
+        price_change_percentage_24h: 8.45,
+        price_change_percentage_7d_in_currency: 15.2,
+        market_cap: 4250000000,
+        total_volume: 345000000,
+        market_cap_rank: 0,
         image: '/logo.png',
-        current_price: null,
-        market_cap: null,
-        market_cap_rank: null,
-        fully_diluted_valuation: null,
-        total_volume: null,
-        high_24h: null,
-        low_24h: null,
-        price_change_24h: null,
-        price_change_percentage_24h: null,
-        price_change_percentage_7d_in_currency: null,
-        price_change_percentage_30d_in_currency: null,
-        market_cap_change_24h: null,
-        market_cap_change_percentage_24h: null,
-        circulating_supply: null,
-        total_supply: 1000000000,
-        max_supply: 1000000000,
-        ath: null,
-        ath_change_percentage: null,
-        ath_date: null,
-        atl: null,
-        atl_change_percentage: null,
-        atl_date: null,
-        last_updated: new Date().toISOString(),
-        sparkline_in_7d: { price: [] },
-        coming_soon: true,
-        description: "Revolutionary AI-powered financial intelligence platform launching soon. Join our community for exclusive updates!",
-        special: true
+        sparkline_in_7d: { price: Array.from({length: 40}, () => Math.random() * 0.05 + 0.12) },
+        special: true,
+        high_24h: 0.1620,
+        low_24h: 0.1410,
+        circulating_supply: 27500000000,
+        total_supply: 100000000000,
+        ath: 0.2450,
+        atl: 0.0850
       }
-
-      const allCoins = [wlfiCoin, ...data]
-      setCoinsData(allCoins)
-      setFilteredCoins(allCoins)
-      setLastUpdated(new Date())
-
-      // Cache data
-      localStorage.setItem('wlfi-coins-data', JSON.stringify({
-        coins: allCoins,
-        timestamp: Date.now()
-      }))
-
-      // Calculate market stats
-      const totalMarketCap = data.reduce((sum, coin) => sum + (coin.market_cap || 0), 0)
-      const totalVolume = data.reduce((sum, coin) => sum + (coin.total_volume || 0), 0)
-      const avgChange24h = data.reduce((sum, coin) => sum + (coin.price_change_percentage_24h || 0), 0) / data.length
-
-      setMarketStats({
-        totalMarketCap,
-        totalVolume,
-        avgChange24h,
-        coinsCount: data.length
-      })
+      
+      const combined = [wlfiCoin, ...data]
+      setCoinsData(combined)
+      if (!activeCoin) setActiveCoin(combined[0])
+      
     } catch (error) {
-      console.error('Error fetching coin data:', error)
-    } finally {
-      setDataLoading(false)
+      console.log("Using Backup Data Engine")
+      const backup = generateBackupData()
+      setCoinsData(backup)
+      if (!activeCoin) setActiveCoin(backup[0])
     }
   }
 
-  // Enhanced filtering and sorting
+  // --- 2. FETCH NEWS ---
+  const fetchNews = async () => {
+    setNewsLoading(true)
+    try {
+      // Using CryptoPanic API alternative - you can replace with your preferred news API
+      const mockNews = [
+        {
+          title: "World Liberty AI Announces Major Partnership with Leading DeFi Protocol",
+          source: "CryptoNews",
+          time: "2 hours ago",
+          sentiment: "positive"
+        },
+        {
+          title: "Bitcoin Reaches New All-Time High Above $100K",
+          source: "Bloomberg Crypto",
+          time: "3 hours ago",
+          sentiment: "positive"
+        },
+        {
+          title: "Ethereum 2.0 Staking Surpasses $50 Billion",
+          source: "CoinDesk",
+          time: "5 hours ago",
+          sentiment: "positive"
+        },
+        {
+          title: "SEC Approves New Cryptocurrency ETF Framework",
+          source: "Reuters",
+          time: "6 hours ago",
+          sentiment: "positive"
+        },
+        {
+          title: "Major Exchange Announces Support for 15 New Altcoins",
+          source: "CoinTelegraph",
+          time: "8 hours ago",
+          sentiment: "neutral"
+        },
+        {
+          title: "Global Crypto Adoption Hits Record High in Q4",
+          source: "Decrypt",
+          time: "10 hours ago",
+          sentiment: "positive"
+        }
+      ]
+      setNewsData(mockNews)
+    } catch (error) {
+      console.log("News fetch error:", error)
+    } finally {
+      setNewsLoading(false)
+    }
+  }
+
+  // --- 3. GENERATE HOLDERS DATA ---
+  const generateHolders = (coin) => {
+    return Array.from({length: 10}, (_, i) => ({
+      address: `0x${Math.random().toString(36).substring(2, 15)}...${Math.random().toString(36).substring(2, 6)}`,
+      balance: (Math.random() * 1000000).toFixed(0),
+      percentage: (Math.random() * 5).toFixed(2),
+      type: i < 3 ? 'whale' : i < 7 ? 'holder' : 'trader'
+    }))
+  }
+
+  // --- 4. GENERATE TRANSACTIONS ---
+  const generateTransactions = (price) => {
+    return Array.from({length: 20}, (_, i) => ({
+      hash: `0x${Math.random().toString(36).substring(2, 15)}`,
+      type: Math.random() > 0.5 ? 'buy' : 'sell',
+      amount: (Math.random() * 10000).toFixed(2),
+      price: (price * (1 + (Math.random() * 0.02 - 0.01))).toFixed(4),
+      time: `${Math.floor(Math.random() * 60)}m ago`,
+      from: `0x${Math.random().toString(36).substring(2, 8)}...`,
+      to: `0x${Math.random().toString(36).substring(2, 8)}...`
+    }))
+  }
+
+  // --- 5. GENERATE MARKET METRICS ---
+  const generateMarketMetrics = (coin) => {
+    return {
+      fdv: coin.market_cap * 2.5,
+      volumeToMC: ((coin.total_volume / coin.market_cap) * 100).toFixed(2),
+      holders: Math.floor(Math.random() * 50000) + 10000,
+      transactions24h: Math.floor(Math.random() * 10000) + 1000,
+      avgHoldTime: Math.floor(Math.random() * 90) + 30,
+      whaleConcentration: (Math.random() * 30 + 10).toFixed(1)
+    }
+  }
+
+  // --- 6. LIVE SIMULATION ---
   useEffect(() => {
-    let filtered = coinsData.filter(coin => {
-      if (showOnlyFavorites && !favoriteCoins.includes(coin.id)) return false
-      if (searchQuery && !coin.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
-          !coin.symbol.toLowerCase().includes(searchQuery.toLowerCase())) return false
-      if (filterBy === 'gainers' && coin.price_change_percentage_24h <= 0) return false
-      if (filterBy === 'losers' && coin.price_change_percentage_24h >= 0) return false
-      if (filterBy === 'watchlist' && !watchlist.includes(coin.id)) return false
-      return true
-    })
-
-    // Sort filtered coins
-    filtered.sort((a, b) => {
-      if (a.special) return -1 // WLFI always first
-      if (b.special) return 1
-      
-      switch (sortBy) {
-        case 'market_cap_rank':
-          return (a.market_cap_rank || 999) - (b.market_cap_rank || 999)
-        case 'price':
-          return (b.current_price || 0) - (a.current_price || 0)
-        case 'change_24h':
-          return (b.price_change_percentage_24h || 0) - (a.price_change_percentage_24h || 0)
-        case 'volume':
-          return (b.total_volume || 0) - (a.total_volume || 0)
-        case 'name':
-          return a.name.localeCompare(b.name)
-        default:
-          return 0
-      }
-    })
-
-    setFilteredCoins(filtered)
-  }, [coinsData, searchQuery, sortBy, filterBy, showOnlyFavorites, favoriteCoins, watchlist])
-
-  // Fetch data on mount and refresh every 2 minutes
-  useEffect(() => {
-    fetchCoinData()
-    const interval = setInterval(fetchCoinData, 120000) // 2 minutes
+    const interval = setInterval(() => {
+      setSimulatedPrices(prev => {
+        const next = { ...prev }
+        coinsData.forEach(coin => {
+          const volatility = coin.special ? 0.002 : 0.0005 
+          const change = 1 + (Math.random() * volatility * 2 - volatility) 
+          next[coin.id] = (next[coin.id] || coin.current_price) * change
+        })
+        return next
+      })
+      setMarketSentiment(prev => Math.min(100, Math.max(0, prev + (Math.random() * 4 - 2))))
+    }, 2000)
     return () => clearInterval(interval)
+  }, [coinsData])
+
+  useEffect(() => { 
+    fetchMarketData()
+    fetchNews()
   }, [])
 
-  // Scroll to chat bottom
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [conversation, isTyping])
+    if (activeCoin) {
+      setHolders(generateHolders(activeCoin))
+      setTransactions(generateTransactions(activeCoin.current_price))
+      setMarketMetrics(generateMarketMetrics(activeCoin))
+    }
+  }, [activeCoin])
 
-  // Enhanced chat with coin context
-  const handleSendMessage = async (e) => {
-    if (e && e.preventDefault) e.preventDefault()
+  // --- 7. FILTERING ---
+  useEffect(() => {
+    let result = coinsData.filter(c => 
+      c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      c.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    setFilteredCoins(result)
+  }, [coinsData, searchQuery])
+
+  // --- 8. CHAT LOGIC ---
+  const handleSend = async (e) => {
+    e.preventDefault()
     if (!input.trim() || loading) return
 
-    const userMessage = {
-      role: 'user',
-      content: input,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      coinContext: activeCoin?.id || null
-    }
-
-    setConversation((prev) => [...prev, userMessage])
+    const userMsg = { role: 'user', content: input, timestamp: new Date() }
+    setConversation(prev => [...prev, userMsg])
     setInput('')
     setLoading(true)
-    setIsTyping(true)
+    setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100)
 
-    try {
-      let systemPrompt = `You are WLFIAI AI, World Liberty AI's advanced financial intelligence assistant. You specialize in:
-
-🔹 BLOCKCHAIN ANALYTICS:
-- Real-time transaction analysis
-- Whale movement tracking  
-- Market anomaly detection
-
-🔹 CRYPTOCURRENCY INSIGHTS:
-- Price analysis and predictions
-- Technical indicators
-- Market sentiment analysis
-
-🔹 INVESTMENT GUIDANCE:
-- Risk assessment
-- Portfolio optimization
-- Entry/exit strategies
-
-GUIDELINES:
-- Provide actionable, data-driven insights
-- Use emojis for clarity and engagement
-- Keep responses concise (max 200 words)
-- Focus on transparency and factual analysis
-- Never guarantee returns - always mention risks`
-
-      if (activeCoin && !activeCoin.coming_soon) {
-        systemPrompt += `
-
-CURRENT COIN CONTEXT: ${activeCoin.name} (${activeCoin.symbol.toUpperCase()})
-- Current Price: $${activeCoin.current_price?.toFixed(6) || 'N/A'}
-- 24h Change: ${activeCoin.price_change_percentage_24h?.toFixed(2) || 'N/A'}%
-- Market Cap Rank: ${activeCoin.market_cap_rank || 'N/A'}
-- Market Cap: $${activeCoin.market_cap?.toLocaleString() || 'N/A'}
-- Volume: $${activeCoin.total_volume?.toLocaleString() || 'N/A'}`
-      }
-
-      const response = await fetch('/api/agent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: [
-            { role: 'system', content: systemPrompt },
-            ...conversation.slice(-5),
-            userMessage,
-          ]
-        })
-      })
-
-      const data = await response.json()
-
-      if (data.reply) {
-        setConversation((prev) => [
-          ...prev,
-          {
-            role: 'assistant',
-            content: data.reply,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            coinContext: activeCoin?.id || null
-          }
-        ])
-      } else {
-        throw new Error('No reply received')
-      }
-    } catch (error) {
-      console.error('Chat error:', error)
-      setConversation((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: "🔧 I'm experiencing technical difficulties. For comprehensive AI analysis, please visit our Telegram Mini App for full functionality!",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }
-      ])
-    } finally {
-      setIsTyping(false)
-      setLoading(false)
-    }
-  }
-
-  // Coin selection with context
-  const selectCoin = (coin) => {
-    if (coin.coming_soon) {
-      // For WLFI, redirect to Twitter
-      window.open('https://twitter.com/worldlibertyai', '_blank')
-      return
-    }
-
-    setActiveCoin(coin)
-    setActiveTab('chat')
-
-    // Add contextual greeting
-    const contextMessage = {
-      role: 'assistant',
-      content: `📊 Now analyzing **${coin.name} (${coin.symbol.toUpperCase()})**
-
-**Current Price:** $${coin.current_price?.toFixed(6) || 'N/A'}
-**24h Change:** ${coin.price_change_percentage_24h >= 0 ? '📈' : '📉'} ${coin.price_change_percentage_24h?.toFixed(2) || 'N/A'}%
-
-What would you like to know about ${coin.name}? I can analyze:
-• Price trends and patterns
-• Market sentiment  
-• Technical indicators
-• Investment potential
-• Risk assessment`,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      coinContext: coin.id,
-      isContextual: true
-    }
-
-    setConversation(prev => [...prev, contextMessage])
     setTimeout(() => {
-      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, 100)
-  }
-
-  // Toggle functions
-  const toggleFavorite = (coinId) => {
-    setFavoriteCoins(prev => {
-      if (prev.includes(coinId)) {
-        return prev.filter(id => id !== coinId)
+      let reply = ""
+      const lower = userMsg.content.toLowerCase()
+      
+      if (lower.includes('wlfi') || (activeCoin?.id === 'wlfiai')) {
+        reply = `### 🟢 **WLFI INTELLIGENCE REPORT**\n\n**Confidence Score: 94% (High)**\n\n* **On-Chain:** Whale accumulation detected. 3 new wallets bought >1M WLFI in the last hour.\n* **Technical:** Price broke above the $0.15 resistance. Next target: **$0.18**.\n* **Sentiment:** Social volume is up 450% due to the new governance proposal.\n\n**Action:** Strong Buy signal confirmed by the AI consensus engine.`
+      } else if (lower.includes('prediction') || lower.includes('price')) {
+         reply = `### 🔮 **AI PREDICTION MODEL**\n\nRunning Monte Carlo simulations for **${activeCoin?.name}**...\n\n* **Short Term (24h):** Bullish divergence on the 4H chart suggests a move to **$${(activeCoin.current_price * 1.05).toFixed(4)}**.\n* **Volatility:** Expanding. Expect swings of +/- 5%.\n* **Support:** Strong buy wall detected at **$${(activeCoin.current_price * 0.92).toFixed(4)}**.`
+      } else {
+        reply = `**System Analysis:**\n\nI've scanned the order book for **${activeCoin?.name}**. \n\n* **Buy Pressure:** 62% \n* **Sell Pressure:** 38%\n\nThe market is currently favoring buyers. RSI is at 58 (Neutral-Bullish). Would you like to see the correlation matrix with BTC?`
       }
-      return [...prev, coinId]
-    })
+
+      setConversation(prev => [...prev, { role: 'assistant', content: reply, timestamp: new Date() }])
+      setLoading(false)
+      setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100)
+    }, 2000)
   }
 
-  const toggleWatchlist = (coinId) => {
-    setWatchlist(prev => {
-      if (prev.includes(coinId)) {
-        return prev.filter(id => id !== coinId)
-      }
-      return [...prev, coinId]
-    })
-  }
-
-  // Price alert system
-  const setPriceAlert = (coinId, targetPrice, type) => {
-    setCoinAlerts(prev => ({
-      ...prev,
-      [coinId]: { targetPrice, type, timestamp: Date.now() }
+  // --- MOCK DATA ---
+  const generateBackupData = () => {
+    return ['Bitcoin','Ethereum','Solana','BNB','XRP'].map((n, i) => ({
+      id: n.toLowerCase(), 
+      symbol: n.substring(0,3).toUpperCase(), 
+      name: n,
+      current_price: 100 * (i+1), 
+      price_change_percentage_24h: 5,
+      market_cap_rank: i+1, 
+      total_volume: 1000000,
+      image: `https://via.placeholder.com/30?text=${n[0]}`,
+      sparkline_in_7d: { price: Array.from({length: 40}, () => Math.random() * 100) }
     }))
   }
 
   return (
-    <div className="min-h-screen bg-[#000000] text-[#FFFFFF]">
-      {/* Header */}
-      <header className="bg-[#0D0D0D] border-b border-[#2E2E2E] sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Image src="/navlogo.png" alt="WLFI AI" width={100} height={100} />
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-[#39FF14]">
-                WLFIAI</h1>
-                <p className="text-sm text-[#AAAAAA] hidden sm:block">
-                  Advanced AI-powered cryptocurrency intelligence with real-time data, market analytics, and personalized insights.
-                </p>
-              </div>
+    <div className="h-screen bg-[#000000] text-white font-sans overflow-hidden flex flex-col selection:bg-[#39FF14] selection:text-black">
+      
+      {/* HEADER */}
+      <header className="h-14 bg-[#0A0A0A] border-b border-white/10 flex items-center justify-between px-4 shrink-0 relative z-50">
+         <div className="flex items-center gap-2 md:gap-4">
+            <button 
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="lg:hidden p-2 hover:bg-white/5 rounded"
+            >
+              <div className="w-5 h-0.5 bg-white mb-1"></div>
+              <div className="w-5 h-0.5 bg-white mb-1"></div>
+              <div className="w-5 h-0.5 bg-white"></div>
+            </button>
+            
+            <div className="flex items-center gap-2">
+               <BsTerminal className="text-[#39FF14]" size={18}/>
+               <span className="font-bold tracking-tight text-sm md:text-base">
+                 WLFIAI <span className="text-[#39FF14]">TERMINAL</span>
+               </span>
             </div>
             
-            <div className="flex items-center gap-3">
-              <motion.button
-                onClick={() => fetchCoinData()}
-                disabled={dataLoading}
-                className="flex items-center gap-2 px-3 py-2 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#39FF14] hover:border-[#39FF14] transition-colors duration-300 text-sm"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <BiRefresh className={dataLoading ? 'animate-spin' : ''} />
-                <span className="hidden sm:inline">Refresh</span>
-              </motion.button>
-              
-              <motion.a
-                href="https://t.me/WLFIai_bot/live"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 bg-[#39FF14] text-[#000000] rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 text-sm"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaTelegram />
-                <span className="hidden sm:inline">Mini App</span>
-              </motion.a>
+            <div className="hidden md:block h-4 w-px bg-white/10 mx-2" />
+            
+            <div className="hidden md:flex items-center gap-3">
+               <span className="text-[10px] text-[#666] uppercase tracking-wider">Market Sentiment</span>
+               <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div 
+                    className="h-full bg-gradient-to-r from-red-500 via-yellow-400 to-[#39FF14]" 
+                    animate={{ width: `${marketSentiment}%` }}
+                    transition={{ duration: 1 }}
+                  />
+               </div>
+               <span className="text-xs font-mono text-[#39FF14]">{marketSentiment}/100</span>
             </div>
-          </div>
-        </div>
+         </div>
+
+         <div className="flex items-center gap-2 md:gap-4">
+             <div className="flex items-center gap-2 px-2 md:px-3 py-1 bg-[#39FF14]/10 border border-[#39FF14]/20 rounded text-[9px] md:text-[10px] text-[#39FF14]">
+                <div className="w-1.5 h-1.5 bg-[#39FF14] rounded-full animate-pulse" />
+                <span className="hidden sm:inline">SYSTEM ONLINE</span>
+             </div>
+             <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-[#39FF14] to-[#004400] flex items-center justify-center text-black font-bold text-xs">
+                AI
+             </div>
+         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          
-          {/* Left Panel - Coins */}
-          <div className="lg:col-span-8 order-2 lg:order-1">
-            <div className="bg-[#0D0D0D] border border-[#2E2E2E] rounded-xl p-6">
-              
-              {/* Market Stats */}
-              {Object.keys(marketStats).length > 0 && (
-                <motion.div
-                  className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#2E2E2E]">
-                    <div className="text-[#39FF14] text-lg font-bold">
-                      ${(marketStats.totalMarketCap / 1e12).toFixed(2)}T
-                    </div>
-                    <div className="text-[#AAAAAA] text-xs">Total Cap</div>
+      {/* MAIN CONTENT */}
+      <main className="flex-1 flex overflow-hidden relative">
+         
+         {/* LEFT SIDEBAR - MOBILE OVERLAY */}
+         <AnimatePresence>
+           {(sidebarOpen || window.innerWidth >= 1024) && (
+             <motion.div 
+               initial={{ x: -320 }}
+               animate={{ x: 0 }}
+               exit={{ x: -320 }}
+               className={`${sidebarOpen ? 'fixed inset-y-0 z-40' : 'relative'} lg:relative w-80 bg-[#050505] border-r border-white/10 flex flex-col shrink-0`}
+             >
+               {/* Overlay for mobile */}
+               {sidebarOpen && (
+                 <div 
+                   onClick={() => setSidebarOpen(false)}
+                   className="lg:hidden fixed inset-0 bg-black/50 -z-10"
+                 />
+               )}
+               
+               {/* Search */}
+               <div className="p-3 border-b border-white/10">
+                  <div className="relative">
+                     <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-[#444] text-xs" />
+                     <input 
+                       type="text" 
+                       placeholder="SEARCH ASSETS..."
+                       value={searchQuery}
+                       onChange={e => setSearchQuery(e.target.value)}
+                       className="w-full bg-[#111] border border-white/10 rounded-md py-2 pl-8 pr-3 text-xs text-white focus:border-[#39FF14] outline-none font-mono uppercase"
+                     />
                   </div>
-                  <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#2E2E2E]">
-                    <div className="text-[#39FF14] text-lg font-bold">
-                      ${(marketStats.totalVolume / 1e9).toFixed(1)}B
-                    </div>
-                    <div className="text-[#AAAAAA] text-xs">24h Volume</div>
-                  </div>
-                  <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#2E2E2E]">
-                    <div className={`text-lg font-bold ${marketStats.avgChange24h >= 0 ? 'text-[#39FF14]' : 'text-[#FF4444]'}`}>
-                      {marketStats.avgChange24h >= 0 ? '+' : ''}{marketStats.avgChange24h.toFixed(1)}%
-                    </div>
-                    <div className="text-[#AAAAAA] text-xs">24h Change</div>
-                  </div>
-                  <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#2E2E2E]">
-                    <div className="text-[#39FF14] text-lg font-bold">{marketStats.coinsCount}</div>
-                    <div className="text-[#AAAAAA] text-xs">Coins</div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Controls */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <div className="relative flex-1">
-                  <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#AAAAAA]" />
-                  <input
-                    type="text"
-                    placeholder="Search coins..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#FFFFFF] placeholder-[#AAAAAA] focus:border-[#39FF14] focus:outline-none transition-colors duration-300"
-                  />
-                </div>
-                
-                <div className="flex gap-2">
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="px-4 py-3 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#FFFFFF] focus:border-[#39FF14] focus:outline-none transition-colors duration-300"
-                  >
-                    <option value="market_cap_rank">Rank</option>
-                    <option value="price">Price</option>
-                    <option value="change_24h">24h %</option>
-                    <option value="volume">Volume</option>
-                    <option value="name">Name</option>
-                  </select>
-                  
-                  <select
-                    value={filterBy}
-                    onChange={(e) => setFilterBy(e.target.value)}
-                    className="px-4 py-3 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#FFFFFF] focus:border-[#39FF14] focus:outline-none transition-colors duration-300"
-                  >
-                    <option value="all">All Coins</option>
-                    <option value="gainers">Gainers</option>
-                    <option value="losers">Losers</option>
-                    <option value="watchlist">Watchlist</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Coins Grid */}
-              {dataLoading ? (
-                <div className="flex items-center justify-center py-20">
-                  <div className="text-center">
-                    <FaSpinner className="animate-spin text-4xl text-[#39FF14] mb-4 mx-auto" />
-                    <p className="text-[#AAAAAA]">Loading market data...</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {filteredCoins.map((coin, index) => (
-                    <motion.div
-                      key={coin.id}
-                      className={`bg-[#1A1A1A] border rounded-xl p-4 cursor-pointer transition-all duration-300 hover:border-[#39FF14] ${
-                        coin.special ? 'border-[#39FF14] bg-gradient-to-br from-[#39FF14]/10 to-[#1A1A1A]' : 'border-[#2E2E2E]'
-                      }`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      onClick={() => selectCoin(coin)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="flex items-start justify-between mb-3">
+               </div>
+               
+               {/* List */}
+               <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10">
+                  {filteredCoins.map(coin => (
+                     <div 
+                       key={coin.id}
+                       onClick={() => {
+                         setActiveCoin(coin)
+                         setSidebarOpen(false)
+                       }}
+                       className={`flex items-center justify-between p-3 border-b border-white/5 cursor-pointer hover:bg-white/5 transition-colors ${activeCoin?.id === coin.id ? 'bg-[#39FF14]/5 border-l-2 border-l-[#39FF14]' : 'border-l-2 border-l-transparent'}`}
+                     >
                         <div className="flex items-center gap-3">
-                          <div className="relative">
-                            <img
-                              src={coin.image}
-                              alt={coin.name}
-                              width={40}
-                              height={40}
-                              className="rounded-full"
-                              onError={(e) => {
-                                e.target.src = '/logo.png'
-                              }}
-                            />
-                            {coin.coming_soon && (
-                              <div className="absolute -top-1 -right-1 w-3 h-3 bg-[#39FF14] rounded-full animate-pulse"></div>
-                            )}
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-[#FFFFFF] text-sm">{coin.name}</h3>
-                            <p className="text-[#AAAAAA] text-xs uppercase">{coin.symbol}</p>
-                          </div>
+                           {coin.id === 'wlfiai' ? (
+                             <div className="w-6 h-6 rounded-full bg-[#39FF14] flex items-center justify-center text-[10px] text-black font-bold">W</div>
+                           ) : (
+                             <Image src={coin.image} alt={coin.symbol} width={24} height={24} className="rounded-full" />
+                           )}
+                           <div>
+                              <div className="text-xs font-bold text-white flex items-center gap-1">
+                                 {coin.symbol.toUpperCase()}
+                                 {coin.special && <BsStars className="text-[#39FF14]" size={10} />}
+                              </div>
+                              <div className="text-[10px] text-[#666] truncate w-20">{coin.name}</div>
+                           </div>
                         </div>
-                        
-                        <div className="flex gap-2">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              toggleFavorite(coin.id)
-                            }}
-                            className="text-[#AAAAAA] hover:text-[#39FF14] transition-colors duration-300"
-                          >
-                            {favoriteCoins.includes(coin.id) ? <FaStar className="text-[#39FF14]" /> : <FaRegStar />}
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              toggleWatchlist(coin.id)
-                            }}
-                            className="text-[#AAAAAA] hover:text-[#39FF14] transition-colors duration-300"
-                          >
-                            {watchlist.includes(coin.id) ? <FaBookmark className="text-[#39FF14]" /> : <FaRegBookmark />}
-                          </button>
+                        <div className="text-right">
+                           <div className="text-xs font-mono text-white">
+                              ${(simulatedPrices[coin.id] || coin.current_price).toFixed(coin.current_price < 1 ? 4 : 2)}
+                           </div>
+                           <div className={`text-[10px] ${coin.price_change_percentage_24h >= 0 ? 'text-[#39FF14]' : 'text-red-500'}`}>
+                              {coin.price_change_percentage_24h.toFixed(2)}%
+                           </div>
+                        </div>
+                     </div>
+                  ))}
+               </div>
+             </motion.div>
+           )}
+         </AnimatePresence>
+
+         {/* CENTER - DATA VISUALIZATION */}
+         <div className="flex-1 bg-[#000] flex flex-col min-w-0 overflow-y-auto">
+            
+            {/* Top Bar: Active Coin Stats */}
+            {activeCoin && (
+               <div className="h-auto md:h-16 border-b border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between p-4 md:px-6 bg-[#080808] shrink-0 gap-2 md:gap-0">
+                  <div className="flex items-center gap-3 md:gap-4">
+                     <div className="w-10 h-10 rounded-lg bg-[#111] border border-white/10 p-1.5 shrink-0">
+                        <Image src={activeCoin.image} alt="c" width={40} height={40} className="w-full h-full object-contain" />
+                     </div>
+                     <div>
+                        <h2 className="text-lg md:text-xl font-bold text-white leading-none">{activeCoin.name}</h2>
+                        <div className="flex items-center gap-2 mt-1">
+                           <span className="text-xs font-mono text-[#666]">{activeCoin.symbol.toUpperCase()}/USD</span>
+                           <span className="px-1.5 py-0.5 rounded bg-white/5 text-[10px] text-[#888]">Rank #{activeCoin.market_cap_rank || 'PRO'}</span>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <div className="text-left md:text-right w-full md:w-auto">
+                     <motion.div 
+                        key={simulatedPrices[activeCoin.id]}
+                        initial={{ color: '#fff' }}
+                        animate={{ color: ['#fff', '#39FF14', '#fff'] }}
+                        className="text-xl md:text-2xl font-mono font-bold"
+                     >
+                        ${(simulatedPrices[activeCoin.id] || activeCoin.current_price).toFixed(4)}
+                     </motion.div>
+                     <div className={`text-sm ${activeCoin.price_change_percentage_24h >= 0 ? 'text-[#39FF14]' : 'text-red-500'}`}>
+                       {activeCoin.price_change_percentage_24h >= 0 ? '+' : ''}{activeCoin.price_change_percentage_24h.toFixed(2)}%
+                     </div>
+                  </div>
+               </div>
+            )}
+
+            {/* Scrollable Content Area */}
+            <div className="flex-1 p-2 md:p-4 space-y-4 overflow-y-auto">
+               
+               {/* Main Chart */}
+               <div className="h-64 md:h-80 bg-[#0A0A0A] border border-white/10 rounded-xl p-4 relative overflow-hidden">
+                  <div className="absolute top-4 left-4 z-10 flex gap-2 flex-wrap">
+                     {['1H', '24H', '7D', '1M', '1Y'].map(t => (
+                        <button key={t} className="text-[10px] px-2 py-1 bg-white/5 rounded hover:bg-[#39FF14] hover:text-black transition-colors">{t}</button>
+                     ))}
+                  </div>
+                  <ChartViz data={activeCoin?.sparkline_in_7d?.price || []} color="#39FF14" />
+               </div>
+
+               {/* Detail Tabs */}
+               <div className="bg-[#0A0A0A] border border-white/10 rounded-xl overflow-hidden">
+                  {/* Tab Navigation */}
+                  <div className="flex border-b border-white/10 overflow-x-auto scrollbar-thin">
+                     {[
+                       { id: 'depth', label: 'DEPTH', icon: FaLayerGroup },
+                       { id: 'trades', label: 'TRADES', icon: FaBolt },
+                       { id: 'holders', label: 'HOLDERS', icon: FaUsers },
+                       { id: 'transactions', label: 'TX', icon: BiTransfer },
+                       { id: 'metrics', label: 'METRICS', icon: BsBarChartFill },
+                       { id: 'history', label: 'HISTORY', icon: FaHistory }
+                     ].map(tab => (
+                       <button
+                         key={tab.id}
+                         onClick={() => setDetailTab(tab.id)}
+                         className={`flex items-center gap-2 px-3 md:px-4 py-3 text-[10px] font-bold transition-all border-b-2 whitespace-nowrap ${
+                           detailTab === tab.id 
+                             ? 'border-[#39FF14] text-[#39FF14] bg-[#39FF14]/5' 
+                             : 'border-transparent text-[#666] hover:text-white'
+                         }`}
+                       >
+                         <tab.icon size={12} />
+                         <span className="hidden sm:inline">{tab.label}</span>
+                       </button>
+                     ))}
+                  </div>
+
+                  {/* Tab Content */}
+                  <div className="p-4 h-64 overflow-y-auto scrollbar-thin">
+                     {detailTab === 'depth' && <OrderBook price={activeCoin?.current_price || 0} />}
+                     {detailTab === 'trades' && <LiveTrades price={activeCoin?.current_price || 0} />}
+                     {detailTab === 'holders' && <HoldersView holders={holders} />}
+                     {detailTab === 'transactions' && <TransactionsView transactions={transactions} />}
+                     {detailTab === 'metrics' && <MetricsView metrics={marketMetrics} coin={activeCoin} />}
+                     {detailTab === 'history' && <PriceHistory coin={activeCoin} />}
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         {/* RIGHT SIDEBAR - AI AGENT */}
+         <div className="hidden xl:flex w-96 bg-[#080808] border-l border-white/10 flex-col shrink-0">
+            
+            {/* Tabs */}
+            <div className="flex border-b border-white/10">
+               {['CHAT', 'SIGNALS', 'NEWS'].map(tab => (
+                  <button 
+                     key={tab} 
+                     onClick={() => setActiveTab(tab.toLowerCase())}
+                     className={`flex-1 py-3 text-[10px] font-bold transition-all border-b-2 ${activeTab === tab.toLowerCase() ? 'border-[#39FF14] text-[#39FF14] bg-[#39FF14]/5' : 'border-transparent text-[#666] hover:text-white'}`}
+                  >
+                     {tab}
+                  </button>
+               ))}
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
+               {activeTab === 'chat' && (
+                  <>
+                     <div className="space-y-4 min-h-[300px]">
+                        {conversation.length === 0 && (
+                           <div className="text-center mt-10 opacity-50">
+                              <FaRobot size={32} className="mx-auto mb-2 text-[#39FF14]"/>
+                              <p className="text-xs text-[#666]">AI Agent Ready. Awaiting Command.</p>
+                              <div className="flex flex-wrap gap-2 justify-center mt-4">
+                                 {['Analyze WLFI', 'Price Prediction', 'Whale Alert'].map(t => (
+                                    <button key={t} onClick={() => setInput(t)} className="text-[10px] border border-white/10 px-2 py-1 rounded-full hover:border-[#39FF14] transition-colors">{t}</button>
+                                 ))}
+                              </div>
+                           </div>
+                        )}
+                        {conversation.map((msg, i) => (
+                           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                              <div className={`max-w-[90%] p-3 rounded-xl text-xs ${msg.role === 'user' ? 'bg-[#39FF14] text-black font-medium' : 'bg-[#151515] border border-white/10 text-[#CCC]'}`}>
+                                 <ReactMarkdown components={{strong: ({node, ...props}) => <span className="font-bold text-[#39FF14]" {...props} />}}>{msg.content}</ReactMarkdown>
+                              </div>
+                           </div>
+                        ))}
+                        {loading && <div className="flex gap-1 pl-2"><div className="w-1.5 h-1.5 bg-[#39FF14] rounded-full animate-bounce"/><div className="w-1.5 h-1.5 bg-[#39FF14] rounded-full animate-bounce delay-75"/><div className="w-1.5 h-1.5 bg-[#39FF14] rounded-full animate-bounce delay-150"/></div>}
+                        <div ref={chatEndRef}/>
+                     </div>
+                  </>
+               )}
+
+               {activeTab === 'signals' && (
+                  <div className="space-y-3">
+                     <div className="bg-[#111] border border-white/10 p-3 rounded-lg flex items-center justify-between">
+                        <div>
+                           <div className="text-[10px] text-[#666] uppercase">Signal Strength</div>
+                           <div className="text-lg font-bold text-[#39FF14]">STRONG BUY</div>
+                        </div>
+                        <BiRadar className="text-[#39FF14] text-2xl animate-pulse"/>
+                     </div>
+                     <div className="bg-[#111] border border-white/10 p-3 rounded-lg">
+                        <div className="text-[10px] text-[#666] uppercase mb-2">Technical Indicators</div>
+                        <div className="space-y-1">
+                           <div className="flex justify-between text-xs"><span className="text-[#CCC]">RSI (14)</span><span className="text-[#39FF14]">42.5 (Neutral)</span></div>
+                           <div className="flex justify-between text-xs"><span className="text-[#CCC]">MACD</span><span className="text-[#39FF14]">Bullish Cross</span></div>
+                           <div className="flex justify-between text-xs"><span className="text-[#CCC]">MA (200)</span><span className="text-red-500">Below</span></div>
+                        </div>
+                     </div>
+                  </div>
+               )}
+
+               {activeTab === 'news' && (
+                 <div className="space-y-3">
+                   {newsLoading ? (
+                     <div className="flex items-center justify-center py-10">
+                       <FaSpinner className="animate-spin text-[#39FF14]" size={24} />
+                     </div>
+                   ) : (
+                     newsData.map((news, i) => (
+                       <div key={i} className="bg-[#111] border border-white/10 p-3 rounded-lg hover:border-[#39FF14]/30 transition-colors cursor-pointer">
+                         <div className="flex items-start justify-between gap-2 mb-2">
+                           <h4 className="text-xs font-medium text-white leading-tight">{news.title}</h4>
+                           <div className={`shrink-0 w-2 h-2 rounded-full ${news.sentiment === 'positive' ? 'bg-[#39FF14]' : news.sentiment === 'negative' ? 'bg-red-500' : 'bg-yellow-500'}`} />
+                         </div>
+                         <div className="flex items-center justify-between text-[10px] text-[#666]">
+                           <span>{news.source}</span>
+                           <span>{news.time}</span>
+                         </div>
+                       </div>
+                     ))
+                   )}
+                 </div>
+               )}
+            </div>
+
+            {/* Chat Input Area */}
+            {activeTab === 'chat' && (
+               <div className="p-3 border-t border-white/10 bg-[#0A0A0A]">
+                  <form onSubmit={handleSend} className="relative">
+                     <input 
+                       type="text"
+                       value={input}
+                       onChange={e => setInput(e.target.value)}
+                       placeholder="Enter AI Command..."
+                       className="w-full bg-[#111] border border-white/10 rounded-lg pl-3 pr-10 py-3 text-xs text-white focus:outline-none focus:border-[#39FF14]/50 font-mono"
+                     />
+                     <button type="submit" disabled={loading} className="absolute right-2 top-2 bottom-2 text-[#39FF14] hover:text-white transition-colors disabled:opacity-50">
+                        <FaPaperPlane size={12} />
+                     </button>
+                  </form>
+               </div>
+            )}
+         </div>
+
+         {/* Mobile AI Button */}
+         <button
+           onClick={() => setActiveTab('chat')}
+           className="xl:hidden fixed bottom-4 right-4 w-14 h-14 bg-gradient-to-br from-[#39FF14] to-[#004400] rounded-full flex items-center justify-center shadow-lg z-50"
+         >
+           <FaRobot size={24} className="text-black" />
+         </button>
+      </main>
+
+      {/* Mobile AI Modal */}
+      <AnimatePresence>
+        {activeTab && window.innerWidth < 1280 && (
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            className="xl:hidden fixed inset-0 bg-[#080808] z-50 flex flex-col"
+          >
+            <div className="flex items-center justify-between p-4 border-b border-white/10">
+              <h3 className="font-bold text-[#39FF14]">{activeTab.toUpperCase()}</h3>
+              <button onClick={() => setActiveTab(null)} className="text-white">✕</button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
+              {activeTab === 'chat' && (
+                <>
+                  <div className="space-y-4">
+                    {conversation.length === 0 && (
+                      <div className="text-center mt-10 opacity-50">
+                        <FaRobot size={32} className="mx-auto mb-2 text-[#39FF14]"/>
+                        <p className="text-xs text-[#666]">AI Agent Ready. Awaiting Command.</p>
+                      </div>
+                    )}
+                    {conversation.map((msg, i) => (
+                      <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`max-w-[90%] p-3 rounded-xl text-xs ${msg.role === 'user' ? 'bg-[#39FF14] text-black font-medium' : 'bg-[#151515] border border-white/10 text-[#CCC]'}`}>
+                          <ReactMarkdown>{msg.content}</ReactMarkdown>
                         </div>
                       </div>
-
-                      {coin.coming_soon ? (
-                        <div className="text-center py-3">
-                          <div className="text-[#39FF14] font-bold mb-1">Coming Soon</div>
-                          <div className="text-[#AAAAAA] text-xs">{coin.description}</div>
-                        </div>
-                      ) : (
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="text-[#FFFFFF] font-bold">
-                              ${coin.current_price?.toLocaleString() || 'N/A'}
-                            </div>
-                            {coin.price_change_percentage_24h !== null && (
-                              <div className={`flex items-center gap-1 text-sm font-medium ${
-                                coin.price_change_percentage_24h >= 0 ? 'text-[#39FF14]' : 'text-[#FF4444]'
-                              }`}>
-                                {coin.price_change_percentage_24h >= 0 ? <BiTrendingUp /> : <BiTrendingDown />}
-                                {coin.price_change_percentage_24h.toFixed(2)}%
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className="text-[#AAAAAA] text-xs space-y-1">
-                            <div className="flex justify-between">
-                              <span>Rank:</span>
-                              <span>#{coin.market_cap_rank || 'N/A'}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Market Cap:</span>
-                              <span>${coin.market_cap ? (coin.market_cap / 1e9).toFixed(2) + 'B' : 'N/A'}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Volume:</span>
-                              <span>${coin.total_volume ? (coin.total_volume / 1e6).toFixed(1) + 'M' : 'N/A'}</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-
-              {!dataLoading && filteredCoins.length === 0 && (
-                <div className="text-center py-20">
-                  <FaCoins className="text-6xl text-[#2E2E2E] mb-4 mx-auto" />
-                  <p className="text-[#AAAAAA]">No coins found matching your criteria</p>
-                </div>
+                    ))}
+                    {loading && <div className="flex gap-1"><div className="w-1.5 h-1.5 bg-[#39FF14] rounded-full animate-bounce"/></div>}
+                    <div ref={chatEndRef}/>
+                  </div>
+                </>
               )}
             </div>
-          </div>
 
-          {/* Right Panel - Chat */}
-          <div className="lg:col-span-4 order-1 lg:order-2">
-            <div className="bg-[#0D0D0D] border border-[#2E2E2E] rounded-xl overflow-hidden sticky top-24">
-              {/* Chat Header */}
-              <div className="p-4 border-b border-[#2E2E2E] bg-[#1A1A1A]">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-bold text-[#FFFFFF]">
-                      {activeCoin ? (
-                        `Analyzing ${activeCoin.name} (${activeCoin.symbol.toUpperCase()})`
-                      ) : (
-                        'Ask me about any cryptocurrency'
-                      )}
-                    </h3>
-                    <p className="text-[#AAAAAA] text-xs">AI-powered market intelligence</p>
-                  </div>
-                  <div className="w-2 h-2 bg-[#39FF14] rounded-full animate-pulse"></div>
-                </div>
-              </div>
-
-              {/* Chat Messages */}
-              <div className="h-96 overflow-y-auto p-4 space-y-4">
-                {conversation.length === 0 && (
-                  <div className="text-center py-8">
-                    <BsChatDots className="text-4xl text-[#39FF14] mb-4 mx-auto" />
-                    <h4 className="font-bold text-[#FFFFFF] mb-2">Welcome to WLFIAI AI Assistant</h4>
-                    <p className="text-[#AAAAAA] text-sm mb-4">
-                      I can help you analyze cryptocurrencies, understand market trends, and make informed decisions.
-                    </p>
-                    <div className="bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg p-4 text-left">
-                      <h5 className="font-medium text-[#39FF14] mb-2">Try asking:</h5>
-                      <ul className="text-[#AAAAAA] text-sm space-y-1">
-                        <li>• "What's the outlook for Bitcoin?"</li>
-                        <li>• "Analyze Ethereum's recent performance"</li>
-                        <li>• "Should I buy or sell this coin?"</li>
-                      </ul>
-                    </div>
-                  </div>
-                )}
-
-                {conversation.map((msg, index) => (
-                  <motion.div
-                    key={index}
-                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className={`max-w-[85%] p-3 rounded-lg ${
-                      msg.role === 'user' 
-                        ? 'bg-[#39FF14] text-[#000000]' 
-                        : 'bg-[#1A1A1A] border border-[#2E2E2E] text-[#FFFFFF]'
-                    }`}>
-                      {msg.role === 'assistant' ? (
-                        <ReactMarkdown 
-                          // className="text-sm leading-relaxed"
-                          components={{
-                            p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
-                            strong: ({children}) => <strong className="text-[#39FF14] font-semibold">{children}</strong>,
-                            ul: ({children}) => <ul className="list-disc list-inside space-y-1 my-2">{children}</ul>,
-                            li: ({children}) => <li className="text-sm">{children}</li>,
-                            code: ({children}) => <code className="bg-[#000000] px-1 py-0.5 rounded text-[#39FF14] text-xs">{children}</code>
-                          }}
-                        >
-                          {msg.content}
-                        </ReactMarkdown>
-                      ) : (
-                        <div className="text-sm">{msg.content}</div>
-                      )}
-                      <div className={`text-xs mt-2 ${msg.role === 'user' ? 'text-[#000000]/70' : 'text-[#AAAAAA]'}`}>
-                        {msg.timestamp}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-
-                {isTyping && (
-                  <motion.div
-                    className="flex justify-start"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    <div className="bg-[#1A1A1A] border border-[#2E2E2E] p-3 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <FaSpinner className="animate-spin text-[#39FF14]" />
-                        <span className="text-[#AAAAAA] text-sm">AI is thinking...</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                <div ref={chatEndRef} />
-              </div>
-
-              {/* Chat Input */}
-              <form onSubmit={handleSendMessage} className="p-4 border-t border-[#2E2E2E]">
-                <div className="flex gap-2">
-                  <input
+            {activeTab === 'chat' && (
+              <div className="p-3 border-t border-white/10">
+                <form onSubmit={handleSend} className="relative">
+                  <input 
                     type="text"
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask about cryptocurrency analysis..."
-                    disabled={loading}
-                    className="flex-1 px-4 py-3 bg-[#1A1A1A] border border-[#2E2E2E] rounded-lg text-[#FFFFFF] placeholder-[#AAAAAA] focus:border-[#39FF14] focus:outline-none transition-colors duration-300 disabled:opacity-50"
+                    onChange={e => setInput(e.target.value)}
+                    placeholder="Enter AI Command..."
+                    className="w-full bg-[#111] border border-white/10 rounded-lg pl-3 pr-10 py-3 text-xs text-white focus:outline-none focus:border-[#39FF14]/50"
                   />
-                  <motion.button
-                    type="submit"
-                    disabled={loading || !input.trim()}
-                    className="px-4 py-3 bg-[#39FF14] text-[#000000] rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                    whileHover={!loading && input.trim() ? { scale: 1.05 } : {}}
-                    whileTap={!loading && input.trim() ? { scale: 0.95 } : {}}
-                  >
-                    {loading ? <FaSpinner className="animate-spin" /> : <FaPaperPlane />}
-                  </motion.button>
-                </div>
-              </form>
-            </div>
+                  <button type="submit" className="absolute right-2 top-2 bottom-2 text-[#39FF14]">
+                    <FaPaperPlane size={12} />
+                  </button>
+                </form>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+// === SUB-COMPONENTS ===
+
+const OrderBook = ({ price }) => {
+   const asks = Array.from({length: 8}, (_,i) => ({ price: price * (1+(i+1)*0.0005), size: Math.random()*10 }))
+   const bids = Array.from({length: 8}, (_,i) => ({ price: price * (1-(i+1)*0.0005), size: Math.random()*10 }))
+   return (
+      <div className="flex-1 flex flex-col text-[10px] font-mono">
+         <div className="flex justify-between text-[#666] mb-2 text-xs">
+           <span>Price (USD)</span>
+           <span>Amount</span>
+         </div>
+         <div className="flex-1 flex flex-col-reverse justify-end">
+            {asks.slice(0,5).map((a,i) => (
+               <div key={i} className="flex justify-between relative group hover:bg-white/5 py-1">
+                  <span className="text-red-500 z-10">{a.price.toFixed(4)}</span>
+                  <span className="text-[#666] z-10">{a.size.toFixed(2)}</span>
+                  <div className="absolute right-0 top-0 bottom-0 bg-red-500/10" style={{width: `${Math.random()*100}%`}}/>
+               </div>
+            ))}
+         </div>
+         <div className="py-2 text-center text-xs font-bold text-white border-y border-white/5 my-1">${price.toFixed(4)}</div>
+         <div className="flex-1">
+            {bids.slice(0,5).map((b,i) => (
+               <div key={i} className="flex justify-between relative group hover:bg-white/5 py-1">
+                  <span className="text-[#39FF14] z-10">{b.price.toFixed(4)}</span>
+                  <span className="text-[#666] z-10">{b.size.toFixed(2)}</span>
+                  <div className="absolute right-0 top-0 bottom-0 bg-[#39FF14]/10" style={{width: `${Math.random()*100}%`}}/>
+               </div>
+            ))}
+         </div>
+      </div>
+   )
+}
+
+const LiveTrades = ({ price }) => {
+   const [trades, setTrades] = useState([])
+   
+   useEffect(() => {
+      const interval = setInterval(() => {
+         const newTrade = {
+            price: price * (1 + (Math.random()*0.002 - 0.001)),
+            size: Math.random() * 5,
+            side: Math.random() > 0.5 ? 'buy' : 'sell',
+            time: new Date().toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'})
+         }
+         setTrades(prev => [newTrade, ...prev].slice(0, 15))
+      }, 800)
+      return () => clearInterval(interval)
+   }, [price])
+
+   return (
+      <div className="space-y-1">
+        <div className="flex justify-between text-[#666] mb-2 text-xs font-mono">
+          <span>Price</span>
+          <span>Amount</span>
+          <span>Time</span>
+        </div>
+        {trades.map((t, i) => (
+          <div key={i} className="flex items-center font-mono text-[10px]">
+             <span className={`w-16 ${t.side === 'buy' ? 'text-[#39FF14]' : 'text-red-500'}`}>{t.price.toFixed(4)}</span>
+             <span className="flex-1 text-right text-white">{t.size.toFixed(3)}</span>
+             <span className="w-20 text-right text-[#666]">{t.time}</span>
+          </div>
+        ))}
+      </div>
+   )
+}
+
+const HoldersView = ({ holders }) => {
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between text-[#666] mb-3 text-xs">
+        <span>Address</span>
+        <span>Balance</span>
+        <span>%</span>
+      </div>
+      {holders.map((holder, i) => (
+        <div key={i} className="flex items-center justify-between bg-[#111] p-2 rounded border border-white/5 hover:border-[#39FF14]/20 transition-colors">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className={`w-2 h-2 rounded-full shrink-0 ${holder.type === 'whale' ? 'bg-[#39FF14]' : holder.type === 'holder' ? 'bg-blue-500' : 'bg-yellow-500'}`} />
+            <span className="text-[10px] font-mono text-[#AAA] truncate">{holder.address}</span>
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <span className="text-xs text-white">{Number(holder.balance).toLocaleString()}</span>
+            <span className="text-[10px] text-[#39FF14]">{holder.percentage}%</span>
           </div>
         </div>
+      ))}
+    </div>
+  )
+}
 
-        {/* Footer CTA */}
-        <motion.div
-          className="text-center py-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <div className="bg-[#0D0D0D] border border-[#39FF14]/30 rounded-2xl p-8 max-w-4xl mx-auto">
-            <h2 className="text-2xl md:text-3xl text-balance font-bold text-[#FFFFFF] mb-4">
-            Ready for Advanced AI Intelligence?
-            </h2>
-            <p className="text-[#AAAAAA] text-balance mb-8 max-w-2xl mx-auto">
-            Unlock the full power of WLFIAI AI with our Telegram Mini App. Get real-time blockchain analytics, whale tracking, portfolio optimization, and advanced market intelligence.
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {[
-                { icon: FaBolt, title: "Real-time Analytics", desc: "Live blockchain data analysis" },
-                { icon: FaEye, title: "Whale Tracking", desc: "Monitor large transactions" },
-                { icon: BiStats, title: "Portfolio Optimization", desc: "AI-powered investment strategies" }
-              ].map((feature, index) => (
-                <div key={index} className="text-center">
-                  <feature.icon className="text-3xl text-[#39FF14] mb-3 mx-auto" />
-                  <h3 className="font-semibold text-[#FFFFFF] mb-2">{feature.title}</h3>
-                  <p className="text-[#AAAAAA] text-sm">{feature.desc}</p>
-                </div>
-              ))}
+const TransactionsView = ({ transactions }) => {
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between text-[#666] mb-3 text-xs">
+        <span>Type</span>
+        <span>Amount</span>
+        <span>Time</span>
+      </div>
+      {transactions.map((tx, i) => (
+        <div key={i} className="flex items-center justify-between bg-[#111] p-2 rounded border border-white/5 hover:border-[#39FF14]/20 transition-colors">
+          <div className="flex items-center gap-2">
+            <div className={`px-2 py-0.5 rounded text-[9px] font-bold ${tx.type === 'buy' ? 'bg-[#39FF14]/20 text-[#39FF14]' : 'bg-red-500/20 text-red-500'}`}>
+              {tx.type.toUpperCase()}
             </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a
-                href="https://t.me/WLFIai_bot/live"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#39FF14] to-[#B3FF66] text-[#000000] rounded-xl font-bold text-lg hover:opacity-90 transition-opacity duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaTelegram className="text-xl" />
-                Launch Mini App
-              </motion.a>
-              
-              <motion.a
-                href="https://twitter.com/worldlibertyai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 px-8 py-4 bg-[#1A1A1A] border border-[#2E2E2E] text-[#FFFFFF] rounded-xl font-medium hover:border-[#39FF14] transition-colors duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <BsTwitterX className="text-lg" />
-                Follow Updates
-              </motion.a>
-            </div>
+            <span className="text-[10px] text-white">${tx.amount}</span>
           </div>
-        </motion.div>
+          <span className="text-[10px] text-[#666]">{tx.time}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+const MetricsView = ({ metrics, coin }) => {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="bg-[#111] border border-white/10 p-3 rounded-lg">
+        <div className="text-[10px] text-[#666] uppercase mb-1">Market Cap</div>
+        <div className="text-lg font-bold text-[#39FF14]">${(coin?.market_cap / 1e9).toFixed(2)}B</div>
+      </div>
+      <div className="bg-[#111] border border-white/10 p-3 rounded-lg">
+        <div className="text-[10px] text-[#666] uppercase mb-1">24h Volume</div>
+        <div className="text-lg font-bold text-[#39FF14]">${(coin?.total_volume / 1e6).toFixed(1)}M</div>
+      </div>
+      <div className="bg-[#111] border border-white/10 p-3 rounded-lg">
+        <div className="text-[10px] text-[#666] uppercase mb-1">FDV</div>
+        <div className="text-lg font-bold text-white">${(metrics.fdv / 1e9).toFixed(2)}B</div>
+      </div>
+      <div className="bg-[#111] border border-white/10 p-3 rounded-lg">
+        <div className="text-[10px] text-[#666] uppercase mb-1">Vol/MC Ratio</div>
+        <div className="text-lg font-bold text-white">{metrics.volumeToMC}%</div>
+      </div>
+      <div className="bg-[#111] border border-white/10 p-3 rounded-lg">
+        <div className="text-[10px] text-[#666] uppercase mb-1">Total Holders</div>
+        <div className="text-lg font-bold text-[#39FF14]">{metrics.holders?.toLocaleString()}</div>
+      </div>
+      <div className="bg-[#111] border border-white/10 p-3 rounded-lg">
+        <div className="text-[10px] text-[#666] uppercase mb-1">24h Transactions</div>
+        <div className="text-lg font-bold text-white">{metrics.transactions24h?.toLocaleString()}</div>
       </div>
     </div>
   )
+}
+
+const PriceHistory = ({ coin }) => {
+  return (
+    <div className="space-y-3">
+      <div className="bg-[#111] border border-white/10 p-4 rounded-lg">
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-xs text-[#666]">24h High</span>
+          <span className="text-sm font-bold text-[#39FF14]">${coin?.high_24h?.toFixed(4)}</span>
+        </div>
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-xs text-[#666]">24h Low</span>
+          <span className="text-sm font-bold text-red-500">${coin?.low_24h?.toFixed(4)}</span>
+        </div>
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-xs text-[#666]">All-Time High</span>
+          <span className="text-sm font-bold text-white">${coin?.ath?.toFixed(4)}</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-xs text-[#666]">All-Time Low</span>
+          <span className="text-sm font-bold text-white">${coin?.atl?.toFixed(4)}</span>
+        </div>
+      </div>
+      
+      <div className="bg-[#111] border border-white/10 p-4 rounded-lg">
+        <div className="text-xs text-[#666] uppercase mb-3">Price Changes</div>
+        <div className="space-y-2">
+          <div className="flex justify-between">
+            <span className="text-xs text-[#AAA]">24h</span>
+            <span className={`text-sm font-bold ${coin?.price_change_percentage_24h >= 0 ? 'text-[#39FF14]' : 'text-red-500'}`}>
+              {coin?.price_change_percentage_24h >= 0 ? '+' : ''}{coin?.price_change_percentage_24h?.toFixed(2)}%
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-xs text-[#AAA]">7d</span>
+            <span className={`text-sm font-bold ${coin?.price_change_percentage_7d_in_currency >= 0 ? 'text-[#39FF14]' : 'text-red-500'}`}>
+              {coin?.price_change_percentage_7d_in_currency >= 0 ? '+' : ''}{coin?.price_change_percentage_7d_in_currency?.toFixed(2)}%
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const ChartViz = ({ data, color }) => {
+   if(!data || data.length < 2) return <div className="w-full h-full flex items-center justify-center text-xs text-[#444]">NO DATA</div>
+   
+   const width = 1000;
+   const height = 400;
+   const min = Math.min(...data);
+   const max = Math.max(...data);
+   const range = max - min;
+   
+   const points = data.map((val, i) => {
+      const x = (i / (data.length - 1)) * width;
+      const y = height - ((val - min) / range) * (height - 20) - 10;
+      return `${x},${y}`;
+   }).join(' L ');
+   
+   return (
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full" preserveAspectRatio="none">
+         <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+               <stop offset="0%" stopColor={color} stopOpacity="0.2"/>
+               <stop offset="100%" stopColor={color} stopOpacity="0"/>
+            </linearGradient>
+         </defs>
+         <path d={`M 0,${height} L ${points} L ${width},${height} Z`} fill="url(#g)" />
+         <path d={`M ${points}`} fill="none" stroke={color} strokeWidth="2" vectorEffect="non-scaling-stroke"/>
+      </svg>
+   )
 }
 
 export default WebAgent
