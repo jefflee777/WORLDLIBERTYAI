@@ -26,7 +26,8 @@ const BottomCTASection = () => {
       desc: "Connect with the community",
       icon: PiTelegramLogoDuotone,
       link: "https://t.me/WLFIai_bot",
-      color: "#2AABEE"
+      color: "#2AABEE",
+      btnlabel: "Join Community"
     },
     {
       id: "twitter",
@@ -34,7 +35,8 @@ const BottomCTASection = () => {
       desc: "Stay updated with news",
       icon: PiXLogoBold,
       link: "https://x.com/worldlibertyai",
-      color: "#FFFFFF"
+      color: "#FFFFFF",
+      btnlabel: "Follow"
     },
     {
       id: "miniapp",
@@ -42,7 +44,8 @@ const BottomCTASection = () => {
       desc: "Trade directly on Telegram",
       icon: PiAppStoreLogoDuotone,
       link: "https://t.me/WLFIai_bot/live",
-      color: "#39FF14"
+      color: "#39FF14",
+      btnlabel: "Launch Bot"
     }
   ]
 
@@ -155,7 +158,7 @@ const CTACard = ({ action, index }) => {
         <div className="mt-auto w-full relative z-20">
           <MagneticButton>
             <a href={action.link} className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-white text-black font-bold text-sm hover:bg-[#39FF14] transition-colors duration-300">
-              Get Started
+              {action.btnlabel}
               <PiArrowUpRightBold />
             </a>
           </MagneticButton>
