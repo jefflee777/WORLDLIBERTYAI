@@ -67,6 +67,7 @@ const TokenomicsSection = () => {
 
   return (
     <section 
+      id='tokenomics'
       ref={sectionRef}
       className="relative py-24 bg-[#050505] overflow-hidden min-h-screen flex items-center"
     >
