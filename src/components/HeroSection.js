@@ -142,7 +142,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mb-8"
         >
-          <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-white/5 bg-white/[0.02] backdrop-blur-md transition-colors hover:border-[#39FF14]/20 hover:bg-[#39FF14]/5 cursor-default">
+          <div className="inline-flex sm:opacity-100 opacity-0 items-center gap-2.5 px-3 py-1.5 rounded-full border border-white/5 bg-white/[0.02] backdrop-blur-md transition-colors hover:border-[#39FF14]/20 hover:bg-[#39FF14]/5 cursor-default">
             <span className="relative flex h-1.5 w-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#39FF14] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#39FF14]"></span>
