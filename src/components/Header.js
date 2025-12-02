@@ -25,7 +25,7 @@ const socialLinks = [
     hover: "#39FF14"
   },
   {
-    href: "https://bscscan.com",
+    href: "https://bscscan.com/token/0x649b4cbad977e053fe8d1719d41ecd299812f266",
     icon: RiBnbFill,
     label: "BscScan",
     color: "#f0b90b",

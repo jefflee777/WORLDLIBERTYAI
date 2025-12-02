@@ -29,7 +29,7 @@ const Footer = () => {
   const socials = [
     { icon: PiTelegramLogoDuotone, href: "https://t.me/worldlibertyai", label: "Telegram" },
     { icon: PiXLogoBold, href: "https://x.com/worldlibertyai", label: "X / Twitter" },
-    { icon: SiBinance, href: "https://bscscan.com", label: "BscScan" }
+    { icon: SiBinance, href: "https://bscscan.com/token/0x649b4cbad977e053fe8d1719d41ecd299812f266", label: "BscScan" }
   ]
 
   return (
