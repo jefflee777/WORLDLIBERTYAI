@@ -3,11 +3,10 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react'
 import { FaTelegram, FaBars, FaTimes } from 'react-icons/fa'
 import { RiBnbFill } from "react-icons/ri";
 import { BsTwitterX } from "react-icons/bs";
-import { PiLightningFill } from "react-icons/pi";
 
 const Navbar = () => {
   const [hidden, setHidden] = useState(false)

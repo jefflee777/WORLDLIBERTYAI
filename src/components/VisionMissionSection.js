@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { PiScan, PiTrendUp, PiBellRinging, PiTelegramLogo, PiCaretRight } from 'react-icons/pi';
+import { PiScan, PiTrendUp, PiBellRinging, PiTelegramLogo } from 'react-icons/pi';
 import Image from 'next/image';
 
 const VisionMissionSection = () => {    

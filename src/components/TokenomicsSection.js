@@ -1,10 +1,8 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView } from 'motion/react'
 import { useRef, useState } from 'react'
 import { 
-  FaKey, 
-  FaBolt, 
   FaGift,
   FaChartPie,
   FaCoins,

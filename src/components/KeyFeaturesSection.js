@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView } from 'motion/react'
 import { useRef } from 'react'
 import { FaBrain, FaChartLine, FaEye, FaTelegram } from 'react-icons/fa'
 import { BsTwitterX } from "react-icons/bs";

@@ -8,7 +8,7 @@ import {
   useSpring, 
   useMotionValue, 
   animate, 
-} from 'framer-motion';
+} from 'motion/react';
 import { 
   PiRocketLaunchDuotone, 
   PiArrowRight, 

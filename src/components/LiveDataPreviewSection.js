@@ -1,8 +1,7 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView } from 'motion/react'
 import { useRef, useState, useEffect } from 'react'
-import { FaChartLine, FaExchangeAlt, FaLayerGroup } from 'react-icons/fa'
 import { PiCaretUpBold, PiCaretDownBold, PiLightningDuotone } from 'react-icons/pi'
 
 const LiveDataPreviewSection = () => {
