@@ -82,7 +82,7 @@ const RoadmapSection = () => {
     <section 
       id='roadmap'
       ref={containerRef}
-      className="relative py-32 bg-[#050505] overflow-hidden"
+      className="relative py-10 sm:py-32 bg-[#050505] overflow-hidden"
     >
       {/* --- Background Noise & Ambience --- */}
       <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" 
@@ -148,7 +148,7 @@ const RoadmapSection = () => {
           </div>
           
           {/* Mobile Vertical Line */}
-          <div className="absolute left-[28px] top-0 bottom-0 w-px bg-white/10 md:hidden" />
+          <div className="absolute hidden left-[28px] top-0 bottom-0 w-px bg-white/10 md:hidden" />
 
 
           {/* --- Phase Cards --- */}
@@ -167,14 +167,6 @@ const RoadmapSection = () => {
 
 // --- SUB-COMPONENT: PHASE CARD ---
 const PhaseCard = ({ data, index }) => {
-  // Determine if card is Left or Right aligned on Desktop
-  // Index 0: Center/Top, Index 1: Right, Index 2: Left... actually, let's do Zig Zag for cleaner look
-  // Better yet: Center alignment for all with alternating slight offsets looks premium.
-  
-  // Let's stick to strict Zig-Zag for the beam logic above:
-  // Phase 1 (Top) -> Center/Rightish
-  // Phase 2 (Mid) -> Leftish
-  // Phase 3 (Bot) -> Center
   
   // Adjusted layout logic:
   const isRight = index % 2 === 0; // Alternating
@@ -217,7 +209,7 @@ const PhaseCard = ({ data, index }) => {
 
 
       {/* 3. The Main Card */}
-      <div className="w-full md:w-1/2 pl-16 md:pl-0">
+      <div className="w-full md:w-1/2  md:pl-0">
         <motion.div
            initial={{ opacity: 0, y: 30 }}
            whileInView={{ opacity: 1, y: 0 }}
@@ -242,8 +234,8 @@ const PhaseCard = ({ data, index }) => {
                   <data.icon size={26} className="text-white group-hover:text-[#39FF14] transition-colors" />
                </div>
                <div>
-                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Focus: {data.focus}</div>
-                  <h3 className="text-2xl font-bold text-white group-hover:text-[#39FF14] transition-colors">{data.title}</h3>
+                  <div className="text-xs text-white/40 uppercase tracking-widest sm:mb-1 mb-0 mt-2 sm:mt-0">Focus: {data.focus}</div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-[#39FF14] transition-colors">{data.title}</h3>
                </div>
             </div>
 
