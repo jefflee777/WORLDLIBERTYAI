@@ -317,9 +317,6 @@ const WebAgent = () => {
                 <div className="w-1.5 h-1.5 bg-[#39FF14] rounded-full animate-pulse" />
                 <span className="hidden sm:inline">SYSTEM ONLINE</span>
              </div>
-             <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-[#39FF14] to-[#004400] flex items-center justify-center text-black font-bold text-xs">
-                AI
-             </div>
          </div>
       </header>
 
