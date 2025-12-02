@@ -97,7 +97,7 @@ const Footer = () => {
             </div>
           </div>
 
-
+ 
           {/* Right: Navigation & Socials */}
           <div className="lg:col-span-7 flex flex-col md:flex-row gap-16 md:gap-24 pt-4 lg:pt-0 justify-end">
             
