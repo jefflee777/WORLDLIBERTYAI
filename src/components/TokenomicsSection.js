@@ -80,7 +80,7 @@ const TokenomicsSection = () => {
       <div className="relative z-10 container mx-auto px-6">
         
         {/* --- Header --- */}
-        <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20 border-b border-white/5 pb-8">
+        <div className="flex flex-col md:flex-row sm:items-end items-start justify-between gap-8 mb-20 border-b border-white/5 pb-8">
           <div className="max-w-2xl">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
