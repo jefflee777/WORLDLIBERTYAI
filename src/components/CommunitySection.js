@@ -50,7 +50,7 @@ const BottomCTASection = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative py-32 bg-[#050505] overflow-hidden flex flex-col items-center justify-center min-h-[90vh]"
+      className="relative py-10 sm:py-32 bg-[#050505] overflow-hidden flex flex-col items-center justify-center min-h-[90vh]"
     > 
       {/* Radar Scanner Animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

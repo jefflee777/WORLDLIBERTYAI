@@ -40,7 +40,7 @@ const KeyFeaturesSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-32 overflow-hidden bg-[#050505]"
+      className="relative py-10 sm:py-32 overflow-hidden bg-[#050505]"
     >
       {/* Background Ambience */}
       <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" 

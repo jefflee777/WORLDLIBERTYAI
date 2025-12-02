@@ -69,7 +69,7 @@ const TokenomicsSection = () => {
     <section 
       id='tokenomics'
       ref={sectionRef}
-      className="relative py-24 bg-[#050505] overflow-hidden min-h-screen flex items-center"
+      className="relative py-10 sm:py-24 bg-[#050505] overflow-hidden min-h-screen flex items-center"
     >
       {/* --- Background FX --- */}
       <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" 

@@ -48,7 +48,7 @@ const VisionMissionSection = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative py-32 overflow-hidden bg-[#050505]"
+      className="relative py-10 sm:py-32 overflow-hidden bg-[#050505]"
     >
       {/* --- Background Layers --- */}
       <div className="absolute inset-0 opacity-[0.04] mix-blend-overlay pointer-events-none" 

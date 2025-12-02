@@ -67,7 +67,7 @@ const LiveDataPreviewSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-24 bg-[#050505] overflow-hidden"
+      className="relative py-10 sm:py-24 bg-[#050505] overflow-hidden"
     >
       {/* Background Noise & Ambience */}
       <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" 
