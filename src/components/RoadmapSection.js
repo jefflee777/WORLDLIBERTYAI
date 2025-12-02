@@ -4,7 +4,6 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { 
   PiRocketLaunchDuotone, 
-  PiChartLineUpDuotone, 
   PiGlobeHemisphereWestDuotone, 
   PiCheckCircleFill, 
   PiCircleDashedBold, 
@@ -13,6 +12,7 @@ import {
   PiHandshakeDuotone,
   PiLightningDuotone
 } from 'react-icons/pi'
+import { BsBarChartLine } from "react-icons/bs";
 
 const RoadmapSection = () => {
   const containerRef = useRef(null)
@@ -34,7 +34,7 @@ const RoadmapSection = () => {
     {
       id: "01",
       title: "Foundation",
-      status: "completed", // completed | processing | upcoming
+      status: "completed", 
       timeframe: "Q1 - Q2 2024",
       icon: PiCpuDuotone,
       focus: "Infrastructure",
@@ -51,7 +51,7 @@ const RoadmapSection = () => {
       title: "Expansion",
       status: "processing",
       timeframe: "Q3 - Q4 2024",
-      icon: PiChartLineUpDuotone,
+      icon: BsBarChartLine,
       focus: "Intelligence",
       specs: [
         "Multi-Asset Analysis (ETH, SOL, BTC)",
