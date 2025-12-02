@@ -470,7 +470,7 @@ const WebAgent = () => {
                   </div>
 
                   {/* Tab Content */}
-                  <div className="p-4 h-64 overflow-y-auto scrollbar-thin">
+                  <div className="p-4 sm:h-[60vh] h-[35vh] overflow-y-auto scrollbar-thin">
                      {detailTab === 'depth' && <OrderBook price={activeCoin?.current_price || 0} />}
                      {detailTab === 'trades' && <LiveTrades price={activeCoin?.current_price || 0} />}
                      {detailTab === 'holders' && <HoldersView holders={holders} />}
