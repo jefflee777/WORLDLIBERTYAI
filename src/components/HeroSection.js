@@ -19,6 +19,7 @@ import {
   PiCaretDownBold
 } from 'react-icons/pi';
 import Lenis from 'lenis';
+import Link from 'next/link';
 
 // --- UTILITY: COUNTING NUMBER ---
 const Counter = ({ from, to, prefix = '', suffix = '', decimals = 0 }) => {
@@ -204,18 +205,18 @@ const HeroSection = () => {
           transition={{ duration: 1, delay: 0.5 }}
         >
           <MagneticWrapper>
-            <a href="#" className="relative group block">
+            <Link href="/ai" className="relative group block">
               <div className="absolute inset-0 bg-[#39FF14] rounded-full blur-[12px] opacity-10 group-hover:opacity-30 transition-opacity duration-500" />
               <button className="relative px-8 py-4 bg-[#EAEAEA] hover:bg-white text-black rounded-full overflow-hidden flex items-center gap-2 transition-colors active:scale-95 shadow-[0_0_20px_rgba(57,255,20,0.1)]">
                 <span className="font-bold tracking-tight text-sm uppercase">Start Trading</span>
                 <PiRocketLaunchDuotone className="text-black group-hover:rotate-45 transition-transform duration-300" size={18} />
               </button>
-            </a>
+            </Link>
           </MagneticWrapper>
 
           <MagneticWrapper strength={0.2}>
-            <a href="#" className="px-8 py-4 rounded-full border border-white/10 text-white hover:bg-white/5 transition-colors flex items-center gap-2 group">
-              <span className="font-medium tracking-tight text-sm uppercase text-white/80 group-hover:text-white">Ecosystem</span>
+            <a href="https://t.me/WLFIai_bot/live" target='_blank' className="px-8 py-4 rounded-full border border-white/10 text-white hover:bg-white/5 transition-colors flex items-center gap-2 group">
+              <span className="font-medium tracking-tight text-sm uppercase text-white/80 group-hover:text-white">Mini App</span>
               <PiArrowRight className="text-white/50 group-hover:translate-x-1 group-hover:text-white transition-all" />
             </a>
           </MagneticWrapper>
