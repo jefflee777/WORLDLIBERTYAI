@@ -1,15 +1,13 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { motion, useScroll, useSpring } from 'motion/react'
 import { 
-  PiRocketLaunchDuotone, 
   PiGlobeHemisphereWestDuotone, 
   PiCheckCircleFill, 
   PiCircleDashedBold, 
   PiLockKeyDuotone, 
   PiCpuDuotone, 
-  PiHandshakeDuotone,
   PiLightningDuotone
 } from 'react-icons/pi'
 import { BsBarChartLine } from "react-icons/bs";
