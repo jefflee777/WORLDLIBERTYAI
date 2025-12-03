@@ -62,21 +62,21 @@ const WebAgent = () => {
         id: 'wlfiai',
         symbol: 'wlfi',
         name: 'World Liberty',
-        current_price: 0.1542,
-        price_change_percentage_24h: 8.45,
-        price_change_percentage_7d_in_currency: 15.2,
-        market_cap: 4250000000,
-        total_volume: 345000000,
+        current_price: 0.0,
+        price_change_percentage_24h: 0,
+        price_change_percentage_7d_in_currency: 0,
+        market_cap: 0,
+        total_volume: 0,
         market_cap_rank: 0,
         image: '/logo.png',
-        sparkline_in_7d: { price: Array.from({length: 40}, () => Math.random() * 0.05 + 0.12) },
+        sparkline_in_7d: { price: Array.from({length: 40}, () => Math.random() * 0.0 + 0.0) },
         special: true,
-        high_24h: 0.1620,
-        low_24h: 0.1410,
-        circulating_supply: 27500000000,
-        total_supply: 100000000000,
-        ath: 0.2450,
-        atl: 0.0850
+        high_24h: 0.0,
+        low_24h: 0.0,
+        circulating_supply: 0,
+        total_supply: 0,
+        ath: 0.0,
+        atl: 0.0
       }
       
       const combined = [wlfiCoin, ...data]
