@@ -143,18 +143,18 @@ const WebAgent = () => {
   }
 
   // --- 3. GENERATE HOLDERS DATA ---
-  const generateHolders = (coin) => {
-    return Array.from({length: 10}, (_, i) => ({
+  const generateHolders = () => {
+    return Array.from({length: 10}, () => ({
       address: `0x${Math.random().toString(36).substring(2, 15)}...${Math.random().toString(36).substring(2, 6)}`,
       balance: (Math.random() * 1000000).toFixed(0),
       percentage: (Math.random() * 5).toFixed(2),
-      type: i < 3 ? 'whale' : i < 7 ? 'holder' : 'trader'
+      type: Math.random() < 0.3 ? 'whale' : Math.random() < 0.7 ? 'holder' : 'trader'
     }))
   }
 
   // --- 4. GENERATE TRANSACTIONS ---
   const generateTransactions = (price) => {
-    return Array.from({length: 20}, (_, i) => ({
+    return Array.from({length: 20}, () => ({
       hash: `0x${Math.random().toString(36).substring(2, 15)}`,
       type: Math.random() > 0.5 ? 'buy' : 'sell',
       amount: (Math.random() * 10000).toFixed(2),
@@ -310,7 +310,7 @@ const WebAgent = () => {
          
          {/* LEFT SIDEBAR - MOBILE OVERLAY */}
          <AnimatePresence>
-           {(sidebarOpen || (typeof window !== 'undefined' && window.innerWidth >= 1024)) && (
+          {(sidebarOpen || (typeof window !== 'undefined' && window?.innerWidth >= 1024)) && (
              <motion.div 
                initial={{ x: -320 }}
                animate={{ x: 0 }}
@@ -586,7 +586,7 @@ const WebAgent = () => {
 
       {/* Mobile AI Modal */}
       <AnimatePresence>
-        {activeTab && window.innerWidth < 1280 && (
+        {activeTab && typeof window !== 'undefined' && window?.innerWidth < 1280 && (
           <motion.div
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
