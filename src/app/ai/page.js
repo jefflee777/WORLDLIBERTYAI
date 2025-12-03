@@ -7,32 +7,17 @@ import {
   FaPaperPlane, 
   FaSpinner, 
   FaLayerGroup,
-  FaGlobeAmericas,
-  FaWallet,
   FaBolt,
-  FaRobot,
-  FaChartLine,
-  FaShieldAlt,
-  FaExchangeAlt,
-  FaFireAlt,
   FaUsers,
-  FaHistory,
-  FaBell
+  FaHistory
 } from 'react-icons/fa'
 import { 
   BsTerminal, 
-  BsLightningChargeFill, 
-  BsCpu,
   BsStars,
-  BsGpuCard,
-  BsBarChartFill,
-  BsGraphUp,
-  BsShieldCheck,
-  BsClockHistory
+  BsBarChartFill
 } from "react-icons/bs";
-import { BiTrendingUp, BiTrendingDown, BiCrosshair, BiRadar, BiWallet, BiTransfer } from 'react-icons/bi'
-import { MdShowChart, MdAccountBalanceWallet, MdTimeline } from 'react-icons/md'
-import { RiExchangeDollarLine, RiPieChart2Fill } from 'react-icons/ri'
+import { BsChatLeftText } from "react-icons/bs";
+import { BiRadar, BiTransfer } from 'react-icons/bi'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 
@@ -325,7 +310,7 @@ const WebAgent = () => {
          
          {/* LEFT SIDEBAR - MOBILE OVERLAY */}
          <AnimatePresence>
-           {(sidebarOpen || window.innerWidth >= 1024) && (
+           {(sidebarOpen || (typeof window !== 'undefined' && window.innerWidth >= 1024)) && (
              <motion.div 
                initial={{ x: -320 }}
                animate={{ x: 0 }}
@@ -505,7 +490,7 @@ const WebAgent = () => {
                      <div className="space-y-4 min-h-[300px]">
                         {conversation.length === 0 && (
                            <div className="text-center mt-10 opacity-50">
-                              <FaRobot size={32} className="mx-auto mb-2 text-[#39FF14]"/>
+                              <BsChatLeftText size={32} className="mx-auto mb-2 text-[#39FF14]"/>
                               <p className="text-xs text-[#666]">AI Agent Ready. Awaiting Command.</p>
                               <div className="flex flex-wrap gap-2 justify-center mt-4">
                                  {['Analyze WLFI', 'Price Prediction', 'Whale Alert'].map(t => (
@@ -595,7 +580,7 @@ const WebAgent = () => {
            onClick={() => setActiveTab('chat')}
            className="xl:hidden fixed bottom-4 right-4 w-14 h-14 bg-gradient-to-br from-[#39FF14] to-[#004400] rounded-full flex items-center justify-center shadow-lg z-50"
          >
-           <FaRobot size={24} className="text-black" />
+           <BsChatLeftText size={24} className="text-black" />
          </button>
       </main>
 
@@ -619,7 +604,7 @@ const WebAgent = () => {
                   <div className="space-y-4">
                     {conversation.length === 0 && (
                       <div className="text-center mt-10 opacity-50">
-                        <FaRobot size={32} className="mx-auto mb-2 text-[#39FF14]"/>
+                        <BsChatLeftText size={32} className="mx-auto mb-2 text-[#39FF14]"/>
                         <p className="text-xs text-[#666]">AI Agent Ready. Awaiting Command.</p>
                       </div>
                     )}
@@ -672,7 +657,7 @@ const OrderBook = ({ price }) => {
            <span>Amount</span>
          </div>
          <div className="flex-1 flex flex-col-reverse justify-end">
-            {asks.slice(0,5).map((a,i) => (
+            {asks.slice(0,10).map((a,i) => (
                <div key={i} className="flex justify-between relative group hover:bg-white/5 py-1">
                   <span className="text-red-500 z-10">{a.price.toFixed(4)}</span>
                   <span className="text-[#666] z-10">{a.size.toFixed(2)}</span>
@@ -682,7 +667,7 @@ const OrderBook = ({ price }) => {
          </div>
          <div className="py-2 text-center text-xs font-bold text-white border-y border-white/5 my-1">${price.toFixed(4)}</div>
          <div className="flex-1">
-            {bids.slice(0,5).map((b,i) => (
+            {bids.slice(0,10).map((b,i) => (
                <div key={i} className="flex justify-between relative group hover:bg-white/5 py-1">
                   <span className="text-[#39FF14] z-10">{b.price.toFixed(4)}</span>
                   <span className="text-[#666] z-10">{b.size.toFixed(2)}</span>
